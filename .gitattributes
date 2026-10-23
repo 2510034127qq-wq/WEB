@@ -3,10 +3,13 @@
 *.css text eol=lf
 *.py text eol=lf
 *.md text eol=lf
-*.glb binary
-*.blend binary
-*.jpg binary
-*.png binary
+*.glb filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.hdr filter=lfs diff=lfs merge=lfs -text
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.bin filter=lfs diff=lfs merge=lfs -text
 *.mjs text eol=lf
 *.json text eol=lf
 *.cmd text eol=crlf

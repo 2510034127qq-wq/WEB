@@ -1,0 +1,218 @@
+[
+  {
+    "material": "courtyard_stone",
+    "type": "ao",
+    "size": 4096,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/courtyard_stone_ao.png"
+  },
+  {
+    "material": "courtyard_stone",
+    "type": "sky",
+    "size": 4096,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/courtyard_stone_sky.png"
+  },
+  {
+    "material": "courtyard_stone",
+    "type": "indirect",
+    "size": 4096,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/courtyard_stone_indirect.hdr"
+  },
+  {
+    "material": "lime_plaster",
+    "type": "ao",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/lime_plaster_ao.png"
+  },
+  {
+    "material": "lime_plaster",
+    "type": "sky",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/lime_plaster_sky.png"
+  },
+  {
+    "material": "lime_plaster",
+    "type": "indirect",
+    "size": 2048,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/lime_plaster_indirect.hdr"
+  },
+  {
+    "material": "stone_plinth",
+    "type": "ao",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/stone_plinth_ao.png"
+  },
+  {
+    "material": "stone_plinth",
+    "type": "sky",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/stone_plinth_sky.png"
+  },
+  {
+    "material": "stone_plinth",
+    "type": "indirect",
+    "size": 2048,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/stone_plinth_indirect.hdr"
+  },
+  {
+    "material": "weathered_wood",
+    "type": "ao",
+    "size": 4096,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/weathered_wood_ao.png"
+  },
+  {
+    "material": "weathered_wood",
+    "type": "sky",
+    "size": 4096,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/weathered_wood_sky.png"
+  },
+  {
+    "material": "weathered_wood",
+    "type": "indirect",
+    "size": 4096,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/weathered_wood_indirect.hdr"
+  },
+  {
+    "material": "kiln_firebrick",
+    "type": "ao",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/kiln_firebrick_ao.png"
+  },
+  {
+    "material": "kiln_firebrick",
+    "type": "sky",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/kiln_firebrick_sky.png"
+  },
+  {
+    "material": "kiln_firebrick",
+    "type": "indirect",
+    "size": 2048,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/kiln_firebrick_indirect.hdr"
+  },
+  {
+    "material": "grey_fired_roof_tiles",
+    "type": "ao",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/grey_fired_roof_tiles_ao.png"
+  },
+  {
+    "material": "grey_fired_roof_tiles",
+    "type": "sky",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/grey_fired_roof_tiles_sky.png"
+  },
+  {
+    "material": "grey_fired_roof_tiles",
+    "type": "indirect",
+    "size": 2048,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/grey_fired_roof_tiles_indirect.hdr"
+  },
+  {
+    "material": "ivory_porcelain",
+    "type": "ao",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/ivory_porcelain_ao.png"
+  },
+  {
+    "material": "ivory_porcelain",
+    "type": "sky",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/ivory_porcelain_sky.png"
+  },
+  {
+    "material": "ivory_porcelain",
+    "type": "indirect",
+    "size": 2048,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/ivory_porcelain_indirect.hdr"
+  },
+  {
+    "material": "unglazed_stoneware",
+    "type": "ao",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/unglazed_stoneware_ao.png"
+  },
+  {
+    "material": "unglazed_stoneware",
+    "type": "sky",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/unglazed_stoneware_sky.png"
+  },
+  {
+    "material": "unglazed_stoneware",
+    "type": "indirect",
+    "size": 2048,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/unglazed_stoneware_indirect.hdr"
+  },
+  {
+    "material": "undyed_linen",
+    "type": "ao",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/undyed_linen_ao.png"
+  },
+  {
+    "material": "undyed_linen",
+    "type": "sky",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/undyed_linen_sky.png"
+  },
+  {
+    "material": "undyed_linen",
+    "type": "indirect",
+    "size": 2048,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/undyed_linen_indirect.hdr"
+  }
+]

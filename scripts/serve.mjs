@@ -1,6 +1,7 @@
 import http from "node:http";
 import { readFile, stat } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { existsSync, createReadStream } from "node:fs";
+import { pipeline } from "node:stream/promises";
 import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
@@ -22,6 +23,7 @@ const types = {
   ".css": "text/css; charset=utf-8",
   ".json": "application/json; charset=utf-8",
   ".glb": "model/gltf-binary",
+  ".gltf": "model/gltf+json",
   ".jpg": "image/jpeg",
   ".png": "image/png",
   ".svg": "image/svg+xml",
@@ -44,6 +46,20 @@ const server = http.createServer(async (req, res) => {
     }
     const info = await stat(path);
     if (!info.isFile()) throw new Error("Not a file");
+    // Scan meshes and PBR maps are large. Stream them without retaining both a
+    // raw and gzip copy in RAM for the lifetime of the local server.
+    const textAsset = [".html", ".js", ".css", ".json", ".gltf", ".svg"].includes(extname(path));
+    if (!textAsset || info.size > 1024 * 1024) {
+      res.writeHead(200, {
+        "Content-Type": types[extname(path)] || "application/octet-stream",
+        "Content-Length": info.size,
+        "Cache-Control": "no-cache",
+        "X-Content-Type-Options": "nosniff",
+      });
+      if (req.method === "HEAD") res.end();
+      else await pipeline(createReadStream(path), res);
+      return;
+    }
     let entry = cache.get(path);
     if (!entry || entry.mtime !== info.mtimeMs) {
       const buffer = await readFile(path);

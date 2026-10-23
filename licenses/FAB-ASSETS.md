@@ -1,5 +1,18 @@
 # Fab 免费资产与署名
 
+## hands（2026-10-24 新增）
+
+- 作者：Store Page。
+- 原始页面：[hands](https://www.fab.com/listings/c9b121d9-4dd7-43fa-9086-9d5854fa0ada)。
+- 授权：[Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/)。作者不为本项目背书。
+- 免费下载 `hands.zip` 中的 `hands.fbx` 和 `arm_base_2048_*` 皮肤贴图；原件保存在 `art/sources/fab-hands/`。
+- 修改：裁剪左手、统一米制坐标和骨名、保留 UV 与权重、细分一次；游戏左手保持原侧，右手镜像，增加与工具接触的指骨姿态。
+- 可编辑改编文件 `art/hands.blend`；运行文件 `public/assets/hands.glb`；各指骨长度 `public/assets/hand-rig.json`。通过 `scripts/adapt-fab-hands.py` 复现。
+
+## 未采用的 Giant Bamboo 候选
+
+Quixel Megaplants [Giant Bamboo](https://www.fab.com/listings/73f94dc9-9642-4c44-9f8e-c37eebe3205c) 的免费 USD 已通过正常网页下载。页面标注 Fab Standard License、NoAI。文件未带配套纹理，Blender 检查还报告部分无效面索引，因此未作为运行资产，也没有用于生成式 AI。候选源文件留在本地工作目录，发布打包排除它。
+
 2026-10-23 从 Fab 详情页检查价格、授权及通用下载格式，使用正常网页下载。未购买资产。
 
 ## Hanging Ancient Pottery Set

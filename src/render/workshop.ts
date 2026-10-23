@@ -1,10 +1,12 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { modelLoader } from "./model-loader";
 import {
   loadWorkshopMaterials,
   loadCourtyardSky,
   replaceCourtyardGround,
-  captureWorkshopReflections,
+  loadWorkstationReflections,
+  workstationRegion,
+  bindBakedLighting,
   type MaterialSet,
 } from "./materials";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -15,6 +17,9 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
 import { clone } from "three/addons/utils/SkeletonUtils.js";
 import { fineNoise, makeGarden, makeWear } from "./details";
 import { Ceramic } from "./ceramic";
+import { loadScannedProps } from "./scanned-props";
+import { loadCraftAssets } from "./craft-assets";
+import { fingerTip, solveFingerContact } from "./hand-contact";
 import { sleeveGeometry, poseSleeve } from "./sleeve";
 import type { MotionPose } from "../simulation/locomotion";
 import {
@@ -52,8 +57,10 @@ export class Workshop {
   private forearms: THREE.Mesh[] = [];
   private surfaces!: MaterialSet;
   private reflections = new Map<string, THREE.Texture>();
+  craftAssets = new Map<string, THREE.Object3D>();
+  private reach: {target:THREE.Vector3;start:number;hand:number} | null = null;
   sun = new THREE.DirectionalLight("#fff0d6", 4.25);
-  fire = new THREE.PointLight("#ff6b1b", 0, 8, 1.5);
+  fire = new THREE.PointLight("#ff6b1b", 0, 8, 2);
   flames: THREE.Mesh[] = [];
   focus: StationId | null = null;
   turn = 0;
@@ -80,13 +87,17 @@ export class Workshop {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 0.92;
+    // Reproducible photographic comparisons use the same scene and light energy.
+    const photographicAudit = new URLSearchParams(location.search);
+    if (photographicAudit.get('tone') === 'agx') this.renderer.toneMapping = THREE.AgXToneMapping;
+    const auditExposure = Number(photographicAudit.get('exposure'));
+    if (auditExposure >= .1 && auditExposure <= 4) this.renderer.toneMappingExposure = auditExposure;
     host.append(this.renderer.domElement);
     this.scene.background = new THREE.Color("#b8cfdf");
     this.scene.fog = new THREE.Fog("#c2cdd1", 34, 80);
     this.camera.rotation.order = "YXZ";
     this.camera.position.fromArray(state.player);
-    // Sky irradiance comes from the HDRI. A tiny ground bounce keeps unlit cloth legible.
-    this.scene.add(new THREE.HemisphereLight("#c6dcff", "#88735a", 0.28));
+    // Direct sun is aligned with the sky panorama after it has loaded.
     this.sun.position.set(-9, 13, 11);
     this.sun.castShadow = true;
     this.sun.shadow.mapSize.set(4096, 4096);
@@ -119,6 +130,7 @@ export class Workshop {
     this.ao.kernelRadius = 0.18;
     this.ao.minDistance = 0.0004;
     this.ao.maxDistance = 0.008;
+    this.ao.enabled = new URLSearchParams(location.search).get('ao-audit') !== 'off';
     this.composer.addPass(this.ao);
     this.composer.addPass(new OutputPass());
     this.board = new THREE.Mesh(
@@ -132,10 +144,10 @@ export class Workshop {
     window.addEventListener("resize", () => this.resize());
   }
   async load(onProgress: (label: string) => void) {
-    const loader = new GLTFLoader();
+    const loader = modelLoader();
     onProgress("木构、窑砖与石阶");
     const gltf = await loader.loadAsync("/assets/workshop.glb");
-    onProgress("载入实拍 2K 材质与自然天光");
+    onProgress("载入表面材质与自然天光");
     const [surfaces] = await Promise.all([
       loadWorkshopMaterials(this.renderer),
       loadCourtyardSky(this.scene, this.renderer),
@@ -150,15 +162,18 @@ export class Workshop {
       lime_plaster: "wall",
       courtyard_stone: "ground",
       kiln_firebrick: "brick",
+      stone_plinth: "ground",
+      unglazed_stoneware: "earthenware",
     };
     gltf.scene.traverse((o) => {
       if (!(o instanceof THREE.Mesh)) return;
       o.castShadow = o.receiveShadow = true;
       const old = o.material as THREE.MeshStandardMaterial;
+      o.userData.sourceMaterial = old.name;
       const key = map[old.name];
       if (key) {
         o.material = surfaces[key];
-        if (key === "ground") replaceCourtyardGround(o, surfaces.ground);
+        if (old.name === "courtyard_stone") replaceCourtyardGround(o, surfaces.ground);
         if (key === "wall") {
           // Source UV units are 1.4m. A 2.2m plaster sample retains visible trowel detail.
           const uv = o.geometry.attributes.uv;
@@ -168,17 +183,18 @@ export class Workshop {
         }
       }
       if (old.name === "grey_fired_roof_tiles") {
-        old.color.set("#525957");
-        old.roughness = 0.92;
-        old.bumpMap = fineNoise(512);
-        old.bumpScale = 0.003;
-        old.side = THREE.DoubleSide;
-      }
-      if (old.name === "unglazed_stoneware") {
-        old.color.set("#746047");
-        old.roughness = 0.9;
-        old.bumpMap = fineNoise(512);
-        old.bumpScale = 0.002;
+        o.material=surfaces.rooftile;
+        surfaces.rooftile.normalScale.setScalar(.38);
+        const uv=o.geometry.attributes.uv;
+        // Sample the interior of individual photographed tiles. The model itself
+        // supplies lap joints and thickness, so painted seams must not cross it.
+        const strips=[.031,.103,.173,.302,.435,.562,.704];
+        for(let i=0;i<uv.count;i++){
+          const u=uv.getX(i),v=uv.getY(i),col=Math.floor(u/.13),row=Math.floor(v/.15);
+          uv.setXY(i,strips[Math.abs(col)%7]+THREE.MathUtils.clamp((u-col*.13)/.11,0,1)*.036,
+            .12+(Math.abs(row)%6)*.122+THREE.MathUtils.clamp((v-row*.15)/.14,0,1)*.065);
+        }
+        uv.needsUpdate=true;
       }
       if (old.name === "still_water") {
         o.material = new THREE.MeshPhysicalMaterial({
@@ -190,16 +206,19 @@ export class Workshop {
         });
       }
       if (old.name === "ivory_porcelain") {
-        o.material = new THREE.MeshPhysicalMaterial({
-          color: "#e7e5d7",
-          roughness: 0.21,
-          clearcoat: 1,
-          clearcoatRoughness: 0.12,
-          ior: 1.5,
-        });
+        const body = surfaces.earthenware.clone();
+        body.map = null; body.color.set("#b4b1a0"); body.roughness = 1;
+        body.normalScale.setScalar(.18); o.material = body;
+      }
+      if (old.name === "undyed_linen") {
+        old.normalMap = surfaces.linen.normalMap;
+        old.roughnessMap = surfaces.linen.roughnessMap;
+        old.normalScale.setScalar(.18); old.color.set("#a89e78");
       }
       if (old.name === "bamboo_leaves") old.side = THREE.DoubleSide;
     });
+    onProgress("工棚遮蔽、窗洞天光与墙面反弹光");
+    await bindBakedLighting(gltf.scene);
     this.scene.add(gltf.scene);
     onProgress("悬挂陶罐实物资产");
     const purchased = await loader.loadAsync("/assets/fab/hanging-pottery.glb");
@@ -255,20 +274,26 @@ export class Workshop {
     });
     pile.name = "Fab_sixonetwo_firewood_scan_CC_BY_4";
     this.scene.add(pile);
+    onProgress("木器、编织与储料器具");
+    await loadScannedProps(this.scene, this.renderer);
     onProgress("双手与工具");
     const hands = await loader.loadAsync("/assets/hands.glb");
+    const handRig = await (await fetch('/assets/hand-rig.json')).json();
     for (let i = 0; i < 2; i++) {
       const hand = clone(hands.scene);
-      hand.scale.set(i === 0 ? -1 : 1, 1, 1);
+      // The imported rig is hand.L. Keep it on the player's left; mirror only
+      // the right hand. Mirroring the left swapped both thumbs onto the underside.
+      hand.scale.set(i === 0 ? 1 : -1, 1, 1);
+      hand.name=i===0?'player_left_hand':'player_right_hand';
       hand.traverse((o) => {
         if (o instanceof THREE.Mesh) {
           o.castShadow = true;
           o.receiveShadow = true;
           const mat = o.material as THREE.MeshStandardMaterial;
           if (mat.name === "warm_skin") {
-            mat.bumpMap = fineNoise();
-            mat.bumpScale = 0.00018;
-            mat.color.set("#b68c6b");
+            mat.color.set("#ffffff");
+            mat.normalScale.setScalar(0.65);
+            if (mat.map) mat.map.anisotropy = 16;
             this.skinMaterials.add(mat);
           }
           if (mat.name === "indigo_cotton") {
@@ -278,8 +303,10 @@ export class Workshop {
             mat.color.set("#293e40");
           }
         }
-        if (o instanceof THREE.Bone)
+        if (o instanceof THREE.Bone) {
           o.userData.restQuaternion = o.quaternion.clone();
+          o.userData.length=handRig.boneLengths[o.name];
+        }
       });
       hand.visible = false;
       this.scene.add(hand);
@@ -288,25 +315,45 @@ export class Workshop {
     for (let i = 0; i < 2; i++) {
       const arm = new THREE.Mesh(
         sleeveGeometry(),
-        new THREE.MeshStandardMaterial({
-          color: "#293e40",
-          roughness: 0.96,
-          bumpMap: fineNoise(),
-          bumpScale: 0.00005,
-        }),
+        this.surfaces.linen.clone(),
       );
+      (arm.material as THREE.MeshStandardMaterial).color.set("#3b5757");
       arm.castShadow = arm.receiveShadow = true;
       arm.visible = false;
       this.forearms.push(arm);
       this.scene.add(arm);
     }
+    this.craftAssets = await loadCraftAssets(surfaces);
     this.makeProps();
     this.makeSigns();
     this.makeAtmosphere();
     await makeGarden(this.scene);
     makeWear(this.scene);
-    this.reflections = captureWorkshopReflections(this.scene, this.renderer);
+    this.reflections = await loadWorkstationReflections(this.renderer);
+    this.applyLocalLighting(this.scene);
     this.sync();
+  }
+  /** Roof/wall occlusion must also apply to static timber's specular reflection. */
+  applyLocalLighting(root: THREE.Object3D) {
+    root.updateMatrixWorld(true);
+    root.traverse(o => {
+      if (!(o instanceof THREE.Mesh)) return;
+      o.geometry.computeBoundingBox();
+      const center=o.geometry.boundingBox!.getCenter(new THREE.Vector3()).applyMatrix4(o.matrixWorld);
+      // Workshop probes contain roof/wall occlusion. The outside tree belt must
+      // retain its actual sky environment instead of inheriting an indoor probe.
+      const region=(o.userData.lightingRegion as string)||workstationRegion(center.x,center.z);
+      if (!region || region==='outdoor') return;
+      const materials=Array.isArray(o.material) ? o.material : [o.material];
+      const local=materials.map(m => {
+        if (!(m instanceof THREE.MeshStandardMaterial)) return m;
+        const mat=m.clone(); mat.envMap=this.reflections.get(region)!; mat.envMapIntensity=1;
+        mat.onBeforeCompile=m.onBeforeCompile;mat.customProgramCacheKey=m.customProgramCacheKey;
+        mat.envMapRotation.y=Math.PI/2;
+        return mat;
+      });
+      o.material=Array.isArray(o.material)?local:local[0];
+    });
   }
   makeProps() {
     const wood = new THREE.MeshStandardMaterial({
@@ -400,26 +447,8 @@ export class Workshop {
       ring.position.y = 0.008;
       this.wheelHead.add(ring);
     }
-    const profile = [
-      new THREE.Vector2(0, 0),
-      new THREE.Vector2(0.28, 0),
-      new THREE.Vector2(0.3, 0.38),
-      new THREE.Vector2(0.28, 0.4),
-      new THREE.Vector2(0.26, 0.04),
-      new THREE.Vector2(0, 0.04),
-    ];
-    const tub = new THREE.Mesh(
-      new THREE.LatheGeometry(profile, 64),
-      new THREE.MeshStandardMaterial({
-        color: "#62503b",
-        roughness: 0.9,
-        bumpMap: fineNoise(),
-        bumpScale: 0.003,
-        side: THREE.DoubleSide,
-      }),
-    );
+    const tub = this.craftAssets.get("glaze_vat")!;
     tub.position.set(7.2, 0.99, 0.48);
-    tub.castShadow = tub.receiveShadow = true;
     this.scene.add(tub);
     const slurry = new THREE.Mesh(
       new THREE.CircleGeometry(0.275, 64),
@@ -434,7 +463,9 @@ export class Workshop {
     this.scene.add(slurry);
     for (const name of ["brush", "knife", "sagger", "bamboo"]) {
       const group = new THREE.Group();
-      if (name === "sagger") {
+      if (name === "brush" || name === "knife") {
+        group.add(this.craftAssets.get(name)!);
+      } else if (name === "sagger") {
         const pts = [
           new THREE.Vector2(0, 0),
           new THREE.Vector2(0.23, 0),
@@ -486,6 +517,17 @@ export class Workshop {
       this.props.set(name, group);
       this.scene.add(group);
     }
+  }
+  reachTo(target: THREE.Vector3, hand: number) {
+    this.reach={target:target.clone(),start:performance.now()/1000,hand};
+  }
+  handDiagnostics() {
+    return this.hands.map(h=>({
+      name:h.name,visible:h.visible,mirror:h.scale.x,
+      wrist:h.position.toArray(),
+      thumb:fingerTip(h,'thumb_2').toArray(),index:fingerTip(h,'finger0_2').toArray(),
+      palm:new THREE.Vector3(0,1,0).transformDirection(h.matrixWorld).toArray(),
+    }));
   }
   makeSigns() {
     for (const s of STATIONS) {
@@ -626,14 +668,11 @@ export class Workshop {
         this.ceramics.set(p.id, o);
         this.scene.add(o);
       } else o.piece = p;
-      const region =
-        p.location === "display"
-          ? "south"
-          : p.location === "glaze" || p.location === "kiln"
-            ? "east"
-            : "north";
-      o.mesh.material.envMap = this.reflections.get(region) || null;
-      o.mesh.material.envMapIntensity = 1.3;
+      const position=p.location==='held'?this.state.player:p.position;
+      const region=workstationRegion(position[0],position[2]);
+      o.mesh.material.envMap = region?this.reflections.get(region)||null:null;
+      o.mesh.material.envMapIntensity = 1;
+      o.mesh.material.envMapRotation.y=Math.PI/2;
       o.update();
     }
     for (const [id, o] of this.ceramics)
@@ -793,7 +832,7 @@ export class Workshop {
         // The player's dragged depth is the pose; releasing does not trigger an automatic dip.
         o.position.z += 0.68;
         o.position.y =
-          1.39 - item.height * THREE.MathUtils.clamp(this.dipDepth, 0, 1);
+          1.40 - (item.height * item.shrink + .078) * THREE.MathUtils.clamp(this.dipDepth, 0, 1);
       }
     }
     const carried = this.state.pieces.find((q) => q.id === this.state.held);
@@ -851,10 +890,11 @@ export class Workshop {
       const normal = this.contact
         ? this.contactNormal
         : new THREE.Vector3(0.3, 0.5, 1).normalize();
-      brush.position.copy(target).addScaledVector(normal, 0.135);
+      const brushAxis=normal.clone().add(new THREE.Vector3(0,.65,0)).normalize();
+      brush.position.copy(target).addScaledVector(brushAxis, 0.149);
       brush.quaternion.setFromUnitVectors(
         new THREE.Vector3(0, 0, -1),
-        normal.clone().negate(),
+        brushAxis.clone().negate(),
       );
       this.brushPose.position.copy(brush.position);
       this.brushPose.quaternion.copy(brush.quaternion);
@@ -886,9 +926,10 @@ export class Workshop {
       h.visible = work || !!this.state.held;
       if (work && p) {
         const center = this.ceramics.get(p.id)!.position;
+        const ringHeight = this.contact ? Math.max(.12,this.workMotion) : .42;
         const r =
           p.radius[
-            this.focus === "glaze" ? 47 : Math.floor(this.workMotion * 47)
+            this.focus === "glaze" ? 47 : Math.floor(ringHeight * 47)
           ] || 0.1;
         const toward = this.camera.position
             .clone()
@@ -904,7 +945,7 @@ export class Workshop {
           this.focus === "glaze"
             ? p.height + 0.022
             : 0.018 +
-              p.height * Math.max(0.08, Math.min(0.98, this.workMotion));
+              p.height * Math.max(0.12, Math.min(0.98, ringHeight));
         if (this.contact && ["wheel", "clay"].includes(this.focus!)) {
           // Fingers stay on the selected ring instead of hovering at a fixed mid height.
           h.position.y = Math.max(center.y + 0.02, this.contact.y);
@@ -921,6 +962,22 @@ export class Workshop {
           Math.atan2(toward.x, toward.z) + side * 0.7,
           -side * 0.15,
         );
+        if (this.focus === "wheel" || this.focus === "glaze") {
+          // The palm faces the wall of the vessel. Finger axes follow its height;
+          // the wrist is below the contact ring and fingers flex onto the wall.
+          const palm = right.clone().multiplyScalar(-side),
+            backward = toward.clone().multiplyScalar(.8).add(new THREE.Vector3(0,-.6,0)).normalize(),
+            across = new THREE.Vector3().crossVectors(palm,backward).normalize();
+          h.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(across,palm,backward));
+          h.position.addScaledVector(right,-side*.035);
+          h.position.y = Math.max(center.y+.085,h.position.y-(this.focus === "glaze" ? .045 : .025));
+        }
+        if (this.focus === "clay") {
+          const palm = new THREE.Vector3(0,-1,0), backward = toward.clone(),
+            across = new THREE.Vector3().crossVectors(palm,backward).normalize();
+          h.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(across,palm,backward));
+          h.position.y = center.y + p.height * .72;
+        }
         if (this.focus === "paint" && i === 0) h.visible = false;
       } else {
         h.position
@@ -946,10 +1003,47 @@ export class Workshop {
         if (b instanceof THREE.Bone && /finger/.test(b.name)) {
           const j = Number(b.name.slice(-1));
           b.quaternion.copy(b.userData.restQuaternion);
-          b.rotateX(-(work ? 0.1 : 0.35) - (j === 0 ? 0 : 0.12));
+          const finger = Number(b.name[6]);
+          const grip = this.focus === "paint" ? [0.62,1.06,.75] : this.focus === "glaze" ? [.35,.72,.48] : work ? [.10,.24,.16] : [.45,.72,.45];
+          b.userData.flex=grip[j]+finger*.035;
+          b.rotateX(b.userData.flex);
+        }
+        if (b instanceof THREE.Bone && /^thumb_/.test(b.name)) {
+          const j = Number(b.name.slice(-1));
+          b.quaternion.copy(b.userData.restQuaternion);
+          b.userData.flex=j===0?.35:.22;
+          b.rotateX(b.userData.flex);
+          if (j === 0) b.rotateZ(this.focus === "paint" ? -.40 : -.18);
         }
       });
+      if(work && this.focus==='paint' && i===1) {
+        h.updateMatrixWorld(true);
+        const pinch=fingerTip(h,'finger0_2').add(fingerTip(h,'thumb_2')).multiplyScalar(.5);
+        const grip=new THREE.Vector3(0,0,.012).applyQuaternion(this.brushPose.quaternion).add(this.brushPose.position);
+        h.position.add(grip.clone().sub(pinch));h.updateMatrixWorld(true);
+        for(const [finger,x,y,z] of [['thumb',-.005,0,.012],['finger0',.005,0,.012],['finger1',.003,-.004,.025]] as const)
+          solveFingerContact(h,finger,new THREE.Vector3(x,y,z).applyQuaternion(this.brushPose.quaternion).add(this.brushPose.position));
+      }
+      if(this.reach && i===this.reach.hand) {
+        const age=performance.now()/1000-this.reach.start;
+        if(age<.95) {
+          const amount=age<.35?THREE.MathUtils.smoothstep(age,0,.35):1-THREE.MathUtils.smoothstep(age,.58,.95);
+          const backward=this.camera.position.clone().sub(this.reach.target).setY(0).normalize(), palm=new THREE.Vector3(0,-1,0),
+            across=new THREE.Vector3().crossVectors(palm,backward).normalize();
+          const q=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(across,palm,backward));
+          const wrist=this.reach.target.clone().addScaledVector(backward,.11);
+          wrist.y+=.025+.07*Math.sin(Math.PI*Math.min(1,age/.35));
+          h.position.lerp(wrist,amount);h.quaternion.slerp(q,amount);h.visible=true;
+        } else this.reach=null;
+      }
+      const region = workstationRegion(h.position.x,h.position.z)||'wheel';
+      h.traverse(o => { if (o instanceof THREE.Mesh && o.material instanceof THREE.MeshStandardMaterial) {
+        o.material.envMap=this.reflections.get(region)!; o.material.envMapIntensity=1;
+        o.material.envMapRotation.y=Math.PI/2;
+      }});
       const arm = this.forearms[i];
+      (arm.material as THREE.MeshStandardMaterial).envMap=this.reflections.get(region)!;
+      (arm.material as THREE.MeshStandardMaterial).envMapRotation.y=Math.PI/2;
       arm.visible = h.visible;
       if (h.visible) {
         h.updateMatrixWorld(true);
@@ -962,8 +1056,8 @@ export class Workshop {
     for (const skin of this.skinMaterials) {
       skin.color.set(
         p && ["raw", "prepared", "thrown"].includes(p.stage)
-          ? "#a49679"
-          : "#b68c6b",
+          ? "#e4dbcb"
+          : "#ffffff",
       );
       skin.roughness =
         p && ["raw", "prepared", "thrown"].includes(p.stage) ? 0.49 : 0.68;

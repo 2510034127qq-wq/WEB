@@ -29,6 +29,7 @@ export type Mark = {
   surface?: "outer" | "inner";
   end?: boolean;
 };
+export type WheelTrace = { v:number; width:number; depth:number };
 export interface Piece {
   id: string;
   name: string;
@@ -39,6 +40,8 @@ export interface Piece {
   radius: number[];
   height: number;
   thickness: number[];
+  /** Actual fingertip/tool contacts. Missing in older saves, never synthesized. */
+  wheelTraces?: WheelTrace[];
   moisture: number;
   purity: number;
   air: number;
@@ -267,7 +270,7 @@ export function volume(p: Piece) {
   }
   return v;
 }
-export function shape(p: Piece, ring: number, delta: number, pressure = 0.5) {
+export function shape(p: Piece, ring: number, delta: number, pressure = 0.5, angularSpeed = 6) {
   if (!["prepared", "thrown"].includes(p.stage) || !p.opened) return false;
   const before = volume(p);
   const radius = [...p.radius];
@@ -292,6 +295,14 @@ export function shape(p: Piece, ring: number, delta: number, pressure = 0.5) {
     else lo = s;
   }
   p.stage = "thrown";
+  if(Math.abs(delta)>1e-6&&angularSpeed>.2) {
+    const v=clamp(ring/47,0,1),width=.006+clamp(pressure,0,1)*.008,
+      depth=Math.min(.00022,Math.abs(delta)*.12)*clamp(angularSpeed/6,.2,1);
+    const traces=p.wheelTraces??=[];
+    const nearby=traces.find(t=>Math.abs(t.v-v)*p.height<.002);
+    if(nearby){nearby.depth=Math.min(.00035,nearby.depth+depth*.3);nearby.width=width;}
+    else {if(traces.length>=128)traces.shift();traces.push({v,width,depth});}
+  }
   if (Math.min(...p.thickness) < 0.0035) p.stress += Math.abs(delta) * 2;
   return true;
 }
@@ -305,6 +316,7 @@ export function stretch(p: Piece, height: number) {
 }
 export function smooth(p: Piece) {
   if (!p.opened || !["prepared", "thrown"].includes(p.stage)) return;
+  if(p.wheelTraces)p.wheelTraces=p.wheelTraces.map(t=>({...t,depth:t.depth*.65})).filter(t=>t.depth>.00001);
   const before = volume(p),
     old = [...p.radius],
     thickness = [...p.thickness];
@@ -356,6 +368,7 @@ export function trim(p: Piece, dt: number, ring: number) {
     Math.max(0.003, t - dt * 0.0008 * Math.exp(-(((i - ring) / 7) ** 2))),
   );
   p.trimmed = clamp(p.trimmed + dt * 0.26, 0, 1);
+  if(p.wheelTraces)for(const t of p.wheelTraces)t.depth*=1-Math.min(.8,dt*2)*Math.exp(-(((t.v*47-ring)/4)**2));
   if (p.trimmed === 1 && p.stage !== "trimmed") {
     p.stage = "trimmed";
     p.history.push("半干利坯，旋削圈足。");
@@ -642,6 +655,9 @@ export function validateSave(input: unknown): GameState {
     )
       throw new Error("作品字段不完整。");
     ids.add(p.id);
+    if(p.wheelTraces!==undefined && (!Array.isArray(p.wheelTraces)||p.wheelTraces.length>128||p.wheelTraces.some(t=>
+      !t||![t.v,t.width,t.depth].every(Number.isFinite)||t.v<0||t.v>1||t.width<.001||t.width>.04||t.depth<0||t.depth>.0005)))
+      throw new Error('轮制接触记录无效。');
     if (
       !vector(p.radius, 48, 0.025, 0.26) ||
       !vector(p.thickness, 48, 0.001, 0.05) ||

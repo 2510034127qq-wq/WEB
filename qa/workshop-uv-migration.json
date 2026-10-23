@@ -1,0 +1,83 @@
+[
+  {
+    "object": "workshop_courtyard_stone",
+    "uvLayers": [
+      "SurfaceUV",
+      "LightUV"
+    ]
+  },
+  {
+    "object": "workshop_lime_plaster",
+    "uvLayers": [
+      "SurfaceUV",
+      "LightUV"
+    ]
+  },
+  {
+    "object": "workshop_grey_fired_roof_tiles",
+    "uvLayers": [
+      "SurfaceUV",
+      "LightUV"
+    ]
+  },
+  {
+    "object": "workshop_stone_plinth",
+    "uvLayers": [
+      "SurfaceUV",
+      "LightUV"
+    ]
+  },
+  {
+    "object": "workshop_weathered_wood",
+    "uvLayers": [
+      "SurfaceUV",
+      "LightUV"
+    ]
+  },
+  {
+    "object": "workshop_ivory_porcelain",
+    "uvLayers": [
+      "SurfaceUV",
+      "LightUV"
+    ]
+  },
+  {
+    "object": "workshop_unglazed_stoneware",
+    "uvLayers": [
+      "SurfaceUV",
+      "LightUV"
+    ]
+  },
+  {
+    "object": "workshop_still_water",
+    "uvLayers": [
+      "SurfaceUV"
+    ]
+  },
+  {
+    "object": "workshop_undyed_linen",
+    "uvLayers": [
+      "SurfaceUV",
+      "LightUV"
+    ]
+  },
+  {
+    "object": "workshop_kiln_firebrick",
+    "uvLayers": [
+      "SurfaceUV",
+      "LightUV"
+    ]
+  },
+  {
+    "object": "workshop_charcoal",
+    "uvLayers": [
+      "SurfaceUV"
+    ]
+  },
+  {
+    "object": "workshop_bamboo_leaves",
+    "uvLayers": [
+      "SurfaceUV"
+    ]
+  }
+]

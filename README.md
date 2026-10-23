@@ -2,7 +2,7 @@
 
 一抔泥，一器一生。以清代景德镇青花工艺为线索的桌面浏览器制瓷游戏。
 
-当前分支为沉浸体验改造版：免费 Fab 资产、实拍 PBR/HDR 光照、惯性步态和直接手势操作。改动与当前验证边界见 [沉浸修订](docs/IMMERSION-REVISION.md)、[材质与光影](docs/VISUAL-REVISION.md)。旧 `release/yaohuo-1.0.0-rc.1.zip` 不含本轮修改。
+当前分支为 `1.1.0-preview.2` 写实重制工作版：免费 Fab / Poly Haven 资产、实拍 PBR/HDR 光照、惯性步态和直接手势操作。最新实施、逐轮复查与未完成问题见 [写实重制记录](docs/PHOTOGRAPHIC-REVISION.md)，旧 [沉浸修订](docs/IMMERSION-REVISION.md)、[材质与光影](docs/VISUAL-REVISION.md) 保留为阶段证据。旧 `release/yaohuo-1.0.0-rc.1.zip` 不含本轮修改，当前没有新的照片级验收结论。
 
 在同一个三维院落里自由行走，把同一件作品从原泥带到成器堂。器形由你在坯壁上的拖动产生；青花画在三维表面上；釉层、器壁、窑位和火候共同决定烧成结果。
 
@@ -88,7 +88,7 @@ npx playwright install ffmpeg
 | `scripts/` | 资产重建、开发 QA、性能测试、本地服务与打包 |
 | `qa/` | Chrome 截图、实测报告和实际游玩导出样品 |
 
-重建模型需 Blender；运行 `blender -b --python scripts/build-workshop.py` 和 `blender -b --python scripts/build-hands.py`。运行模型使用外部 PBR 图，`.blend` 保留编辑材质；改动后必须同时重新导出 GLB。贴图可用 `python scripts/fetch-assets.py` 重新下载并生成来源校验清单。
+重建模型需 Blender。工坊依次执行 `build-workshop.py`、`bake-workshop-light.py`、`bake-local-probes.py`；当前手资产使用 `adapt-fab-hands.py`（旧 `build-hands.py` 只供旧版复现）；工具为 `build-craft-tools.py`，林地为 `prepare-vegetation.py`。这些文件均在 `scripts/`。最后运行 `node scripts/compress-models.mjs` 校验并压缩 GLB。`.blend` 保留可编辑材质；改动后须同步导出、烘焙与视觉复查。各 `fetch-*-surfaces.py` / `fetch-scan-assets.py` 保存可复现下载流程及来源校验清单。
 
 ## 范围和依据
 

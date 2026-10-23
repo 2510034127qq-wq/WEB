@@ -4,6 +4,7 @@ import {
   newState,
   prepare,
   shape,
+  smooth,
   openClay,
   volume,
   stretch,
@@ -173,13 +174,34 @@ describe("same piece through the full craft dependency chain", () => {
     openClay(p);
     const g = ceramicGeometry(p),
       uv = g.attributes.uv,
-      n = g.attributes.normal;
-    expect(uv.getX(64 * 100 + 30)).toBeCloseTo(0.25);
-    expect(uv.getX(64 * 100 + 70)).toBeCloseTo(0.75);
-    for (const j of [10, 30, 70]) {
-      expect(n.getX(j)).toBeCloseTo(n.getX(128 * 100 + j), 7);
-      expect(n.getZ(j)).toBeCloseTo(n.getZ(128 * 100 + j), 7);
+      n = g.attributes.normal,
+      pos = g.attributes.position,
+      stride = g.parameters.points.length;
+    // Find each physical wall at mid-height. Tessellating the rolled lip or
+    // throwing rings must not change the independence of inner/outer painting.
+    const mid = Array.from({length:stride},(_,j)=>j)
+      .filter(j=>Math.abs(pos.getY(j)-p.height*.5)<p.height*.08);
+    const outer=mid.find(j=>n.getZ(j)>.3)!;
+    const inner=mid.find(j=>n.getZ(j)<-.3)!;
+    expect(outer).toBeDefined();expect(inner).toBeDefined();
+    expect(uv.getX(64 * stride + outer)).toBeCloseTo(0.25);
+    expect(uv.getX(64 * stride + inner)).toBeCloseTo(0.75);
+    for (const j of [outer, inner, Math.floor(stride/2)]) {
+      expect(n.getX(j)).toBeCloseTo(n.getX(128 * stride + j), 7);
+      expect(n.getZ(j)).toBeCloseTo(n.getZ(128 * stride + j), 7);
     }
     g.dispose();
+  });
+  it("records only actual wheel contact, softens it on smoothing and preserves it in saves", () => {
+    const s=newState(),p=newPiece('vase',1);s.pieces.push(p);prepare(p,5,.65);openClay(p);
+    expect(p.wheelTraces).toBeUndefined();
+    shape(p,24,.002,.6,0);expect(p.wheelTraces).toBeUndefined();
+    shape(p,24.35,.002,.6,5);
+    expect(p.wheelTraces).toHaveLength(1);
+    expect(p.wheelTraces![0].v).toBeCloseTo(24.35/47);
+    const depth=p.wheelTraces![0].depth;smooth(p);
+    expect(p.wheelTraces![0].depth).toBeLessThan(depth);
+    expect(validateSave(JSON.parse(JSON.stringify(s))).pieces[0].wheelTraces).toEqual(p.wheelTraces);
+    p.wheelTraces![0].depth=10;expect(()=>validateSave(s)).toThrow('轮制');
   });
 });

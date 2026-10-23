@@ -1,0 +1,85 @@
+{
+  "method": "Cycles 128 samples, same openings, materials, sky and sun as the static irradiance bake; 4 diffuse bounces. No solar disc in the sky.",
+  "probes": [
+    {
+      "station": "clay",
+      "position": [
+        -5.6,
+        1.35,
+        -5.6
+      ],
+      "file": "clay.hdr",
+      "samples": 128
+    },
+    {
+      "station": "wheel",
+      "position": [
+        0,
+        1.35,
+        -5.6
+      ],
+      "file": "wheel.hdr",
+      "samples": 128
+    },
+    {
+      "station": "paint",
+      "position": [
+        5.4,
+        1.35,
+        -5.6
+      ],
+      "file": "paint.hdr",
+      "samples": 128
+    },
+    {
+      "station": "drying",
+      "position": [
+        -7.2,
+        1.35,
+        -0.2
+      ],
+      "file": "drying.hdr",
+      "samples": 128
+    },
+    {
+      "station": "glaze",
+      "position": [
+        7.2,
+        1.5,
+        -0.2
+      ],
+      "file": "glaze.hdr",
+      "samples": 128
+    },
+    {
+      "station": "supply",
+      "position": [
+        -6,
+        1.55,
+        4.8
+      ],
+      "file": "supply.hdr",
+      "samples": 128
+    },
+    {
+      "station": "display",
+      "position": [
+        0,
+        1.35,
+        5.8
+      ],
+      "file": "display.hdr",
+      "samples": 128
+    },
+    {
+      "station": "kiln",
+      "position": [
+        6,
+        1.15,
+        3.5
+      ],
+      "file": "kiln.hdr",
+      "samples": 128
+    }
+  ]
+}

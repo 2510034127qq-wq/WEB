@@ -17,3 +17,10 @@ qa/walk-video/
 qa/walk-attempt-*.json
 qa/immersion-first-pass.json
 qa/immersion-contact-pass.json
+# Re-downloadable candidates and the full, unused catalog source are preserved
+# locally. Used authored assets and their provenance remain versioned.
+art/pine-source.blend
+art/exports/
+art/sources/fab-giant-bamboo/
+public/assets/scans/pine_tree_01/
+public/assets/scans/jacaranda_tree/

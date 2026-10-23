@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { CraftControls, type CraftHit } from "./render/craft-controls";
 import { Workshop } from "./render/workshop";
+import { applyLightingAudit } from "./render/lighting-audit";
 import { Physics } from "./physics/world";
 import { Sound } from "./render/sound";
 import { Locomotion } from "./simulation/locomotion";
@@ -92,7 +93,7 @@ let dragging = false,
   remap: string | null = null,
   restorePointer = false;
 const keys = new Set<string>();
-let shapeUndo: { radius: number[]; thickness: number[]; height: number }[] = [];
+let shapeUndo: Pick<Piece,'radius'|'thickness'|'height'|'wheelTraces'>[] = [];
 let frames: number[] = [];
 let packing: string | null = null,
   packingTime = 0;
@@ -446,7 +447,7 @@ function openModal(kind: string) {
       : "<p>还没有出窑的作品。第一团泥已经在原料房等你。</p>";
   }
   if (kind === "journal")
-    content += `<h3>素材署名</h3><p><a href="https://www.fab.com/listings/f19a85c6-1938-4a95-8ecc-ee7bc72767d8" target="_blank" rel="noopener">Hanging Ancient Pottery Set — Glowbox3D</a>；<a href="https://www.fab.com/listings/81a65096-1e1b-4133-9c69-3acf87398248" target="_blank" rel="noopener">Firewood Pile Scan LOWPOLY — sixonetwo</a>。均依 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> 使用，作场景摆放与比例调整。作者不为本作背书。实拍材质、天空与叶图来自 <a href="https://polyhaven.com/license" target="_blank" rel="noopener">Poly Haven（CC0）</a>。</p>`;
+    content += `<h3>素材署名</h3><p><a href="https://www.fab.com/listings/f19a85c6-1938-4a95-8ecc-ee7bc72767d8" target="_blank" rel="noopener">Hanging Ancient Pottery Set — Glowbox3D</a>；<a href="https://www.fab.com/listings/81a65096-1e1b-4133-9c69-3acf87398248" target="_blank" rel="noopener">Firewood Pile Scan LOWPOLY — sixonetwo</a>；<a href="https://www.fab.com/listings/c9b121d9-4dd7-43fa-9086-9d5854fa0ada" target="_blank" rel="noopener">Hands — StorePage</a>。均依 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> 使用，作比例、场景摆放或骨架适配。作者不为本作背书。实拍材质、天空与叶图来自 <a href="https://polyhaven.com/license" target="_blank" rel="noopener">Poly Haven（CC0）</a>；泥土与工具表面使用 <a href="https://ambientcg.com/" target="_blank" rel="noopener">ambientCG（CC0）</a>。</p>`;
   $("#modal-root").innerHTML =
     `<div class="modal-wrap"><section class="modal" role="dialog" aria-modal="true" aria-label="${title}"><div class="modal-head"><h2>${title}</h2>${button("close-modal", "关闭 ×")}</div>${content}</section></div>`;
   $("#modal-root button")?.focus();
@@ -464,7 +465,7 @@ async function exportGlb() {
     history: p.history,
     defects: p.defects,
     units: "metres",
-    source: "Yaohuo v1.1.0-preview.1",
+    source: "Yaohuo v1.1.0-preview.2",
   };
   const output = await new GLTFExporter().parseAsync(object, { binary: true });
   download(
@@ -581,6 +582,7 @@ root.addEventListener("click", async (e) => {
         if (p) {
           shapeUndo.push({
             radius: [...p.radius],
+            wheelTraces: structuredClone(p.wheelTraces||[]),
             thickness: [...p.thickness],
             height: p.height,
           });
@@ -802,6 +804,9 @@ window.addEventListener("pointercancel", () => {
 });
 function useControl(hit: CraftHit) {
   const p = active(state);
+  controls.disturb(hit.action,performance.now()/1000+.3);
+  if(['clay-water','wheel-water','paint-water','paint-ink'].includes(hit.action))
+    game.reachTo(hit.point,hit.station==='paint'?1:0);
   try {
     if (hit.action === "supply-clay") {
       if (state.pieces.length >= 100)
@@ -984,7 +989,7 @@ window.addEventListener("mousemove", (e) => {
         pressure = 0.45;
         if (keys.has("ShiftLeft") || keys.has("ShiftRight")) smooth(p);
         else {
-          shape(p, ring, dx * scale * 0.6, pressure);
+          shape(p, hit.uv.y*47, dx * scale * 0.6, pressure, spin);
           if (Math.abs(dy) > Math.abs(dx) * 0.8)
             stretch(p, p.height - dy * scale * 0.25);
         }
@@ -1425,7 +1430,9 @@ async function boot() {
       game.load((label) => ($("#loading").textContent = "正在准备 · " + label)),
       physics.init(state.player, state.props),
     ]);
-    controls = new CraftControls(game.scene);
+    controls = new CraftControls(game.scene, game.craftAssets);
+    game.applyLocalLighting(controls.group);
+    applyLightingAudit(game.scene,new URLSearchParams(location.search).get('lighting-audit')||'');
     const canvas = game.renderer.domElement;
     canvas.addEventListener("contextmenu", (e) => e.preventDefault());
     canvas.addEventListener("pointerdown", (e) => {
@@ -1478,6 +1485,7 @@ async function boot() {
           if (focus === "wheel" && p.opened)
             shapeUndo.push({
               radius: [...p.radius],
+              wheelTraces: structuredClone(p.wheelTraces||[]),
               thickness: [...p.thickness],
               height: p.height,
             });
@@ -1543,6 +1551,18 @@ async function boot() {
               }
             : null;
         },
+        inspectSurface: (x:number,y:number) => {
+          const ray=new THREE.Raycaster();
+          ray.setFromCamera(new THREE.Vector2(x/innerWidth*2-1,1-y/innerHeight*2),game.camera);
+          const hit=ray.intersectObjects(game.scene.children,true).find(h=>h.object.visible&&h.object instanceof THREE.Mesh);
+          if(!hit||!(hit.object instanceof THREE.Mesh))return null;
+          const m=(Array.isArray(hit.object.material)?hit.object.material[hit.face?.materialIndex||0]:hit.object.material) as THREE.MeshStandardMaterial;
+          return {object:hit.object.name,parent:hit.object.parent?.name,point:hit.point.toArray(),
+            normal:hit.face?.normal.clone().transformDirection(hit.object.matrixWorld).toArray(),
+            material:m.name,type:m.type,color:m.color?.toArray(),roughness:m.roughness,metalness:m.metalness,
+            envMap:m.envMap?.uuid,envMapIntensity:m.envMapIntensity,lightMap:!!m.lightMap,aoMap:!!m.aoMap,
+            shader:m.customProgramCacheKey().slice(0,180),uv:hit.uv?.toArray()};
+        },
         stats: () => ({
           fps:
             1000 /
@@ -1558,6 +1578,7 @@ async function boot() {
           cameraFov: game.camera.fov,
           look: { yaw, pitch },
           pieceBounds: game.activeBounds(),
+          hands: game.handDiagnostics(),
         }),
       },
       writable: false,

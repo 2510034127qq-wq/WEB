@@ -1,0 +1,37 @@
+{
+  "method": "Meshopt byte compression without quantization or filters. Exact attribute/image comparison and cyclic-normalized triangle comparison after decode. Node matrices checked separately within 5e-6 absolute floating-point tolerance.",
+  "reports": [
+    {
+      "name": "workshop",
+      "inputBytes": 90478060,
+      "outputBytes": 42224616,
+      "attributesAndImagesExact": true,
+      "transformMaxAbsDiff": 0,
+      "sha256": "1c5433d514022f309d93a784354764b884663301214845eea54897760fa35dd3"
+    },
+    {
+      "name": "hands",
+      "inputBytes": 31840276,
+      "outputBytes": 31508740,
+      "attributesAndImagesExact": true,
+      "transformMaxAbsDiff": 2.445816054130745e-7,
+      "sha256": "1aa64c52228ea9a727e3a613cb5b9960cb5a07ad37fed70c888bf9f9e316c9a4"
+    },
+    {
+      "name": "craft-tools",
+      "inputBytes": 4325668,
+      "outputBytes": 2260420,
+      "attributesAndImagesExact": true,
+      "transformMaxAbsDiff": 0,
+      "sha256": "6aa20d95952fda98bc0d4fbdce2355b2bdba4fb8d4562002c651e465dc431d46"
+    },
+    {
+      "name": "woodland-pine",
+      "inputBytes": 147357316,
+      "outputBytes": 109947352,
+      "attributesAndImagesExact": true,
+      "transformMaxAbsDiff": 0,
+      "sha256": "90e17b3d8a5a3aaefee0b717e334b728a5f226ab5a6e11931b5f75a7ba3f656f"
+    }
+  ]
+}

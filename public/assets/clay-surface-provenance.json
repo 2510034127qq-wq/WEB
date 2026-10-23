@@ -1,0 +1,66 @@
+[
+  {
+    "file": "public/assets/clay-surfaces/Clay005_4K-JPG_Color.jpg",
+    "asset": "https://ambientcg.com/a/Clay005",
+    "license": "CC0-1.0",
+    "source": "https://ambientcg.com/get?file=Clay005_4K-JPG.zip",
+    "sourceWidthMetres": 0.2,
+    "sha256": "ad6daed8dc2baf40cfb393764b78b395ee757053871c8d7b03da532a4767b068"
+  },
+  {
+    "file": "public/assets/clay-surfaces/Clay005_4K-JPG_Displacement.jpg",
+    "asset": "https://ambientcg.com/a/Clay005",
+    "license": "CC0-1.0",
+    "source": "https://ambientcg.com/get?file=Clay005_4K-JPG.zip",
+    "sourceWidthMetres": 0.2,
+    "sha256": "5542154e8ab5bb34ee530d77a14fb03b35b4105b12b82044abb5e8b79e51c043"
+  },
+  {
+    "file": "public/assets/clay-surfaces/Clay005_4K-JPG_NormalGL.jpg",
+    "asset": "https://ambientcg.com/a/Clay005",
+    "license": "CC0-1.0",
+    "source": "https://ambientcg.com/get?file=Clay005_4K-JPG.zip",
+    "sourceWidthMetres": 0.2,
+    "sha256": "20080a0c49850f0c995eefe546ee1d463de1c9e5bd57fe91d22cf6c4a9474b66"
+  },
+  {
+    "file": "public/assets/clay-surfaces/Clay005_4K-JPG_Roughness.jpg",
+    "asset": "https://ambientcg.com/a/Clay005",
+    "license": "CC0-1.0",
+    "source": "https://ambientcg.com/get?file=Clay005_4K-JPG.zip",
+    "sourceWidthMetres": 0.2,
+    "sha256": "b7d8fb52cf3ee6aca3975911a11847d6a37b8b32fdb8b4101ed1f281567ab819"
+  },
+  {
+    "file": "public/assets/clay-surfaces/Clay006_4K-JPG_Color.jpg",
+    "asset": "https://ambientcg.com/a/Clay006",
+    "license": "CC0-1.0",
+    "source": "https://ambientcg.com/get?file=Clay006_4K-JPG.zip",
+    "sourceWidthMetres": 0.2,
+    "sha256": "61a8543df58091e652457fa6fb45ebcb8174c4a3f0ab6e5ff7bbd12007e5b512"
+  },
+  {
+    "file": "public/assets/clay-surfaces/Clay006_4K-JPG_Displacement.jpg",
+    "asset": "https://ambientcg.com/a/Clay006",
+    "license": "CC0-1.0",
+    "source": "https://ambientcg.com/get?file=Clay006_4K-JPG.zip",
+    "sourceWidthMetres": 0.2,
+    "sha256": "69764716e21ddb868c6c8efb5292c12097963438d757bdbdc0f318a4e0fb273c"
+  },
+  {
+    "file": "public/assets/clay-surfaces/Clay006_4K-JPG_NormalGL.jpg",
+    "asset": "https://ambientcg.com/a/Clay006",
+    "license": "CC0-1.0",
+    "source": "https://ambientcg.com/get?file=Clay006_4K-JPG.zip",
+    "sourceWidthMetres": 0.2,
+    "sha256": "aa60644380083e05a46a2f828606367ed115f4929c729629b43ed31e4630561a"
+  },
+  {
+    "file": "public/assets/clay-surfaces/Clay006_4K-JPG_Roughness.jpg",
+    "asset": "https://ambientcg.com/a/Clay006",
+    "license": "CC0-1.0",
+    "source": "https://ambientcg.com/get?file=Clay006_4K-JPG.zip",
+    "sourceWidthMetres": 0.2,
+    "sha256": "9d7cc9c718006e79c64946f00b6e0eff33350da33a73209595ba0f28ecb04d21"
+  }
+]

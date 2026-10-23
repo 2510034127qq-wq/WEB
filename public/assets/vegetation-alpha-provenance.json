@@ -1,0 +1,18 @@
+[
+  {
+    "file": "public/assets/vegetation/pine-twig-alpha.png",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/pine_tree_01/pine_tree_01_twig_alpha_4k.png",
+    "license": "CC0-1.0",
+    "asset": "https://polyhaven.com/a/pine_tree_01",
+    "sha256": "ddf47644c0ee1ac7a620e3ec3fc03b408a89045f266b9d15fb1e538a7839ddd8",
+    "bytes": 1915879
+  },
+  {
+    "file": "public/assets/vegetation/grass-alpha.png",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/grass_bermuda_01/grass_bermuda_01_alpha_4k.png",
+    "license": "CC0-1.0",
+    "asset": "https://polyhaven.com/a/grass_bermuda_01",
+    "sha256": "d123f50273ca3b3a17391f962c7e4c598f0068b8268433940df9940a68781530",
+    "bytes": 203961
+  }
+]

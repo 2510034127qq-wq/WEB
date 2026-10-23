@@ -1,0 +1,135 @@
+[
+  {
+    "material": "lime_plaster",
+    "sourceFaces": 1078,
+    "retainedFaces": 1078,
+    "regions": [
+      "outdoor",
+      "clay",
+      "paint",
+      "wheel",
+      "supply",
+      "drying",
+      "kiln",
+      "glaze",
+      "display"
+    ]
+  },
+  {
+    "material": "grey_fired_roof_tiles",
+    "sourceFaces": 256916,
+    "retainedFaces": 256916,
+    "regions": [
+      "outdoor",
+      "drying",
+      "glaze",
+      "supply",
+      "display",
+      "kiln",
+      "wheel",
+      "clay",
+      "paint"
+    ]
+  },
+  {
+    "material": "stone_plinth",
+    "sourceFaces": 2744,
+    "retainedFaces": 2744,
+    "regions": [
+      "clay",
+      "wheel",
+      "paint",
+      "drying",
+      "glaze",
+      "outdoor",
+      "display",
+      "kiln",
+      "supply"
+    ]
+  },
+  {
+    "material": "weathered_wood",
+    "sourceFaces": 158048,
+    "retainedFaces": 158048,
+    "regions": [
+      "clay",
+      "paint",
+      "outdoor",
+      "wheel",
+      "drying",
+      "supply",
+      "glaze",
+      "display",
+      "kiln"
+    ]
+  },
+  {
+    "material": "ivory_porcelain",
+    "sourceFaces": 366592,
+    "retainedFaces": 366592,
+    "regions": [
+      "drying",
+      "paint",
+      "clay",
+      "wheel"
+    ]
+  },
+  {
+    "material": "unglazed_stoneware",
+    "sourceFaces": 160242,
+    "retainedFaces": 160242,
+    "regions": [
+      "clay",
+      "glaze",
+      "supply",
+      "kiln"
+    ]
+  },
+  {
+    "material": "still_water",
+    "sourceFaces": 264,
+    "retainedFaces": 264,
+    "regions": [
+      "clay",
+      "glaze",
+      "supply"
+    ]
+  },
+  {
+    "material": "undyed_linen",
+    "sourceFaces": 2058,
+    "retainedFaces": 2058,
+    "regions": [
+      "paint",
+      "display"
+    ]
+  },
+  {
+    "material": "kiln_firebrick",
+    "sourceFaces": 32046,
+    "retainedFaces": 32046,
+    "regions": [
+      "kiln"
+    ]
+  },
+  {
+    "material": "charcoal",
+    "sourceFaces": 1764,
+    "retainedFaces": 1764,
+    "regions": [
+      "clay",
+      "wheel",
+      "paint",
+      "glaze"
+    ]
+  },
+  {
+    "material": "bamboo_leaves",
+    "sourceFaces": 18682,
+    "retainedFaces": 18682,
+    "regions": [
+      "supply",
+      "drying"
+    ]
+  }
+]

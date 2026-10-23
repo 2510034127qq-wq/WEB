@@ -1,0 +1,15 @@
+{
+  "runtimeExcludePrefixes": [
+    "assets/scans/pine_tree_01/",
+    "assets/scans/jacaranda_tree/",
+    "assets/craft-surfaces/oldplaster_"
+  ],
+  "runtimeExcludeSuffixes": ["_sky.png", "_indirect.png"],
+  "sourceExcludePrefixes": [
+    "art/pine-source.blend",
+    "art/exports/",
+    "art/sources/fab-giant-bamboo/",
+    "public/assets/scans/pine_tree_01/",
+    "public/assets/scans/jacaranda_tree/"
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "date": "2026-10-23T18:23:07.426Z",
+  "browser": "156.0.8078.48",
+  "url": "http://127.0.0.1:5173/",
+  "viewport": "1440 x 900",
+  "method": "Real Chrome pointer/key input following documented public JSON station fixtures. Read-only __YAOHUO__ used solely for assertions/camera projection. This is interaction regression coverage, not a full production chain playthrough.",
+  "fixtures": [
+    {
+      "station": "clay",
+      "stage": "raw",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "wheel",
+      "stage": "prepared",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "wheel",
+      "stage": "leather",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "paint",
+      "stage": "trimmed",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "glaze",
+      "stage": "painted",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "display",
+      "stage": "fired",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "paint",
+      "stage": "trimmed",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "wheel",
+      "stage": "prepared",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    }
+  ],
+  "results": [
+    {
+      "name": "01-knead-contact",
+      "passed": true,
+      "detail": {
+        "idlePreparation": 0,
+        "afterDrag": 1,
+        "stage": "prepared"
+      }
+    },
+    {
+      "name": "02-wheel-open-shape-brake",
+      "passed": true,
+      "detail": {
+        "opened": true,
+        "radiusChanged": true,
+        "brakePreventedChange": true
+      }
+    },
+    {
+      "name": "03-trim-requires-contact",
+      "passed": true,
+      "detail": {
+        "beforeMean": 0.017414074170633728,
+        "afterMean": 0.017036784643149963,
+        "noContactStopped": true
+      }
+    },
+    {
+      "name": "04-paint-stroke",
+      "passed": true,
+      "detail": {
+        "addedMarks": 17
+      }
+    },
+    {
+      "name": "05-glaze-depth-foot",
+      "passed": true,
+      "detail": {
+        "beforeMean": 0,
+        "dippedMean": 0.832333333333338,
+        "footClean": true
+      }
+    },
+    {
+      "name": "06-paper-fold",
+      "passed": true,
+      "detail": {
+        "start": {
+          "x": 1099.6067779702223,
+          "y": 547.4346656616017
+        },
+        "end": {
+          "x": 515.7410080518398,
+          "y": 371.7721364903698
+        },
+        "stage": "packed"
+      }
+    },
+    {
+      "name": "07-save-reload",
+      "passed": true,
+      "detail": {
+        "id": "fb030509-c33c-4afe-96bc-7bba2e575e9d",
+        "marks": 21
+      }
+    },
+    {
+      "name": "08-wheel-hand-turn",
+      "passed": true,
+      "detail": {
+        "rpm": 30,
+        "pathPoints": 21,
+        "mechanism": "real projected disk arc, no Space key"
+      }
+    }
+  ],
+  "errors": [],
+  "failedRequests": []
+}

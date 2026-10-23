@@ -76,7 +76,7 @@ export class CraftControls {
   private paper: THREE.MeshStandardMaterial;
   private iron: THREE.MeshStandardMaterial;
 
-  constructor(scene: THREE.Scene) {
+  constructor(scene: THREE.Scene, private assets: Map<string, THREE.Object3D>) {
     this.group.name = "physical-craft-controls";
     const noise = fineNoise();
     this.textures.add(noise);
@@ -119,16 +119,14 @@ export class CraftControls {
     );
     this.water = this.material(
       new THREE.MeshPhysicalMaterial({
-        color: "#7e9b8c",
-        roughness: 0.1,
+        color: "#e3e3d9",
+        roughness: 0.045,
         metalness: 0,
-        clearcoat: 1,
-        clearcoatRoughness: 0.08,
-        transparent: true,
-        opacity: 0.69,
-        bumpMap: noise,
-        bumpScale: 0.00008,
-        depthWrite: false,
+        transmission: .94,
+        thickness: .045,
+        ior: 1.333,
+        attenuationColor: new THREE.Color('#aeb5a0'),
+        attenuationDistance: .22,
       }),
     );
     this.ink = this.material(
@@ -231,7 +229,7 @@ export class CraftControls {
     }
   }
   private bowl(parent: THREE.Object3D, radius: number, height: number) {
-    const points = [
+    const profile = [
       [0, 0],
       [radius * 0.56, 0],
       [radius * 0.64, height * 0.08],
@@ -243,8 +241,10 @@ export class CraftControls {
       [radius * 0.72, height * 0.37],
       [radius * 0.48, height * 0.16],
       [0, height * 0.16],
-    ].map(([x, y]) => new THREE.Vector2(x, y));
-    return this.mesh(parent, new THREE.LatheGeometry(points, 48), this.ceramic);
+    ].map(([x, y]) => new THREE.Vector3(x, y, 0));
+    const curve=new THREE.CatmullRomCurve3(profile,false,'centripetal');
+    const points=curve.getPoints(96).map(p=>new THREE.Vector2(Math.max(0,p.x),p.y));
+    return this.mesh(parent, new THREE.LatheGeometry(points, 128), this.ceramic);
   }
   /** A three-plank stool under loose equipment, separate from draggable objects. */
   private makeSupport(
@@ -297,11 +297,14 @@ export class CraftControls {
     this.bowl(root, radius, radius * 0.62);
     const surface = this.mesh(
       root,
-      new THREE.CircleGeometry(radius * 0.84, 48),
+      new THREE.RingGeometry(.0001, radius * 0.84, 96, 24),
       this.water,
       [0, radius * 0.48, 0],
     );
     surface.rotation.x = -Math.PI / 2;
+    surface.userData.radius=radius*.84;
+    surface.userData.base=surface.geometry.attributes.position.array.slice();
+    surface.userData.disturbedAt=-100;
     surface.castShadow = false;
     this.wetSurfaces.push(surface);
     // Small irregular water ring marks sit on the table, not over the liquid.
@@ -364,16 +367,7 @@ export class CraftControls {
       [0, 0.003, 0],
     );
     cloth.rotation.x = -Math.PI / 2;
-    this.lump(root, [-0.12, 0.07, 0.04], 0.19, 1);
-    this.lump(root, [0.12, 0.08, -0.05], 0.17, 3);
-    this.lump(root, [0.02, 0.16, 0.015], 0.14, 7);
-    for (let i = 0; i < 6; i++)
-      this.lump(
-        root,
-        [-0.25 + i * 0.085, 0.012, 0.2 + Math.sin(i) * 0.025],
-        0.016,
-        i,
-      );
+    root.add(this.assets.get("supply_clay")!);
   }
   private makeInk() {
     const root = this.control(
@@ -740,10 +734,25 @@ export class CraftControls {
     return state.last;
   }
   /** Optional small water motion in seconds. No gameplay timing is performed here. */
+  disturb(action: CraftAction, time: number) {
+    const root=this.controls.get(action)?.root;
+    for(const surface of this.wetSurfaces) if(surface.parent===root) surface.userData.disturbedAt=time;
+  }
   update(time: number) {
     for (let i = 0; i < this.wetSurfaces.length; i++) {
       const surface = this.wetSurfaces[i];
-      surface.scale.setScalar(1 + Math.sin(time * 1.2 + i) * 0.0015);
+      const positions=surface.geometry.attributes.position, base=surface.userData.base as Float32Array,
+        age=time-surface.userData.disturbedAt, radius=surface.userData.radius as number;
+      if(surface.userData.settled && (age<0 || age>4)) continue;
+      for(let j=0;j<positions.count;j++) {
+        const x=base[j*3], y=base[j*3+1], r=Math.hypot(x,y), edge=r/radius;
+        // Capillary meniscus hugs the wall. Disturbances travel outward and decay.
+        const meniscus=.0014*Math.pow(edge,16);
+        const ripple=age>=0&&age<4?.0011*Math.sin(r*160-age*13)*Math.exp(-age*1.4)*(1-edge**4):0;
+        positions.setZ(j,meniscus+ripple);
+      }
+      positions.needsUpdate=true;surface.geometry.computeVertexNormals();
+      surface.userData.settled=age<0 || age>4;
     }
   }
   dispose() {

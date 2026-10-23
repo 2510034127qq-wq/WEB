@@ -1,7 +1,11 @@
 import { defineConfig } from "vite";
-import { readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { readdirSync, readFileSync, copyFileSync, mkdirSync } from "node:fs";
+import { join, dirname } from "node:path";
 import { createHash } from "node:crypto";
+const delivery = JSON.parse(readFileSync("scripts/asset-delivery.json", "utf8"));
+const isRuntimeAsset = (file: string) =>
+  !delivery.runtimeExcludePrefixes.some((prefix: string) => file.startsWith(prefix)) &&
+  !delivery.runtimeExcludeSuffixes.some((suffix: string) => file.endsWith(suffix));
 function publicFiles(dir: string, prefix = ""): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
     e.isDirectory()
@@ -11,6 +15,7 @@ function publicFiles(dir: string, prefix = ""): string[] {
 }
 export default defineConfig({
   build: {
+    copyPublicDir: false,
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -25,7 +30,7 @@ export default defineConfig({
       name: "local-workshop-offline",
       apply: "build",
       generateBundle(_, bundle) {
-        const files = publicFiles("public");
+        const files = publicFiles("public").filter(isRuntimeAsset);
         const hash = createHash("sha256");
         for (const file of files)
           hash.update(readFileSync(join("public", file)));
@@ -40,8 +45,17 @@ export default defineConfig({
               ...Object.keys(bundle).map((f) => "/" + f),
             ]),
           ];
-        const code = `const CACHE=${JSON.stringify(cache)};const URLS=${JSON.stringify(urls)};self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS)).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('yaohuo-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method==='GET'&&u.origin===location.origin&&URLS.includes(u.pathname))e.respondWith(caches.open(CACHE).then(c=>c.match(u.pathname)).then(r=>r||fetch(e.request)));});`;
+        // Two download workers bound memory while retaining complete offline assets.
+        // Source candidates and intermediate bakes never enter this list.
+        const code = `const CACHE=${JSON.stringify(cache)};const URLS=${JSON.stringify(urls)};async function prepare(){const c=await caches.open(CACHE);let i=0;async function worker(){while(i<URLS.length){const u=URLS[i++];if(!await c.match(u))await c.add(u);}}await Promise.all([worker(),worker()]);await self.skipWaiting();}self.addEventListener('install',e=>e.waitUntil(prepare()));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('yaohuo-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method==='GET'&&u.origin===location.origin&&URLS.includes(u.pathname))e.respondWith(caches.open(CACHE).then(c=>c.match(u.pathname)).then(r=>r||fetch(e.request)));});`;
         this.emitFile({ type: "asset", fileName: "sw.js", source: code });
+      },
+      writeBundle(options) {
+        for (const file of publicFiles("public").filter(isRuntimeAsset)) {
+          const destination = join(options.dir || "dist", file);
+          mkdirSync(dirname(destination), { recursive: true });
+          copyFileSync(join("public", file), destination);
+        }
       },
     },
   ],

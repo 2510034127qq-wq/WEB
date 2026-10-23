@@ -1,13 +1,13 @@
 {
   "name": "yaohuo-workshop",
   "private": true,
-  "version": "1.1.0-preview.1",
+  "version": "1.1.0-preview.2",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "vitest run",
+    "test": "node scripts/test.mjs",
     "qa": "node scripts/immersion-check.mjs",
     "qa:walk": "node scripts/walk-check.mjs",
     "qa:kiln": "node scripts/kiln-controls-check.mjs",
@@ -19,12 +19,16 @@
     "three": "^0.180.0"
   },
   "devDependencies": {
+    "@gltf-transform/core": "^4.5.1",
+    "@gltf-transform/extensions": "^4.5.1",
+    "@gltf-transform/functions": "^4.5.1",
     "@playwright/test": "^1.56.0",
     "@types/three": "^0.180.0",
+    "meshoptimizer": "^1.3.0",
     "prettier": "3.6.2",
     "typescript": "^5.9.3",
     "vite": "^7.1.12",
-    "vitest": "^3.2.4"
+    "vitest": "4.1.12"
   },
   "engines": {
     "node": ">=22.12.0"

@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
-const rings = 13,
-  sides = 24;
+const rings = 37,
+  sides = 48;
 /** One continuous cloth surface from cuff to elbow, with no overlapping sleeve tubes. */
 export function sleeveGeometry() {
   const g = new THREE.BufferGeometry();
@@ -11,8 +11,8 @@ export function sleeveGeometry() {
   for (let j = 0; j < rings; j++)
     for (let k = 0; k <= sides; k++) {
       const i = j * (sides + 1) + k;
-      uv[i * 2] = k / sides;
-      uv[i * 2 + 1] = j / (rings - 1);
+      uv[i * 2] = k / sides * .62;
+      uv[i * 2 + 1] = j / (rings - 1) * 1.8;
       if (j < rings - 1 && k < sides)
         index.push(
           i,
@@ -53,12 +53,19 @@ export function poseSleeve(
     y.crossVectors(tangent, x).normalize();
     for (let k = 0; k <= sides; k++) {
       const a = (k / sides) * Math.PI * 2;
-      const r =
-        0.033 + 0.036 * Math.pow(t, 0.7) + Math.sin(a * 7 + t * 16) * 0.0016;
+      // Cloth gathers where the cuff is tied. Loose fabric hangs beneath the
+      // forearm; compression folds broaden towards the bent elbow.
+      const cuff = Math.exp(-Math.pow((t-.045)/.035,2)) * .005;
+      const gathers = Math.exp(-t*7) * Math.cos(a*8+t*13) * .005;
+      const bend = Math.exp(-Math.pow((t-.72)/.24,2));
+      const folds = (Math.sin(t*39+Math.cos(a)*2)*.006+Math.sin(t*21-a)*.004)*bend;
+      const seam = Math.exp(-Math.pow(Math.sin((a-1.5)*.5)/.035,2))*.0015;
+      const r = .034 + .039 * Math.pow(t,.65) + cuff + gathers + folds + seam;
       const q = p
         .clone()
         .addScaledVector(x, Math.cos(a) * r)
-        .addScaledVector(y, Math.sin(a) * r);
+        .addScaledVector(y, Math.sin(a) * r * (1+.20*Math.sin(Math.PI*t)));
+      q.y -= .015 * Math.sin(Math.PI*t);
       position.setXYZ(j * (sides + 1) + k, q.x, q.y, q.z);
     }
   }

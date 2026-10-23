@@ -1,0 +1,298 @@
+[
+  {
+    "file": "public/assets/craft-surfaces/linen_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/rough_linen/rough_linen_diff_4k.jpg",
+    "asset": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0",
+    "sha256": "dca61aacd6cf3194681070cede3c16a3b61a32cb3eef5bf4c52db698b2286d3d",
+    "bytes": 13064750
+  },
+  {
+    "file": "public/assets/craft-surfaces/linen_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/rough_linen/rough_linen_rough_4k.jpg",
+    "asset": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0",
+    "sha256": "f94c35b6ddf1560783d3cd450810ebe4452a49028d562ce140b3e253b2bbf0b3",
+    "bytes": 18101601
+  },
+  {
+    "file": "public/assets/craft-surfaces/linen_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/rough_linen/rough_linen_nor_gl_4k.jpg",
+    "asset": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0",
+    "sha256": "1a591b2acd7e61f3511e483a731c5f18847cce36ec501d669b853b30c203d422",
+    "bytes": 13435511
+  },
+  {
+    "file": "public/assets/craft-surfaces/linen_ao.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/rough_linen/rough_linen_ao_4k.jpg",
+    "asset": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0",
+    "sha256": "4254ccb4c4e97b990a4ba3555c1c1ed4dd9432f347ed93a74da030c48d9799bd",
+    "bytes": 12325760
+  },
+  {
+    "file": "public/assets/craft-surfaces/linen_disp.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/rough_linen/rough_linen_disp_4k.jpg",
+    "asset": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0",
+    "sha256": "a935957eb1524b83af006acdc863bacd6f76487df14251467134bdce0c7051f7",
+    "bytes": 7822500
+  },
+  {
+    "file": "public/assets/craft-surfaces/linen_metal.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/rough_linen/rough_linen_metal_4k.jpg",
+    "asset": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0",
+    "sha256": "9e73ab5bc042979830dd1534aee72c84beb96b658146ca17829394bc7f79aa07",
+    "bytes": 6735869
+  },
+  {
+    "file": "public/assets/craft-surfaces/earthenware_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_plaster/clay_plaster_diff_4k.jpg",
+    "asset": "https://polyhaven.com/a/clay_plaster",
+    "license": "CC0-1.0",
+    "sha256": "6e24d01ae7135cb43ae5c0621d9c0f724f757c71272b926eb80f853fc98eca47",
+    "bytes": 7127502
+  },
+  {
+    "file": "public/assets/craft-surfaces/earthenware_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_plaster/clay_plaster_rough_4k.jpg",
+    "asset": "https://polyhaven.com/a/clay_plaster",
+    "license": "CC0-1.0",
+    "sha256": "5da40d49d65719f7072b63ce04fa8f365a6e5ab48e06a57c73b48ea32a8761ff",
+    "bytes": 4590333
+  },
+  {
+    "file": "public/assets/craft-surfaces/earthenware_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_plaster/clay_plaster_nor_gl_4k.jpg",
+    "asset": "https://polyhaven.com/a/clay_plaster",
+    "license": "CC0-1.0",
+    "sha256": "f29e185b9c7548b8604c0c21f2beea83ea685ffcae9d1d6a5a1448c66c2c7d5a",
+    "bytes": 12662888
+  },
+  {
+    "file": "public/assets/craft-surfaces/earthenware_ao.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_plaster/clay_plaster_ao_4k.jpg",
+    "asset": "https://polyhaven.com/a/clay_plaster",
+    "license": "CC0-1.0",
+    "sha256": "f4ad100071add2830d6e781dd92c84ab921c8068a51ad486f96dc50afb7b513f",
+    "bytes": 5656383
+  },
+  {
+    "file": "public/assets/craft-surfaces/earthenware_disp.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_plaster/clay_plaster_disp_4k.jpg",
+    "asset": "https://polyhaven.com/a/clay_plaster",
+    "license": "CC0-1.0",
+    "sha256": "a4821405939414c940ba1da0d2df6e6a51d94333d2e3a84be94b7482c59fdb6e",
+    "bytes": 3611674
+  },
+  {
+    "file": "public/assets/craft-surfaces/timber_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/wooden_planks/wooden_planks_diff_4k.jpg",
+    "asset": "https://polyhaven.com/a/wooden_planks",
+    "license": "CC0-1.0",
+    "sha256": "69be5f261f437ada40375d4f0d7e4e236163124b26bf9cbfd91285573f07fa65",
+    "bytes": 7323613
+  },
+  {
+    "file": "public/assets/craft-surfaces/timber_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/wooden_planks/wooden_planks_rough_4k.jpg",
+    "asset": "https://polyhaven.com/a/wooden_planks",
+    "license": "CC0-1.0",
+    "sha256": "fb8a47aec98679f384505e90df4c1ab929561c0e9e7c2616840b3d967b27cf0f",
+    "bytes": 3952445
+  },
+  {
+    "file": "public/assets/craft-surfaces/timber_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/wooden_planks/wooden_planks_nor_gl_4k.jpg",
+    "asset": "https://polyhaven.com/a/wooden_planks",
+    "license": "CC0-1.0",
+    "sha256": "09e29c435cca5a133e97bfcab468fd34e499dbe7e9bc59932172ce449627c33c",
+    "bytes": 13531359
+  },
+  {
+    "file": "public/assets/craft-surfaces/timber_ao.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/wooden_planks/wooden_planks_ao_4k.jpg",
+    "asset": "https://polyhaven.com/a/wooden_planks",
+    "license": "CC0-1.0",
+    "sha256": "cca9764875d1e0caa515cae26bd69711bb3e181b6a3308420127246096ecb59d",
+    "bytes": 9342904
+  },
+  {
+    "file": "public/assets/craft-surfaces/timber_disp.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/wooden_planks/wooden_planks_disp_4k.jpg",
+    "asset": "https://polyhaven.com/a/wooden_planks",
+    "license": "CC0-1.0",
+    "sha256": "c0f157d15a0f1278c83d0ae08c3915e969f356dff5f22c471bdf4fe1167b5b33",
+    "bytes": 1899906
+  },
+  {
+    "file": "public/assets/craft-surfaces/oldplaster_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/worn_plaster_wall/worn_plaster_wall_diff_4k.jpg",
+    "asset": "https://polyhaven.com/a/worn_plaster_wall",
+    "license": "CC0-1.0",
+    "sha256": "1ee65291339b65a0f36cd4526fb1ed25b3b589f12273d9714a54cb26fa4251d6",
+    "bytes": 12414438
+  },
+  {
+    "file": "public/assets/craft-surfaces/oldplaster_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/worn_plaster_wall/worn_plaster_wall_rough_4k.jpg",
+    "asset": "https://polyhaven.com/a/worn_plaster_wall",
+    "license": "CC0-1.0",
+    "sha256": "d8e61f2f11798321cc288a5cde03bc7d353c67c0ca61fcaf35667797b5f6b93a",
+    "bytes": 4115330
+  },
+  {
+    "file": "public/assets/craft-surfaces/oldplaster_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/worn_plaster_wall/worn_plaster_wall_nor_gl_4k.jpg",
+    "asset": "https://polyhaven.com/a/worn_plaster_wall",
+    "license": "CC0-1.0",
+    "sha256": "4f5cc8b48907d03d30d8e38dc0ed90baf463c56cfdae3803869d02ac833fdd8e",
+    "bytes": 12125518
+  },
+  {
+    "file": "public/assets/craft-surfaces/oldplaster_ao.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/worn_plaster_wall/worn_plaster_wall_ao_4k.jpg",
+    "asset": "https://polyhaven.com/a/worn_plaster_wall",
+    "license": "CC0-1.0",
+    "sha256": "ae36e335936ce18589b3496078a27c82784ee4b473b2a7eca73f2e59ee431588",
+    "bytes": 6265724
+  },
+  {
+    "file": "public/assets/craft-surfaces/oldplaster_disp.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/worn_plaster_wall/worn_plaster_wall_disp_4k.jpg",
+    "asset": "https://polyhaven.com/a/worn_plaster_wall",
+    "license": "CC0-1.0",
+    "sha256": "26bc31fe9f8c57743fa14a39666b40c6a5f4b89263cf4caa079aeeeb906f1228",
+    "bytes": 1084010
+  },
+  {
+    "file": "public/assets/craft-surfaces/rooftile_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/grey_roof_tiles/grey_roof_tiles_diff_4k.jpg",
+    "asset": "https://polyhaven.com/a/grey_roof_tiles",
+    "license": "CC0-1.0",
+    "sha256": "28b0a8716d492b6d121e62d12f0c23b061a6b41c1f441e7c9e79cc76db161e3f",
+    "bytes": 6511882
+  },
+  {
+    "file": "public/assets/craft-surfaces/rooftile_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/grey_roof_tiles/grey_roof_tiles_rough_4k.jpg",
+    "asset": "https://polyhaven.com/a/grey_roof_tiles",
+    "license": "CC0-1.0",
+    "sha256": "0c353bd476d3592a7d3d4dc481dd16238076e03f93634384c2311835d435d1ba",
+    "bytes": 3718512
+  },
+  {
+    "file": "public/assets/craft-surfaces/rooftile_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/grey_roof_tiles/grey_roof_tiles_nor_gl_4k.jpg",
+    "asset": "https://polyhaven.com/a/grey_roof_tiles",
+    "license": "CC0-1.0",
+    "sha256": "273145a3f65f556310ab993b01812cf46c1502c50ec5ecbf4e35a3887ea447a1",
+    "bytes": 4287368
+  },
+  {
+    "file": "public/assets/craft-surfaces/rooftile_ao.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/grey_roof_tiles/grey_roof_tiles_ao_4k.jpg",
+    "asset": "https://polyhaven.com/a/grey_roof_tiles",
+    "license": "CC0-1.0",
+    "sha256": "14df69c081ac64c777fbd2fd925ab10e24614ebbc96fe8a1916ed316d7ac2a29",
+    "bytes": 5301896
+  },
+  {
+    "file": "public/assets/craft-surfaces/rooftile_disp.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/grey_roof_tiles/grey_roof_tiles_disp_4k.jpg",
+    "asset": "https://polyhaven.com/a/grey_roof_tiles",
+    "license": "CC0-1.0",
+    "sha256": "aa7cca403f321c5d2f5773f6fb4d46724065c65702b3cb087f99d90024a00fc4",
+    "bytes": 1330205
+  },
+  {
+    "file": "public/assets/craft-surfaces/bamboo_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/bamboo_veneer/bamboo_veneer_diff_4k.jpg",
+    "asset": "https://polyhaven.com/a/bamboo_veneer",
+    "license": "CC0-1.0",
+    "sha256": "2d7892f3ff7456b39355159f659dc28a503466ba463239ec37fda888b2d8de54",
+    "bytes": 8447966
+  },
+  {
+    "file": "public/assets/craft-surfaces/bamboo_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/bamboo_veneer/bamboo_veneer_rough_4k.jpg",
+    "asset": "https://polyhaven.com/a/bamboo_veneer",
+    "license": "CC0-1.0",
+    "sha256": "de7986e4e57e6cc9aca83242ca62ce484a259067adf969c73d263ab6d2404927",
+    "bytes": 9939482
+  },
+  {
+    "file": "public/assets/craft-surfaces/bamboo_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/bamboo_veneer/bamboo_veneer_nor_gl_4k.jpg",
+    "asset": "https://polyhaven.com/a/bamboo_veneer",
+    "license": "CC0-1.0",
+    "sha256": "5a2a229c092095c6e656f87db1ef07d2e08dc445a8c2cb1efff378015c9da96a",
+    "bytes": 5565054
+  },
+  {
+    "file": "public/assets/craft-surfaces/bamboo_ao.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/bamboo_veneer/bamboo_veneer_ao_4k.jpg",
+    "asset": "https://polyhaven.com/a/bamboo_veneer",
+    "license": "CC0-1.0",
+    "sha256": "e0513c94058d0fde28b9399f0c2b2eb500ed6e740dbc5dcd23e86597ac41cc8d",
+    "bytes": 5807076
+  },
+  {
+    "file": "public/assets/craft-surfaces/bamboo_disp.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/bamboo_veneer/bamboo_veneer_disp_4k.jpg",
+    "asset": "https://polyhaven.com/a/bamboo_veneer",
+    "license": "CC0-1.0",
+    "sha256": "096a8ea77a26dc9f83e5e51e78fcc385eb813573ac9cac8bb10fdd3837128de3",
+    "bytes": 899318
+  },
+  {
+    "file": "public/assets/craft-surfaces/iron_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/metal_plate/metal_plate_diff_4k.jpg",
+    "asset": "https://polyhaven.com/a/metal_plate",
+    "license": "CC0-1.0",
+    "sha256": "400ca39b8a01084ad23b2a0754e7efe84cad24bf415f25f318f450298e54bd4b",
+    "bytes": 9734135
+  },
+  {
+    "file": "public/assets/craft-surfaces/iron_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/metal_plate/metal_plate_rough_4k.jpg",
+    "asset": "https://polyhaven.com/a/metal_plate",
+    "license": "CC0-1.0",
+    "sha256": "20a839c3f98e0ef8181a5914d99db689c13a7744f5f9cb615eaa873ac41a382c",
+    "bytes": 11570576
+  },
+  {
+    "file": "public/assets/craft-surfaces/iron_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/metal_plate/metal_plate_nor_gl_4k.jpg",
+    "asset": "https://polyhaven.com/a/metal_plate",
+    "license": "CC0-1.0",
+    "sha256": "d36d2ec0f3b1980286758adea50ca7205f712209bbb1baa8c25bada35398b502",
+    "bytes": 7515712
+  },
+  {
+    "file": "public/assets/craft-surfaces/iron_ao.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/metal_plate/metal_plate_ao_4k.jpg",
+    "asset": "https://polyhaven.com/a/metal_plate",
+    "license": "CC0-1.0",
+    "sha256": "20433c66a363fc888705103d91d8fda4483d405d1835802765d9f57922c9af07",
+    "bytes": 11195389
+  },
+  {
+    "file": "public/assets/craft-surfaces/iron_disp.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/metal_plate/metal_plate_disp_4k.jpg",
+    "asset": "https://polyhaven.com/a/metal_plate",
+    "license": "CC0-1.0",
+    "sha256": "90b05730a0c50d1d008b4480706483cdddddbf629ae4d2e6c74b853ff7f71a5b",
+    "bytes": 3292732
+  },
+  {
+    "file": "public/assets/craft-surfaces/iron_metal.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/metal_plate/metal_plate_metal_4k.jpg",
+    "asset": "https://polyhaven.com/a/metal_plate",
+    "license": "CC0-1.0",
+    "sha256": "7ccd60080e0cf6983824bc4c2205209c2cbd3a84958527770e8a76014b458646",
+    "bytes": 12424702
+  }
+]

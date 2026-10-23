@@ -1,0 +1,11 @@
+{
+  "sunDirection": [
+    -0.42453626743596684,
+    0.741980411720831,
+    0.5188776601995151
+  ],
+  "skyRotation": -1.6598073112136684,
+  "skyStrength": 0.75,
+  "sunStrength": 4.25,
+  "source": "kloofendal_48d_partly_cloudy_2k.hdr"
+}

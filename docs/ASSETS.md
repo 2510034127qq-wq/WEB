@@ -5,8 +5,8 @@
 ## 三维资产
 
 - `art/workshop.blend` / `public/assets/workshop.glb`：为本项目用 Blender 脚本制作的木构、院墙、瓦片、辘轳、窑炉、架子、案台、罐钵及杂物。
-- `art/hands.blend` / `public/assets/hands.glb`：为本项目制作的连续手部网格、16 骨手部骨架、指甲和布袖。
-- 活动瓷器由玩家的 48 环剖面实时生成；纹样、釉层与缺陷来自作品数据。树叶、磨损、纸草包装、火焰及工具由程序构建。
+- `art/hands.blend` / `public/assets/hands.glb`：基于 Fab 作者 Store Page 的 **hands** 改编，CC BY 4.0；保留原作者 UV、皮肤贴图和指骨，裁剪单手、重定坐标/骨名、细分近景网格，再镜像为右手。详情见 `licenses/FAB-ASSETS.md`。
+- 活动瓷器由玩家的 48 环剖面实时细分生成；纹样、釉层与缺陷来自作品数据。`art/craft-tools.blend` 为本项目可编辑工具源文件。
 - 声音通过 Web Audio 合成环境噪声、触泥、脚步和器具声，没有外部录音或音乐。
 - 没有使用 AI 图片充当三维场景，也未将离线渲染图当作浏览器实机截图。
 
@@ -29,3 +29,19 @@
 - 开发依赖 Vite、Vitest、TypeScript、Playwright 等的确切版本由 `package-lock.json` 锁定，其许可随各安装包提供。
 
 本说明仅记录第三方授权，不替项目所有者另行授予原创项目代码、美术或用户方案的公开发布许可。
+
+## 2026-10-24 新增资产
+
+逐文件下载网址、字节数与 SHA-256 分别见 `public/assets/scan-provenance.json`、`craft-surface-provenance.json` 和 `clay-surface-provenance.json`。贴图保留颜色 sRGB、法线/粗糙度/高度线性的区分。
+
+Poly Haven [CC0](https://polyhaven.com/license) 模型：Chinese Console Table、Chinese Stool、Wicker Basket 01、Ceramic Pot、Wooden Bucket 01、Wooden Stool 01，以及林地的 Pine Tree 01、Fern 02、Grass Bermuda 01、Shrub 03、Tree Stump 01。松树 4K 贴图保留，围墙外树冠使用距离 LOD；原始网格和可编辑处理文件留存。
+
+Poly Haven 4K 材质：Rough Linen、Wooden Planks、Grey Roof Tiles、Bamboo Veneer、Metal Plate。Clay Plaster 用于粗陶/灰泥类环境表面，已停止作为主角瓷胎法线；Worn Plaster Wall 因重复图案未用于整面墙。
+
+ambientCG [CC0](https://docs.ambientcg.com/license/)：Clay005 和 Clay006 的 4K Color、NormalGL、Roughness、Displacement；官方标注采样宽度 20cm。它们是通用泥土材质，不是景德镇瓷石的现场化学测量结果。
+
+`public/assets/lighting/` 为项目自建场景的 Cycles 光照结果；源 HDRI 按原有 Poly Haven 授权使用。清单记录样本数、通道、尺寸和是否降噪。
+
+地表新增 [Brown Mud 02](https://polyhaven.com/a/brown_mud_02)（1.3m）与 [Forest Leaves 03](https://polyhaven.com/a/forest_leaves_03)（2.3m）4K 全通道，来源与哈希见 `terrain-provenance.json`。松针与草的独立透明度贴图来自相同资产的官方文件，见 `vegetation-alpha-provenance.json`。
+
+松树的完整下载缓存不进入运行包，当前使用的编辑模型为 `art/woodland-pine.blend`，其中已打包依赖贴图。`scripts/prepare-vegetation.py` 保留重建流程。Meshopt 的运行解码器来自 Three.js，压缩器许可另保存在 `licenses/meshoptimizer-MIT.txt`；编码没有改变模型或图片分辨率。
