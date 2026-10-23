@@ -1,0 +1,406 @@
+{
+  "passed": true,
+  "timestamp": "2026-10-23T16:11:39.456Z",
+  "base": "http://127.0.0.1:5173/",
+  "browser": "156.0.8078.48",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "method": "Fresh independent Chrome context; production entry, actual asset request tracking, public UI credits and keybinding controls, IndexedDB save/reload and service-worker offline restart. No game state mutation through diagnostics.",
+  "limitations": "Focused production smoke only; does not repeat craft gesture QA or make a photorealism acceptance claim.",
+  "checks": [
+    {
+      "name": "production intro displays the new preview version",
+      "passed": true,
+      "evidence": "一器一生 / THE LIFE OF PORCELAIN   —   v1.1.0-preview.1"
+    },
+    {
+      "name": "serving a compiled production entry, not Vite dev source",
+      "passed": true,
+      "evidence": [
+        "http://127.0.0.1:5173/assets/index-DMDbk6QN.js"
+      ]
+    },
+    {
+      "name": "both Fab GLBs and the HDR were actually requested successfully",
+      "passed": true,
+      "evidence": [
+        {
+          "path": "/assets/fab/hanging-pottery.glb",
+          "responses": [
+            {
+              "phase": "online-start",
+              "url": "http://127.0.0.1:5173/assets/fab/hanging-pottery.glb",
+              "status": 200,
+              "fromServiceWorker": false
+            }
+          ]
+        },
+        {
+          "path": "/assets/fab/firewood-pile.glb",
+          "responses": [
+            {
+              "phase": "online-start",
+              "url": "http://127.0.0.1:5173/assets/fab/firewood-pile.glb",
+              "status": 200,
+              "fromServiceWorker": false
+            }
+          ]
+        },
+        {
+          "path": "/assets/environment/courtyard-sky-2k.hdr",
+          "responses": [
+            {
+              "phase": "online-start",
+              "url": "http://127.0.0.1:5173/assets/environment/courtyard-sky-2k.hdr",
+              "status": 200,
+              "fromServiceWorker": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "start enters the interactive workshop",
+      "passed": true,
+      "evidence": true
+    },
+    {
+      "name": "journal credits both Fab authors, source pages and CC BY 4.0 with modification disclosure",
+      "passed": true,
+      "evidence": {
+        "pottery": {
+          "text": "Hanging Ancient Pottery Set — Glowbox3D",
+          "href": "https://www.fab.com/listings/f19a85c6-1938-4a95-8ecc-ee7bc72767d8"
+        },
+        "firewood": {
+          "text": "Firewood Pile Scan LOWPOLY — sixonetwo",
+          "href": "https://www.fab.com/listings/81a65096-1e1b-4133-9c69-3acf87398248"
+        },
+        "cc": {
+          "text": "CC BY 4.0",
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      }
+    },
+    {
+      "name": "fixed gesture key KeyF cannot be assigned to interact",
+      "passed": true,
+      "evidence": {
+        "forward": "KeyW",
+        "back": "KeyS",
+        "left": "KeyA",
+        "right": "KeyD",
+        "interact": "KeyE",
+        "drop": "KeyQ",
+        "journal": "KeyJ",
+        "map": "KeyM"
+      }
+    },
+    {
+      "name": "fixed gesture key KeyB cannot be assigned to interact",
+      "passed": true,
+      "evidence": {
+        "forward": "KeyW",
+        "back": "KeyS",
+        "left": "KeyA",
+        "right": "KeyD",
+        "interact": "KeyE",
+        "drop": "KeyQ",
+        "journal": "KeyJ",
+        "map": "KeyM"
+      }
+    },
+    {
+      "name": "fixed gesture key KeyC cannot be assigned to interact",
+      "passed": true,
+      "evidence": {
+        "forward": "KeyW",
+        "back": "KeyS",
+        "left": "KeyA",
+        "right": "KeyD",
+        "interact": "KeyE",
+        "drop": "KeyQ",
+        "journal": "KeyJ",
+        "map": "KeyM"
+      }
+    },
+    {
+      "name": "fixed gesture key KeyR cannot be assigned to interact",
+      "passed": true,
+      "evidence": {
+        "forward": "KeyW",
+        "back": "KeyS",
+        "left": "KeyA",
+        "right": "KeyD",
+        "interact": "KeyE",
+        "drop": "KeyQ",
+        "journal": "KeyJ",
+        "map": "KeyM"
+      }
+    },
+    {
+      "name": "fixed gesture key KeyZ cannot be assigned to interact",
+      "passed": true,
+      "evidence": {
+        "forward": "KeyW",
+        "back": "KeyS",
+        "left": "KeyA",
+        "right": "KeyD",
+        "interact": "KeyE",
+        "drop": "KeyQ",
+        "journal": "KeyJ",
+        "map": "KeyM"
+      }
+    },
+    {
+      "name": "an unused non-reserved key G can be assigned",
+      "passed": true,
+      "evidence": {
+        "forward": "KeyW",
+        "back": "KeyS",
+        "left": "KeyA",
+        "right": "KeyD",
+        "interact": "KeyG",
+        "drop": "KeyQ",
+        "journal": "KeyJ",
+        "map": "KeyM"
+      }
+    },
+    {
+      "name": "interact can be restored to E",
+      "passed": true,
+      "evidence": {
+        "forward": "KeyW",
+        "back": "KeyS",
+        "left": "KeyA",
+        "right": "KeyD",
+        "interact": "KeyE",
+        "drop": "KeyQ",
+        "journal": "KeyJ",
+        "map": "KeyM"
+      }
+    },
+    {
+      "name": "service worker pre-caches both Fab meshes and HDR",
+      "passed": true,
+      "evidence": {
+        "keys": [
+          "yaohuo-f609498f8b32"
+        ],
+        "entries": [
+          "/",
+          "/index.html",
+          "/assets/environment/courtyard-sky-2k.hdr",
+          "/assets/fab/firewood-pile.glb",
+          "/assets/fab/hanging-pottery.glb",
+          "/assets/hands.glb",
+          "/assets/outskirts/ground_diff.jpg",
+          "/assets/outskirts/ground_nor_gl.jpg",
+          "/assets/outskirts/ground_rough.jpg",
+          "/assets/provenance.json",
+          "/assets/realism-provenance.json",
+          "/assets/textures/agedwood_diff.jpg",
+          "/assets/textures/agedwood_nor_gl.jpg",
+          "/assets/textures/agedwood_rough.jpg",
+          "/assets/textures/brick_diff.jpg",
+          "/assets/textures/brick_nor_gl.jpg",
+          "/assets/textures/brick_rough.jpg",
+          "/assets/textures/ground_diff.jpg",
+          "/assets/textures/ground_nor_gl.jpg",
+          "/assets/textures/ground_rough.jpg",
+          "/assets/textures/realism/agedwood_ao.jpg",
+          "/assets/textures/realism/agedwood_diff.jpg",
+          "/assets/textures/realism/agedwood_disp.jpg",
+          "/assets/textures/realism/agedwood_nor_gl.jpg",
+          "/assets/textures/realism/agedwood_rough.jpg",
+          "/assets/textures/realism/brick_ao.jpg",
+          "/assets/textures/realism/brick_diff.jpg",
+          "/assets/textures/realism/brick_disp.jpg",
+          "/assets/textures/realism/brick_nor_gl.jpg",
+          "/assets/textures/realism/brick_rough.jpg",
+          "/assets/textures/realism/ground_ao.jpg",
+          "/assets/textures/realism/ground_diff.jpg",
+          "/assets/textures/realism/ground_disp.jpg",
+          "/assets/textures/realism/ground_nor_gl.jpg",
+          "/assets/textures/realism/ground_rough.jpg",
+          "/assets/textures/realism/wall_ao.jpg",
+          "/assets/textures/realism/wall_diff.jpg",
+          "/assets/textures/realism/wall_disp.jpg",
+          "/assets/textures/realism/wall_nor_gl.jpg",
+          "/assets/textures/realism/wall_rough.jpg",
+          "/assets/textures/wall_diff.jpg",
+          "/assets/textures/wall_nor_gl.jpg",
+          "/assets/textures/wall_rough.jpg",
+          "/assets/textures/wood_diff.jpg",
+          "/assets/textures/wood_nor_gl.jpg",
+          "/assets/textures/wood_rough.jpg",
+          "/assets/vegetation/leaf_alpha.png",
+          "/assets/vegetation/leaf_diff.jpg",
+          "/assets/vegetation/leaf_nor_gl.jpg",
+          "/assets/workshop.glb",
+          "/favicon.svg",
+          "/assets/index-D14TUzN3.css",
+          "/assets/three--NDqh_Jd.js",
+          "/assets/physics-CKC5f6tm.js",
+          "/assets/index-DMDbk6QN.js"
+        ]
+      }
+    },
+    {
+      "name": "manual save survives a normal reload",
+      "passed": true,
+      "evidence": {
+        "savedPlayer": [
+          -0.0011118670227006078,
+          1.6348379731178284,
+          1.8627240657806396
+        ],
+        "restoredPlayer": [
+          -0.0011118670227006078,
+          1.6348379731178284,
+          1.8627240657806396
+        ],
+        "bindings": {
+          "forward": "KeyW",
+          "back": "KeyS",
+          "left": "KeyA",
+          "right": "KeyD",
+          "interact": "KeyE",
+          "drop": "KeyQ",
+          "journal": "KeyJ",
+          "map": "KeyM"
+        }
+      }
+    },
+    {
+      "name": "offline restart loads saved workshop and in-game asset credits",
+      "passed": true,
+      "evidence": {
+        "player": [
+          -0.0011118670227006078,
+          1.6348379731178284,
+          1.8627240657806396
+        ],
+        "bob": true
+      }
+    },
+    {
+      "name": "no uncaught runtime errors across initial, reload and offline sessions",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "no failed network requests or HTTP error responses",
+      "passed": true,
+      "evidence": {
+        "failedRequests": [],
+        "httpFailures": []
+      }
+    }
+  ],
+  "responseCount": 145,
+  "loadedAssets": [
+    {
+      "path": "/assets/fab/hanging-pottery.glb",
+      "responses": [
+        {
+          "phase": "online-start",
+          "url": "http://127.0.0.1:5173/assets/fab/hanging-pottery.glb",
+          "status": 200,
+          "fromServiceWorker": false
+        }
+      ]
+    },
+    {
+      "path": "/assets/fab/firewood-pile.glb",
+      "responses": [
+        {
+          "phase": "online-start",
+          "url": "http://127.0.0.1:5173/assets/fab/firewood-pile.glb",
+          "status": 200,
+          "fromServiceWorker": false
+        }
+      ]
+    },
+    {
+      "path": "/assets/environment/courtyard-sky-2k.hdr",
+      "responses": [
+        {
+          "phase": "online-start",
+          "url": "http://127.0.0.1:5173/assets/environment/courtyard-sky-2k.hdr",
+          "status": 200,
+          "fromServiceWorker": false
+        }
+      ]
+    }
+  ],
+  "runtimeErrors": [],
+  "failedRequests": [],
+  "scripts": [
+    "http://127.0.0.1:5173/assets/index-DMDbk6QN.js"
+  ],
+  "cache": {
+    "keys": [
+      "yaohuo-f609498f8b32"
+    ],
+    "entries": [
+      "/",
+      "/index.html",
+      "/assets/environment/courtyard-sky-2k.hdr",
+      "/assets/fab/firewood-pile.glb",
+      "/assets/fab/hanging-pottery.glb",
+      "/assets/hands.glb",
+      "/assets/outskirts/ground_diff.jpg",
+      "/assets/outskirts/ground_nor_gl.jpg",
+      "/assets/outskirts/ground_rough.jpg",
+      "/assets/provenance.json",
+      "/assets/realism-provenance.json",
+      "/assets/textures/agedwood_diff.jpg",
+      "/assets/textures/agedwood_nor_gl.jpg",
+      "/assets/textures/agedwood_rough.jpg",
+      "/assets/textures/brick_diff.jpg",
+      "/assets/textures/brick_nor_gl.jpg",
+      "/assets/textures/brick_rough.jpg",
+      "/assets/textures/ground_diff.jpg",
+      "/assets/textures/ground_nor_gl.jpg",
+      "/assets/textures/ground_rough.jpg",
+      "/assets/textures/realism/agedwood_ao.jpg",
+      "/assets/textures/realism/agedwood_diff.jpg",
+      "/assets/textures/realism/agedwood_disp.jpg",
+      "/assets/textures/realism/agedwood_nor_gl.jpg",
+      "/assets/textures/realism/agedwood_rough.jpg",
+      "/assets/textures/realism/brick_ao.jpg",
+      "/assets/textures/realism/brick_diff.jpg",
+      "/assets/textures/realism/brick_disp.jpg",
+      "/assets/textures/realism/brick_nor_gl.jpg",
+      "/assets/textures/realism/brick_rough.jpg",
+      "/assets/textures/realism/ground_ao.jpg",
+      "/assets/textures/realism/ground_diff.jpg",
+      "/assets/textures/realism/ground_disp.jpg",
+      "/assets/textures/realism/ground_nor_gl.jpg",
+      "/assets/textures/realism/ground_rough.jpg",
+      "/assets/textures/realism/wall_ao.jpg",
+      "/assets/textures/realism/wall_diff.jpg",
+      "/assets/textures/realism/wall_disp.jpg",
+      "/assets/textures/realism/wall_nor_gl.jpg",
+      "/assets/textures/realism/wall_rough.jpg",
+      "/assets/textures/wall_diff.jpg",
+      "/assets/textures/wall_nor_gl.jpg",
+      "/assets/textures/wall_rough.jpg",
+      "/assets/textures/wood_diff.jpg",
+      "/assets/textures/wood_nor_gl.jpg",
+      "/assets/textures/wood_rough.jpg",
+      "/assets/vegetation/leaf_alpha.png",
+      "/assets/vegetation/leaf_diff.jpg",
+      "/assets/vegetation/leaf_nor_gl.jpg",
+      "/assets/workshop.glb",
+      "/favicon.svg",
+      "/assets/index-D14TUzN3.css",
+      "/assets/three--NDqh_Jd.js",
+      "/assets/physics-CKC5f6tm.js",
+      "/assets/index-DMDbk6QN.js"
+    ]
+  }
+}

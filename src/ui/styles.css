@@ -852,3 +852,67 @@ kbd {
   border: 1px solid #b7bf9b55;
   width: 100%;
 }
+
+/* Keep instructions out of the player's hands and work surface. */
+.work-panel {
+  top: auto;
+  bottom: 86px;
+  right: 28px;
+  width: 330px;
+  max-height: 32vh;
+  padding: 16px 20px;
+  background: linear-gradient(110deg, #151d18c4, #151d1880);
+  border: none;
+  border-left: 1px solid #c7b99675;
+  box-shadow: none;
+  backdrop-filter: blur(7px);
+}
+.work-heading {
+  padding-bottom: 0;
+  border: none;
+  margin-bottom: 8px;
+}
+.work-heading h2 {
+  font-size: 18px;
+}
+.work-heading .eyebrow {
+  font-size: 9px;
+}
+.work-panel p.gesture-instruction {
+  font-size: 14px;
+  color: #eee5cf;
+  margin: 8px 0;
+}
+#hand-status {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #d1c39d;
+}
+.at-work .objective {
+  opacity: 0;
+  pointer-events: none;
+}
+.at-work .crosshair {
+  display: none;
+}
+.work-panel details {
+  margin-top: 12px;
+}
+.work-panel details button {
+  margin: 5px;
+}
+.work-panel {
+  pointer-events: none;
+}
+.work-panel button,
+.work-panel input,
+.work-panel details {
+  pointer-events: auto;
+}
+body[data-station="kiln"] .work-panel {
+  top: 125px;
+  bottom: auto;
+  right: auto;
+  left: 28px;
+  width: 270px;
+}

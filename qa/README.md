@@ -1,5 +1,24 @@
 # Chrome 实机验证材料
 
+## v1.1.0-preview.1 沉浸修订
+
+- [本轮改动和验证范围](../docs/IMMERSION-REVISION.md)、[免费资产来源](../licenses/FAB-ASSETS.md)。
+- `immersion-check.json`：真实鼠标输入验证七项工位操作；`immersion-wheel-check.json` 单独验证鼠标拖轮。
+- `kiln-controls-check.json`：拖封砖、点火、添柴、风闸及冷却。
+- `revision-smoke.json`：最终生产构建的 17 项启动、资产请求、署名、改键冲突、存档重载和离线启动检查。
+- `walk-check.json`、[行走实录](walk-review.webm)：新工坊直接键鼠操作，记录起步、收步、转向、侧移、蹲下、快走和碰撞。
+- [本轮截图目录](review/immersion/)：院落、Fab 陶罐及扫描柴堆、拉坯、入釉、窑火和成器。工位截图使用公开 JSON 存档定位；不代表从泥到成器的连续通关。
+
+![新版免费资产与光影](review/immersion/realism-courtyard.png)
+
+![Fab 挂陶罐](review/immersion/realism-supply.png)
+
+![Fab 扫描柴堆](review/immersion/realism-kiln.png)
+
+## v1.0.0-rc.1 历史验证
+
+下列材料来自旧版，不能用于宣称新版已通过完整流程或达到旧版帧率。
+
 - [验证结论、设备、方法和限制](../docs/VERIFICATION.md)
 - [最终实机短录像](review/visual-replay-v04.webm)：有意使用已完成作品的存档重放，便于观察双手、几何、蘸釉、火光和包装。
 - `playtest.json`：碗与瓶从原料到入藏的真实键鼠全流程记录。

@@ -9,32 +9,46 @@ function random(seed: number) {
 }
 
 /** Physical leaves and branches, instanced to keep the courtyard GPU budget bounded. */
-export function makeGarden(scene: THREE.Scene) {
+export async function makeGarden(scene: THREE.Scene) {
   const rand = random(1743),
     dummy = new THREE.Object3D(),
     color = new THREE.Color();
-  const foliage = new THREE.BufferGeometry();
-  foliage.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(
-      [0, 0, 0, -0.045, 0.005, -0.09, 0, 0.012, -0.19, 0.045, 0.005, -0.09],
-      3,
-    ),
-  );
-  foliage.setIndex([0, 1, 2, 0, 2, 3]);
+  const loader = new THREE.TextureLoader();
+  const [leafColour, leafAlpha, leafNormal] = await Promise.all([
+    loader.loadAsync("/assets/vegetation/leaf_diff.jpg"),
+    loader.loadAsync("/assets/vegetation/leaf_alpha.png"),
+    loader.loadAsync("/assets/vegetation/leaf_nor_gl.jpg"),
+  ]);
+  leafColour.colorSpace = THREE.SRGBColorSpace;
+  const foliage = new THREE.PlaneGeometry(0.17, 0.22, 2, 2);
+  foliage.rotateX(-Math.PI / 2);
+  const uv = foliage.attributes.uv,
+    position = foliage.attributes.position;
+  for (let i = 0; i < uv.count; i++) {
+    const u = uv.getX(i),
+      v = uv.getY(i);
+    // One actual photographed leaf on the source atlas, including its alpha silhouette.
+    uv.setXY(i, 0.67 + u * 0.18, 0.7 + v * 0.15);
+    position.setY(i, Math.sin(u * Math.PI) * 0.018);
+  }
   foliage.computeVertexNormals();
   const leafMat = new THREE.MeshStandardMaterial({
-    color: "#657f3d",
-    roughness: 0.9,
+    color: "#ffffff",
+    map: leafColour,
+    alphaMap: leafAlpha,
+    normalMap: leafNormal,
+    normalScale: new THREE.Vector2(0.4, 0.4),
+    alphaTest: 0.52,
+    roughness: 0.77,
     side: THREE.DoubleSide,
   });
-  const leaves = new THREE.InstancedMesh(foliage, leafMat, 28000);
-  leaves.castShadow = false;
+  const leaves = new THREE.InstancedMesh(foliage, leafMat, 40000);
+  leaves.castShadow = true;
   leaves.receiveShadow = true;
   const branch = new THREE.InstancedMesh(
     new THREE.CylinderGeometry(1, 1, 1, 7),
     new THREE.MeshStandardMaterial({ color: "#565442", roughness: 1 }),
-    500,
+    720,
   );
   branch.castShadow = true;
   let li = 0,
@@ -49,8 +63,11 @@ export function makeGarden(scene: THREE.Scene) {
     dummy.updateMatrix();
     branch.setMatrixAt(bi++, dummy.matrix);
   };
-  for (let t = 0; t < 14; t++) {
-    const base = new THREE.Vector3(-16 + t * 2.5, 0, -11 - rand() * 6),
+  for (let t = 0; t < 20; t++) {
+    const base =
+        t < 14
+          ? new THREE.Vector3(-16 + t * 2.5, 0, -11 - rand() * 6)
+          : new THREE.Vector3(-11 + (t - 14) * 4.2, -0.1, 17 + rand() * 5),
       height = 4.5 + rand() * 2;
     const top = base
       .clone()
@@ -84,14 +101,10 @@ export function makeGarden(scene: THREE.Scene) {
             ),
           );
         dummy.rotation.set(rand() * 2, rand() * Math.PI * 2, rand() * 2);
-        dummy.scale.setScalar(0.75 + rand() * 0.85);
+        dummy.scale.setScalar(1.0 + rand() * 0.9);
         dummy.updateMatrix();
         leaves.setMatrixAt(li, dummy.matrix);
-        color.setHSL(
-          0.2 + rand() * 0.055,
-          0.23 + rand() * 0.18,
-          0.16 + rand() * 0.14,
-        );
+        color.setScalar(0.74 + rand() * 0.4);
         leaves.setColorAt(li++, color);
       }
     }
@@ -99,6 +112,45 @@ export function makeGarden(scene: THREE.Scene) {
   leaves.count = li;
   branch.count = bi;
   scene.add(leaves, branch);
+  // The courtyard gate opens onto actual ground and a tree belt, not the lower HDR hemisphere.
+  const groundMaps = await Promise.all(
+    ["diff", "nor_gl", "rough"].map(async (channel) => {
+      const texture = await loader.loadAsync(
+        `/assets/outskirts/ground_${channel}.jpg`,
+      );
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.setScalar(180 / 3.2);
+      texture.anisotropy = 8;
+      if (channel === "diff") texture.colorSpace = THREE.SRGBColorSpace;
+      return texture;
+    }),
+  );
+  const terrain = new THREE.PlaneGeometry(180, 180, 60, 60);
+  terrain.rotateX(-Math.PI / 2);
+  const points = terrain.attributes.position;
+  for (let i = 0; i < points.count; i++) {
+    const x = points.getX(i),
+      z = points.getZ(i),
+      d = Math.hypot(x, z);
+    const rise = THREE.MathUtils.smoothstep(d, 16, 40);
+    points.setY(
+      i,
+      -0.14 + rise * (1.2 + Math.sin(x * 0.11) * Math.cos(z * 0.09) * 1.1),
+    );
+  }
+  terrain.computeVertexNormals();
+  const soil = new THREE.Mesh(
+    terrain,
+    new THREE.MeshStandardMaterial({
+      map: groundMaps[0],
+      normalMap: groundMaps[1],
+      roughnessMap: groundMaps[2],
+      roughness: 1,
+      normalScale: new THREE.Vector2(0.55, 0.55),
+    }),
+  );
+  soil.receiveShadow = true;
+  scene.add(soil);
 }
 
 export function makeWear(scene: THREE.Scene) {

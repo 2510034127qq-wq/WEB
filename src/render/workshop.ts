@@ -1,6 +1,12 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import {
+  loadWorkshopMaterials,
+  loadCourtyardSky,
+  replaceCourtyardGround,
+  captureWorkshopReflections,
+  type MaterialSet,
+} from "./materials";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
@@ -9,6 +15,8 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
 import { clone } from "three/addons/utils/SkeletonUtils.js";
 import { fineNoise, makeGarden, makeWear } from "./details";
 import { Ceramic } from "./ceramic";
+import { sleeveGeometry, poseSleeve } from "./sleeve";
+import type { MotionPose } from "../simulation/locomotion";
 import {
   STATIONS,
   type StationId,
@@ -33,17 +41,18 @@ export class Workshop {
   action = "";
   packId: string | null = null;
   packProgress = 0;
-  dipDepth = 1;
+  dipDepth = 0;
   private parcel = new THREE.Group();
   private paperFlaps: THREE.Group[] = [];
   private strawTies: THREE.Mesh[] = [];
   private kilnSeal = new THREE.Group();
   private brushPose = new THREE.Object3D();
   private wheelHead = new THREE.Group();
-  private dipAmount = 0;
   private skinMaterials = new Set<THREE.MeshStandardMaterial>();
   private forearms: THREE.Mesh[] = [];
-  sun = new THREE.DirectionalLight("#ffedcc", 3.2);
+  private surfaces!: MaterialSet;
+  private reflections = new Map<string, THREE.Texture>();
+  sun = new THREE.DirectionalLight("#fff0d6", 4.25);
   fire = new THREE.PointLight("#ff6b1b", 0, 8, 1.5);
   flames: THREE.Mesh[] = [];
   focus: StationId | null = null;
@@ -70,32 +79,28 @@ export class Workshop {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.05;
+    this.renderer.toneMappingExposure = 0.92;
     host.append(this.renderer.domElement);
-    this.scene.background = new THREE.Color("#c8cfc4");
-    this.scene.fog = new THREE.Fog("#c8cfc4", 24, 65);
+    this.scene.background = new THREE.Color("#b8cfdf");
+    this.scene.fog = new THREE.Fog("#c2cdd1", 34, 80);
     this.camera.rotation.order = "YXZ";
     this.camera.position.fromArray(state.player);
-    const pmrem = new THREE.PMREMGenerator(this.renderer);
-    const room = new RoomEnvironment();
-    this.scene.environment = pmrem.fromScene(room, 0.04).texture;
-    room.dispose();
-    pmrem.dispose();
-    this.scene.environmentIntensity = 0.35;
-    this.scene.add(new THREE.HemisphereLight("#d9e6e3", "#746348", 1.05));
-    this.sun.position.set(-7, 11, 3);
+    // Sky irradiance comes from the HDRI. A tiny ground bounce keeps unlit cloth legible.
+    this.scene.add(new THREE.HemisphereLight("#c6dcff", "#88735a", 0.28));
+    this.sun.position.set(-9, 13, 11);
     this.sun.castShadow = true;
-    this.sun.shadow.mapSize.set(2048, 2048);
+    this.sun.shadow.mapSize.set(4096, 4096);
     Object.assign(this.sun.shadow.camera, {
       left: -13,
       right: 13,
       top: 13,
       bottom: -13,
       near: 0.1,
-      far: 35,
+      far: 55,
     });
-    this.sun.shadow.normalBias = 0.009;
-    this.sun.shadow.bias = -0.00006;
+    this.sun.shadow.normalBias = 0.007;
+    this.sun.shadow.radius = 2.5;
+    this.sun.shadow.bias = -0.00008;
     this.sun.target.position.set(0, 0, -2);
     this.scene.add(this.sun, this.sun.target);
     this.fire.position.set(6, 1, 4);
@@ -111,9 +116,9 @@ export class Workshop {
       innerHeight,
       16,
     );
-    this.ao.kernelRadius = 0.28;
+    this.ao.kernelRadius = 0.18;
     this.ao.minDistance = 0.0004;
-    this.ao.maxDistance = 0.012;
+    this.ao.maxDistance = 0.008;
     this.composer.addPass(this.ao);
     this.composer.addPass(new OutputPass());
     this.board = new THREE.Mesh(
@@ -130,66 +135,126 @@ export class Workshop {
     const loader = new GLTFLoader();
     onProgress("木构、窑砖与石阶");
     const gltf = await loader.loadAsync("/assets/workshop.glb");
-    const textures = new THREE.TextureLoader();
-    const loaded: Promise<unknown>[] = [];
-    const maps: Record<string, string> = {
+    onProgress("载入实拍 2K 材质与自然天光");
+    const [surfaces] = await Promise.all([
+      loadWorkshopMaterials(this.renderer),
+      loadCourtyardSky(this.scene, this.renderer),
+    ]);
+    this.surfaces = surfaces;
+    this.sun.position
+      .fromArray(this.scene.userData.sunDirection)
+      .multiplyScalar(24)
+      .add(this.sun.target.position);
+    const map: Record<string, keyof MaterialSet> = {
       weathered_wood: "agedwood",
       lime_plaster: "wall",
       courtyard_stone: "ground",
       kiln_firebrick: "brick",
     };
     gltf.scene.traverse((o) => {
-      if (o instanceof THREE.Mesh) {
-        o.castShadow = o.receiveShadow = true;
-        const mat = o.material as THREE.MeshStandardMaterial;
-        const prefix = maps[mat.name];
-        if (prefix) {
-          mat.color.set("#ffffff");
-          for (const [channel, key] of [
-            ["diff", "map"],
-            ["rough", "roughnessMap"],
-            ["nor_gl", "normalMap"],
-          ] as const) {
-            loaded.push(
-              textures
-                .loadAsync(`/assets/textures/${prefix}_${channel}.jpg`)
-                .then((t) => {
-                  t.wrapS = t.wrapT = THREE.RepeatWrapping;
-                  t.anisotropy = Math.min(
-                    8,
-                    this.renderer.capabilities.getMaxAnisotropy(),
-                  );
-                  if (channel === "diff") t.colorSpace = THREE.SRGBColorSpace;
-                  mat[key] = t;
-                  mat.needsUpdate = true;
-                }),
-            );
-          }
-          mat.normalScale.setScalar(0.65);
-        }
-        if (
-          mat.name === "bamboo_leaves" ||
-          mat.name === "grey_fired_roof_tiles"
-        )
-          mat.side = THREE.DoubleSide;
-        if (mat.name === "weathered_wood") {
-          mat.color.set("#af9f86");
-          mat.roughness = 1;
-        }
-        if (mat.name === "lime_plaster") mat.color.set("#d1c7af");
-        if (mat.name === "courtyard_stone") mat.color.set("#c2c0ac");
-        if (mat.name === "grey_fired_roof_tiles") mat.color.set("#3d4746");
-        if (
-          mat.name === "unglazed_stoneware" ||
-          mat.name === "grey_fired_roof_tiles"
-        ) {
-          mat.bumpMap = fineNoise();
-          mat.bumpScale = 0.0025;
+      if (!(o instanceof THREE.Mesh)) return;
+      o.castShadow = o.receiveShadow = true;
+      const old = o.material as THREE.MeshStandardMaterial;
+      const key = map[old.name];
+      if (key) {
+        o.material = surfaces[key];
+        if (key === "ground") replaceCourtyardGround(o, surfaces.ground);
+        if (key === "wall") {
+          // Source UV units are 1.4m. A 2.2m plaster sample retains visible trowel detail.
+          const uv = o.geometry.attributes.uv;
+          if (uv)
+            for (let i = 0; i < uv.count; i++)
+              uv.setXY(i, uv.getX(i) * 0.64, uv.getY(i) * 0.64);
         }
       }
+      if (old.name === "grey_fired_roof_tiles") {
+        old.color.set("#525957");
+        old.roughness = 0.92;
+        old.bumpMap = fineNoise(512);
+        old.bumpScale = 0.003;
+        old.side = THREE.DoubleSide;
+      }
+      if (old.name === "unglazed_stoneware") {
+        old.color.set("#746047");
+        old.roughness = 0.9;
+        old.bumpMap = fineNoise(512);
+        old.bumpScale = 0.002;
+      }
+      if (old.name === "still_water") {
+        o.material = new THREE.MeshPhysicalMaterial({
+          color: "#667060",
+          roughness: 0.08,
+          clearcoat: 1,
+          clearcoatRoughness: 0.06,
+          ior: 1.333,
+        });
+      }
+      if (old.name === "ivory_porcelain") {
+        o.material = new THREE.MeshPhysicalMaterial({
+          color: "#e7e5d7",
+          roughness: 0.21,
+          clearcoat: 1,
+          clearcoatRoughness: 0.12,
+          ior: 1.5,
+        });
+      }
+      if (old.name === "bamboo_leaves") old.side = THREE.DoubleSide;
     });
     this.scene.add(gltf.scene);
-    await Promise.all(loaded);
+    onProgress("悬挂陶罐实物资产");
+    const purchased = await loader.loadAsync("/assets/fab/hanging-pottery.glb");
+    const hanging = purchased.scene;
+    const bounds = new THREE.Box3().setFromObject(hanging);
+    const size = bounds.getSize(new THREE.Vector3());
+    const center = bounds.getCenter(new THREE.Vector3());
+    const scale = 0.9 / Math.max(size.x, size.y, size.z);
+    hanging.scale.setScalar(scale);
+    hanging.position.set(
+      -6.7 - center.x * scale,
+      1.77 - center.y * scale,
+      5.78 - center.z * scale,
+    );
+    hanging.traverse((o) => {
+      if (o instanceof THREE.Mesh) {
+        o.castShadow = o.receiveShadow = true;
+        const m = o.material as THREE.MeshStandardMaterial;
+        if (m.map)
+          m.map.anisotropy = Math.min(
+            16,
+            this.renderer.capabilities.getMaxAnisotropy(),
+          );
+      }
+    });
+    hanging.name = "Fab_Glowbox3D_hanging_pottery_CC_BY_4";
+    this.scene.add(hanging);
+    onProgress("实物扫描柴堆");
+    const firewoodAsset = await loader.loadAsync(
+      "/assets/fab/firewood-pile.glb",
+    );
+    const pile = firewoodAsset.scene;
+    const pileBounds = new THREE.Box3().setFromObject(pile);
+    const pileSize = pileBounds.getSize(new THREE.Vector3());
+    const pileCenter = pileBounds.getCenter(new THREE.Vector3());
+    const pileScale = 1.25 / Math.max(pileSize.x, pileSize.y, pileSize.z);
+    pile.scale.setScalar(pileScale);
+    pile.position.set(
+      3.65 - pileCenter.x * pileScale,
+      0.025 - pileBounds.min.y * pileScale,
+      6.05 - pileCenter.z * pileScale,
+    );
+    pile.traverse((o) => {
+      if (o instanceof THREE.Mesh) {
+        o.castShadow = o.receiveShadow = true;
+        const m = o.material as THREE.MeshStandardMaterial;
+        if (m.map)
+          m.map.anisotropy = Math.min(
+            16,
+            this.renderer.capabilities.getMaxAnisotropy(),
+          );
+      }
+    });
+    pile.name = "Fab_sixonetwo_firewood_scan_CC_BY_4";
+    this.scene.add(pile);
     onProgress("双手与工具");
     const hands = await loader.loadAsync("/assets/hands.glb");
     for (let i = 0; i < 2; i++) {
@@ -207,6 +272,7 @@ export class Workshop {
             this.skinMaterials.add(mat);
           }
           if (mat.name === "indigo_cotton") {
+            o.visible = false;
             mat.bumpMap = fineNoise();
             mat.bumpScale = 0.0005;
             mat.color.set("#293e40");
@@ -215,17 +281,18 @@ export class Workshop {
         if (o instanceof THREE.Bone)
           o.userData.restQuaternion = o.quaternion.clone();
       });
+      hand.visible = false;
       this.scene.add(hand);
       this.hands.push(hand);
     }
     for (let i = 0; i < 2; i++) {
       const arm = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.045, 0.072, 1, 28, 8),
+        sleeveGeometry(),
         new THREE.MeshStandardMaterial({
           color: "#293e40",
           roughness: 0.96,
           bumpMap: fineNoise(),
-          bumpScale: 0.0005,
+          bumpScale: 0.00005,
         }),
       );
       arm.castShadow = arm.receiveShadow = true;
@@ -236,8 +303,9 @@ export class Workshop {
     this.makeProps();
     this.makeSigns();
     this.makeAtmosphere();
-    makeGarden(this.scene);
+    await makeGarden(this.scene);
     makeWear(this.scene);
+    this.reflections = captureWorkshopReflections(this.scene, this.renderer);
     this.sync();
   }
   makeProps() {
@@ -558,6 +626,14 @@ export class Workshop {
         this.ceramics.set(p.id, o);
         this.scene.add(o);
       } else o.piece = p;
+      const region =
+        p.location === "display"
+          ? "south"
+          : p.location === "glaze" || p.location === "kiln"
+            ? "east"
+            : "north";
+      o.mesh.material.envMap = this.reflections.get(region) || null;
+      o.mesh.material.envMapIntensity = 1.3;
       o.update();
     }
     for (const [id, o] of this.ceramics)
@@ -585,13 +661,20 @@ export class Workshop {
     this.renderer.setPixelRatio(ratio);
     this.composer.setPixelRatio(ratio);
     this.sun.shadow.mapSize.setScalar(
-      this.state.settings.quality === "high" ? 2048 : 1024,
+      this.state.settings.quality === "high" ? 4096 : 2048,
     );
     this.sun.shadow.map?.dispose();
     this.sun.shadow.map = null;
     this.resize();
   }
-  pose(dt: number, yaw: number, pitch: number, walking: boolean, time: number) {
+  pose(
+    dt: number,
+    yaw: number,
+    pitch: number,
+    _walking: boolean,
+    _time: number,
+    motion?: MotionPose,
+  ) {
     const s = this.focus
       ? STATIONS.find((v) => v.id === this.focus)
       : undefined;
@@ -601,10 +684,10 @@ export class Workshop {
     if (s) {
       const pos = new THREE.Vector3(...s.pos);
       const close =
-        ["wheel", "paint", "glaze", "display"].includes(s.id) &&
+        ["clay", "wheel", "paint", "glaze", "display"].includes(s.id) &&
         p?.location === s.id;
       if (close) {
-        const distance = Math.max(0.68, (p?.height || 0.2) * 2.1);
+        const distance = Math.max(0.72, (p?.height || 0.2) * 1.95);
         const dir = new THREE.Vector3(...s.approach)
           .sub(pos)
           .setY(0)
@@ -616,7 +699,7 @@ export class Workshop {
           .add(new THREE.Vector3(0, (p?.height || 0.2) * 0.55, 0));
         this.target.position.copy(goal);
         this.target.lookAt(target);
-        fov = 43;
+        fov = 54;
       } else {
         goal.fromArray(s.approach);
         this.target.position.copy(goal);
@@ -630,9 +713,9 @@ export class Workshop {
         fov = 52;
       }
       if (s.id === "kiln") {
-        goal.set(3.9, 1.85, 1.05);
+        goal.set(6, 1.55, 2.6);
         this.target.position.copy(goal);
-        this.target.lookAt(new THREE.Vector3(6, 1.35, 5.2));
+        this.target.lookAt(new THREE.Vector3(6, 0.65, 3.9));
         fov = 61;
       }
       this.camera.quaternion.slerp(
@@ -640,14 +723,21 @@ export class Workshop {
         1 - Math.exp(-dt * 5),
       );
     } else {
-      if (this.state.settings.bob && walking)
-        goal.y += Math.sin(time * 9) * 0.018;
+      if (motion)
+        goal.add(
+          new THREE.Vector3(
+            motion.offset.x,
+            motion.offset.y,
+            motion.offset.z,
+          ).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw),
+        );
       this.target.rotation.order = "YXZ";
-      this.target.rotation.set(pitch, yaw, 0);
-      this.camera.quaternion.slerp(
-        this.target.quaternion,
-        1 - Math.exp(-dt * 18),
+      this.target.rotation.set(
+        pitch + (motion?.pitch || 0),
+        yaw,
+        motion?.roll || 0,
       );
+      this.camera.quaternion.copy(this.target.quaternion);
     }
     this.camera.position.lerp(goal, 1 - Math.exp(-dt * (s ? 5 : 18)));
     this.camera.fov = THREE.MathUtils.damp(this.camera.fov, fov, 6, dt);
@@ -657,12 +747,6 @@ export class Workshop {
     this.renderer.info.autoReset = false;
     this.renderer.info.reset();
     const p = this.state.pieces.find((p) => p.id === this.state.activeId);
-    this.dipAmount = THREE.MathUtils.damp(
-      this.dipAmount,
-      this.action === "dip" ? 1 : 0,
-      5,
-      dt,
-    );
     this.wheelHead.rotation.y = this.rotation;
     for (const [id, o] of this.ceramics) {
       const item = o.piece;
@@ -698,16 +782,18 @@ export class Workshop {
       )
         o.rotation.y = this.rotation;
       o.mesh.scale.set(1, 1, 1);
-      if (this.action === "prepare" && item.location === "clay") {
+      if (
+        ["prepare", "knead"].includes(this.action) &&
+        item.location === "clay"
+      ) {
         const squash = 1 + Math.sin(time * 8) * 0.09;
         o.mesh.scale.set(1 / Math.sqrt(squash), squash, 1 / Math.sqrt(squash));
       }
-      if (item.location === "glaze") {
-        o.position.z += this.dipAmount * 0.68;
-        o.position.y +=
-          Math.sin(this.dipAmount * Math.PI) * 0.44 +
-          this.dipAmount *
-            (1.34 - item.height * this.dipDepth - item.position[1]);
+      if (item.location === "glaze" && this.focus === "glaze") {
+        // The player's dragged depth is the pose; releasing does not trigger an automatic dip.
+        o.position.z += 0.68;
+        o.position.y =
+          1.39 - item.height * THREE.MathUtils.clamp(this.dipDepth, 0, 1);
       }
     }
     const carried = this.state.pieces.find((q) => q.id === this.state.held);
@@ -786,6 +872,9 @@ export class Workshop {
         p.position[2] + 0.04,
       );
       knife.rotation.y = Math.PI / 2;
+      if (this.contact) {
+        knife.position.copy(this.contact).add(new THREE.Vector3(0.1, 0.015, 0));
+      }
     }
     this.hands.forEach((h, i) => {
       const side = i === 0 ? -1 : 1;
@@ -814,7 +903,19 @@ export class Workshop {
         h.position.y +=
           this.focus === "glaze"
             ? p.height + 0.022
-            : 0.04 + p.height * (0.3 + this.workMotion * 0.4);
+            : 0.018 +
+              p.height * Math.max(0.08, Math.min(0.98, this.workMotion));
+        if (this.contact && ["wheel", "clay"].includes(this.focus!)) {
+          // Fingers stay on the selected ring instead of hovering at a fixed mid height.
+          h.position.y = Math.max(center.y + 0.02, this.contact.y);
+          if (this.focus === "clay") {
+            h.position.addScaledVector(
+              toward,
+              (this.contact.z - center.z) * 0.6,
+            );
+            h.position.x += (this.contact.x - center.x) * 0.45;
+          }
+        }
         h.rotation.set(
           0,
           Math.atan2(toward.x, toward.z) + side * 0.7,
@@ -852,16 +953,10 @@ export class Workshop {
       arm.visible = h.visible;
       if (h.visible) {
         h.updateMatrixWorld(true);
-        const wrist = h.localToWorld(new THREE.Vector3(0, 0, 0.26)),
-          elbow = new THREE.Vector3(side * 0.38, -0.64, -0.06)
-            .applyQuaternion(this.camera.quaternion)
-            .add(this.camera.position);
-        arm.position.copy(wrist).lerp(elbow, 0.5);
-        arm.quaternion.setFromUnitVectors(
-          new THREE.Vector3(0, 1, 0),
-          wrist.clone().sub(elbow).normalize(),
-        );
-        arm.scale.y = wrist.distanceTo(elbow);
+        const elbow = new THREE.Vector3(side * 0.38, -0.64, -0.06)
+          .applyQuaternion(this.camera.quaternion)
+          .add(this.camera.position);
+        poseSleeve(arm, h, elbow);
       }
     });
     for (const skin of this.skinMaterials) {
@@ -898,6 +993,13 @@ export class Workshop {
       );
       this.composer.render();
     } else this.renderer.render(this.scene, this.camera);
+  }
+  hitWheel(x: number, y: number) {
+    this.ray.setFromCamera(
+      new THREE.Vector2((x / innerWidth) * 2 - 1, (-y / innerHeight) * 2 + 1),
+      this.camera,
+    );
+    return this.ray.intersectObject(this.wheelHead, true)[0] || null;
   }
   hitPiece(x: number, y: number) {
     const p = this.state.activeId;

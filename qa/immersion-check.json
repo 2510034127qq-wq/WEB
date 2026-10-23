@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-23T15:56:29.603Z",
+  "browser": "156.0.8078.48",
+  "url": "http://127.0.0.1:5190/",
+  "viewport": "1440 x 900",
+  "method": "Real Chrome pointer/key input following documented public JSON station fixtures. Read-only __YAOHUO__ used solely for assertions/camera projection. This is interaction regression coverage, not a full production chain playthrough.",
+  "fixtures": [
+    {
+      "station": "clay",
+      "stage": "raw",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "wheel",
+      "stage": "prepared",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "wheel",
+      "stage": "leather",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "paint",
+      "stage": "trimmed",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "glaze",
+      "stage": "painted",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "display",
+      "stage": "fired",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    },
+    {
+      "station": "paint",
+      "stage": "trimmed",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    }
+  ],
+  "results": [
+    {
+      "name": "01-knead-contact",
+      "passed": true,
+      "detail": {
+        "idlePreparation": 0,
+        "afterDrag": 1,
+        "stage": "prepared"
+      }
+    },
+    {
+      "name": "02-wheel-open-shape-brake",
+      "passed": true,
+      "detail": {
+        "opened": true,
+        "radiusChanged": true,
+        "brakePreventedChange": true
+      }
+    },
+    {
+      "name": "03-trim-requires-contact",
+      "passed": true,
+      "detail": {
+        "beforeMean": 0.017414074170633728,
+        "afterMean": 0.017039851269359585,
+        "noContactStopped": true
+      }
+    },
+    {
+      "name": "04-paint-stroke",
+      "passed": true,
+      "detail": {
+        "addedMarks": 17
+      }
+    },
+    {
+      "name": "05-glaze-depth-foot",
+      "passed": true,
+      "detail": {
+        "beforeMean": 0,
+        "dippedMean": 0.7934483333333354,
+        "footClean": true
+      }
+    },
+    {
+      "name": "06-paper-fold",
+      "passed": true,
+      "detail": {
+        "start": {
+          "x": 1274.0793146290264,
+          "y": 604.2247794569469
+        },
+        "end": {
+          "x": 516.4079173003686,
+          "y": 371.86178996537575
+        },
+        "stage": "packed"
+      }
+    },
+    {
+      "name": "07-save-reload",
+      "passed": true,
+      "detail": {
+        "id": "fb030509-c33c-4afe-96bc-7bba2e575e9d",
+        "marks": 21
+      }
+    }
+  ],
+  "errors": [],
+  "failedRequests": []
+}

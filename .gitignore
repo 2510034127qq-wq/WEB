@@ -13,3 +13,7 @@ qa/baseline-v01/
 qa/*failure*
 qa/package-check.json
 __pycache__/
+qa/walk-video/
+qa/walk-attempt-*.json
+qa/immersion-first-pass.json
+qa/immersion-contact-pass.json

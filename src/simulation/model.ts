@@ -206,7 +206,7 @@ export function newState(): GameState {
       volume: 0.4,
       quality: "high",
       sensitivity: 1,
-      bob: false,
+      bob: true,
       assist: true,
       subtitles: true,
       bindings: {
@@ -377,6 +377,8 @@ export function glazeAt(p: Piece, u: number, v: number, amount: number) {
 export const glazeMean = (p: Piece) => p.glaze.reduce((a, b) => a + b, 0) / 192;
 export function dip(p: Piece, dt: number, depth: number) {
   if (!["trimmed", "painted", "glazed"].includes(p.stage)) return;
+  if (depth <= 0 || dt <= 0) return;
+  p.footClean = false;
   for (let r = 0; r < 12; r++)
     if (r / 12 <= depth)
       for (let c = 0; c < 16; c++)

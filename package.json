@@ -1,14 +1,16 @@
 {
   "name": "yaohuo-workshop",
   "private": true,
-  "version": "1.0.0-rc.1",
+  "version": "1.1.0-preview.1",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
-    "qa": "node scripts/playtest-v02.mjs",
+    "qa": "node scripts/immersion-check.mjs",
+    "qa:walk": "node scripts/walk-check.mjs",
+    "qa:kiln": "node scripts/kiln-controls-check.mjs",
     "benchmark": "node scripts/benchmark.mjs",
     "package": "python scripts/package.py"
   },

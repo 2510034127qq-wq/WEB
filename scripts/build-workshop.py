@@ -45,7 +45,12 @@ def box(name,p,size,m,bevel=0.015):
     for face in o.data.polygons:
         normal=face.normal; axis=max(range(3),key=lambda i:abs(normal[i]));axes=[i for i in range(3) if i!=axis]
         for li in face.loop_indices:
-            co=o.data.vertices[o.data.loops[li].vertex_index].co;uv.data[li].uv=(co[axes[0]]/1.4,co[axes[1]]/1.4)
+            co=o.data.vertices[o.data.loops[li].vertex_index].co
+            if m == wood:
+                # Grain follows the longest timber dimension, including vertical posts.
+                longaxis=max(axes,key=lambda a:o.dimensions[a]); crossaxis=next(a for a in axes if a!=longaxis)
+                uv.data[li].uv=(co[longaxis]/1.4,co[crossaxis]/1.4+0.052)
+            else: uv.data[li].uv=(co[axes[0]]/1.4,co[axes[1]]/1.4)
     if bevel:
         mod=o.modifiers.new('soft worn edges','BEVEL');mod.width=bevel;mod.segments=2;bpy.ops.object.modifier_apply(modifier=mod.name)
         o.modifiers.new('weighted normals','WEIGHTED_NORMAL')
@@ -53,6 +58,8 @@ def box(name,p,size,m,bevel=0.015):
 def cyl(name,p,r,depth,m,r2=None,verts=32):
     bpy.ops.mesh.primitive_cone_add(vertices=verts,radius1=r,radius2=r if r2 is None else r2,depth=depth,location=xyz(p));o=bpy.context.object
     for f in o.data.polygons:f.use_smooth=abs(f.normal.z)<0.9
+    if m == wood:
+        for q in o.data.uv_layers.active.data: q.uv=(q.uv[1]*depth/1.4,q.uv[0]*r*2*math.pi/1.4+0.052)
     return finish(o,name,m)
 def beam(name,a,b,r,m):
     va,vb=Vector(xyz(a)),Vector(xyz(b));o=cyl(name,tuple((a[i]+b[i])/2 for i in range(3)),r,(vb-va).length,m,verts=12);o.rotation_euler=(vb-va).to_track_quat('Z','Y').to_euler();return o

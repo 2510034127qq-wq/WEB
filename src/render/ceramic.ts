@@ -116,6 +116,7 @@ export class Ceramic extends THREE.Group {
   mesh: THREE.Mesh<THREE.LatheGeometry, THREE.MeshPhysicalMaterial>;
   canvas = document.createElement("canvas");
   texture: THREE.CanvasTexture;
+  private roughnessTexture: THREE.CanvasTexture;
   signature = "";
   constructor(public piece: Piece) {
     super();
@@ -129,25 +130,41 @@ export class Ceramic extends THREE.Group {
       map: this.texture,
       roughness: 0.65,
       clearcoat: 0,
+      ior: 1.5,
+      specularIntensity: 0.92,
       side: THREE.DoubleSide,
     });
     // Fine throwing rings and micro pores change with wetness, never a glass shell.
     const micro = document.createElement("canvas");
-    micro.width = 256;
-    micro.height = 256;
+    micro.width = 512;
+    micro.height = 512;
     const c = micro.getContext("2d")!;
     let seed = 17;
-    const im = c.createImageData(256, 256);
+    const im = c.createImageData(512, 512);
+    const roughCanvas = document.createElement("canvas");
+    roughCanvas.width = roughCanvas.height = 512;
+    const rc = roughCanvas.getContext("2d")!;
+    const rough = rc.createImageData(512, 512);
     for (let i = 0; i < im.data.length; i += 4) {
       seed = (seed * 1664525 + 1013904223) >>> 0;
-      const y = Math.floor(i / 4 / 256),
-        v = 125 + (seed % 20) + Math.sin(y * 2) * 7;
+      const y = Math.floor(i / 4 / 512),
+        x = (i / 4) % 512,
+        ring = Math.sin(y * 0.24 + Math.sin(x * 0.012) * 0.6),
+        v = 128 + (seed % 15) + ring * 8 + Math.sin(x * 0.037 + y * 0.021) * 4,
+        r = 200 + Math.sin(x * 0.024 + y * 0.016) * 13 + ring * 5 + (seed % 9);
       im.data.set([v, v, v, 255], i);
+      rough.data.set([r, r, r, 255], i);
     }
     c.putImageData(im, 0, 0);
     const bump = new THREE.CanvasTexture(micro);
     bump.wrapS = bump.wrapT = THREE.RepeatWrapping;
-    bump.repeat.set(3, 6);
+    bump.repeat.set(1, 1);
+    rc.putImageData(rough, 0, 0);
+    this.roughnessTexture = new THREE.CanvasTexture(roughCanvas);
+    this.roughnessTexture.wrapS = this.roughnessTexture.wrapT =
+      THREE.RepeatWrapping;
+    mat.roughnessMap = this.roughnessTexture;
+    mat.clearcoatRoughnessMap = this.roughnessTexture;
     mat.bumpMap = bump;
     mat.bumpScale = 0.00065;
     this.mesh = new THREE.Mesh(ceramicGeometry(piece), mat);
@@ -185,10 +202,10 @@ export class Ceramic extends THREE.Group {
           : "#b9b5a1";
     ctx.fillRect(0, 0, 2048, 1024);
     const mat = this.mesh.material;
-    mat.roughness = fired ? 0.19 : wet ? 0.34 : glazed ? 0.53 : 0.85;
-    mat.clearcoat = fired ? 0.85 : wet ? 0.18 : 0;
-    mat.clearcoatRoughness = 0.18;
-    mat.bumpScale = fired ? 0.00018 : wet ? 0.0006 : 0.0009;
+    mat.roughness = fired ? 0.26 : wet ? 0.56 : glazed ? 0.64 : 0.94;
+    mat.clearcoat = fired ? 1 : wet ? 0.12 : 0;
+    mat.clearcoatRoughness = fired ? 0.15 : 0.26;
+    mat.bumpScale = fired ? 0.000006 : wet ? 0.000025 : 0.00005;
     for (const m of p.marks) {
       ctx.save();
       const offset = m.surface === "inner" ? 1024 : 0;
@@ -256,6 +273,7 @@ export class Ceramic extends THREE.Group {
     this.mesh.geometry.dispose();
     this.mesh.material.bumpMap?.dispose();
     this.mesh.material.dispose();
+    this.roughnessTexture.dispose();
     this.texture.dispose();
   }
 }

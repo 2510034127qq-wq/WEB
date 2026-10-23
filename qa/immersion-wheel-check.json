@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-23T15:57:14.823Z",
+  "browser": "156.0.8078.48",
+  "url": "http://127.0.0.1:5190/",
+  "viewport": "1440 x 900",
+  "method": "Real Chrome pointer/key input following documented public JSON station fixtures. Read-only __YAOHUO__ used solely for assertions/camera projection. This is interaction regression coverage, not a full production chain playthrough.",
+  "fixtures": [
+    {
+      "station": "wheel",
+      "stage": "prepared",
+      "overrides": {},
+      "method": "Public settings JSON import, then E to work. No diagnostic state mutation."
+    }
+  ],
+  "results": [
+    {
+      "name": "08-wheel-hand-turn",
+      "passed": true,
+      "detail": {
+        "rpm": 30,
+        "pathPoints": 21,
+        "mechanism": "real projected disk arc, no Space key"
+      }
+    }
+  ],
+  "errors": [],
+  "failedRequests": []
+}
