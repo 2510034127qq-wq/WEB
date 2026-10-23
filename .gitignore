@@ -11,4 +11,5 @@ release/
 qa/*.png
 qa/baseline-v01/
 qa/*failure*
+qa/package-check.json
 __pycache__/

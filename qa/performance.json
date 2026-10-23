@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-23T10:07:26.848Z",
+  "browser": "156.0.8078.48",
+  "cpu": "AMD Ryzen 9 8945HX with Radeon Graphics        ",
+  "memoryGiB": 63,
+  "resolution": "1920 x 1080",
+  "pixelRatio": 1,
+  "recording": false,
+  "method": "Fresh Chrome context per quality, local HTTP, two-second warmup, 12-second identical WASD/right-drag route; no video capture.",
+  "errors": [],
+  "results": [
+    {
+      "quality": "high",
+      "readyMs": 533,
+      "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 Laptop GPU (0x00002D59) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "transferBytes": 8157510,
+      "samples": 719,
+      "averageFps": 59.89,
+      "medianFrameMs": 16.7,
+      "p95FrameMs": 16.8,
+      "p99FrameMs": 16.9,
+      "over33msPercent": 0,
+      "stats": {
+        "fps": 59.89338976621614,
+        "drawCalls": 133,
+        "triangles": 699056,
+        "geometries": 50,
+        "textures": 28,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "quality": "low",
+      "readyMs": 263,
+      "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 Laptop GPU (0x00002D59) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "transferBytes": 8157510,
+      "samples": 719,
+      "averageFps": 59.89,
+      "medianFrameMs": 16.7,
+      "p95FrameMs": 16.8,
+      "p99FrameMs": 17,
+      "over33msPercent": 0,
+      "stats": {
+        "fps": 59.89458552946813,
+        "drawCalls": 64,
+        "triangles": 349514,
+        "geometries": 50,
+        "textures": 24,
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  ]
+}

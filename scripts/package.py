@@ -12,7 +12,8 @@ for root in roots:
 for name in ['README.md','package.json','package-lock.json','tsconfig.json','vite.config.ts','index.html','.gitignore','.gitattributes','启动窑火.cmd','窑火_高仿真制瓷Web游戏_历史考证与项目方案.md']:
     files.append(ROOT/name)
 files.extend((ROOT/'qa').glob('*.json'))
-files=[p for p in files if 'failure' not in p.name]
+files.extend((ROOT/'qa').glob('*.md'))
+files=[p for p in files if 'failure' not in p.name and p.name!='package-check.json']
 if not (ROOT/'dist/index.html').exists():raise RuntimeError('Run npm run build first')
 revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
 manifest={'version':version,'gitRevision':revision,'files':[{'path':p.relative_to(ROOT).as_posix(),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(set(files))]}

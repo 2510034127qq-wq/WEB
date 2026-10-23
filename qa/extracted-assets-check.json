@@ -1,0 +1,106 @@
+{
+  "root": "D:\\WEB\\.tmp\\\u72ec\u7acb\u9a8c\u6536 \u7a7a\u95f4\\yaohuo-1.0.0-rc.1",
+  "records": [
+    {
+      "file": "art/workshop.blend",
+      "meshObjects": 11,
+      "triangles": 132404,
+      "bones": 0,
+      "images": [
+        {
+          "path": "//..\\public\\assets\\textures\\agedwood_diff.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\agedwood_nor_gl.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\agedwood_rough.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\brick_diff.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\brick_nor_gl.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\brick_rough.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\ground_diff.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\ground_nor_gl.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\ground_rough.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\wall_diff.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\wall_nor_gl.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//..\\public\\assets\\textures\\wall_rough.jpg",
+          "exists": true,
+          "insidePackage": true
+        }
+      ]
+    },
+    {
+      "file": "art/hands.blend",
+      "meshObjects": 7,
+      "triangles": 20564,
+      "bones": 16,
+      "images": []
+    }
+  ],
+  "exportRoundtrip": [
+    {
+      "file": "qa/exports/bowl.glb",
+      "meshes": 1,
+      "vertices": 12900,
+      "textures": [
+        {
+          "width": 2048,
+          "height": 1024,
+          "embedded": true
+        }
+      ]
+    },
+    {
+      "file": "qa/exports/vase.glb",
+      "meshes": 1,
+      "vertices": 12900,
+      "textures": [
+        {
+          "width": 2048,
+          "height": 1024,
+          "embedded": true
+        }
+      ]
+    }
+  ]
+}

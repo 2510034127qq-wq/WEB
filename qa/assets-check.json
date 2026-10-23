@@ -1,0 +1,80 @@
+{
+  "root": "D:\\WEB",
+  "records": [
+    {
+      "file": "art/workshop.blend",
+      "meshObjects": 11,
+      "triangles": 132404,
+      "bones": 0,
+      "images": [
+        {
+          "path": "//../public/assets/textures/agedwood_diff.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/agedwood_nor_gl.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/agedwood_rough.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/brick_diff.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/brick_nor_gl.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/brick_rough.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/ground_diff.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/ground_nor_gl.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/ground_rough.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/wall_diff.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/wall_nor_gl.jpg",
+          "exists": true,
+          "insidePackage": true
+        },
+        {
+          "path": "//../public/assets/textures/wall_rough.jpg",
+          "exists": true,
+          "insidePackage": true
+        }
+      ]
+    },
+    {
+      "file": "art/hands.blend",
+      "meshObjects": 7,
+      "triangles": 20564,
+      "bones": 16,
+      "images": []
+    }
+  ]
+}

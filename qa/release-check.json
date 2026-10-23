@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-23T10:27:04.396Z",
+  "base": "http://127.0.0.1:4183/",
+  "browser": "156.0.8078.48",
+  "checks": [
+    "Actual ray-selected brush pickup",
+    "Dropped rigid-body tool settles on ground and survives reload",
+    "Character cannot walk through the painting workbench",
+    "Final paint, dipping and kiln views reviewed through imported replay fixtures",
+    "Production service-worker cache loads the whole game offline and restores IndexedDB"
+  ],
+  "errors": [],
+  "cache": {
+    "keys": [
+      "yaohuo-e07699d42e41"
+    ],
+    "entries": 25
+  },
+  "dropped": [
+    5.650789260864258,
+    0.01093111652880907,
+    -4.060134410858154
+  ],
+  "restored": [
+    5.650789260864258,
+    0.010930359363555908,
+    -4.060134410858154
+  ],
+  "visualReplay": true
+}
