@@ -5,7 +5,7 @@ const browser = await chromium.launch({ channel: "chrome", headless: true });
 const results = [],
   errors = [],
   base = process.env.QA_URL || "http://127.0.0.1:4173/";
-for (const quality of ["high", "low"]) {
+for (const quality of process.env.QA_QUALITIES?.split(',')||["high", "low"]) {
   const context = await browser.newContext({
     viewport: { width: 1920, height: 1080 },
     deviceScaleFactor: 1,
@@ -14,7 +14,7 @@ for (const quality of ["high", "low"]) {
   page.on("pageerror", (e) => errors.push(e.message));
   const start = performance.now();
   await page.goto(base);
-  await page.waitForFunction(() => window.__YAOHUO__, null, { timeout: 60000 });
+  await page.waitForFunction(() => window.__YAOHUO__, null, { timeout: 120000 });
   const readyMs = Math.round(performance.now() - start);
   const device = await page.evaluate(() => {
     const gl = document.querySelector("canvas").getContext("webgl2"),
@@ -72,7 +72,7 @@ for (const quality of ["high", "low"]) {
     sorted = [...frames].sort((a, b) => a - b),
     at = (p) => sorted[Math.floor((sorted.length - 1) * p)],
     avg = frames.reduce((a, b) => a + b, 0) / frames.length;
-  await page.screenshot({ path: `qa/1080p-${quality}-v03.png` });
+  await page.screenshot({ path: `qa/${process.env.QA_PREFIX||'1080p-v03'}-${quality}.png` });
   results.push({
     quality,
     readyMs,
@@ -86,12 +86,13 @@ for (const quality of ["high", "low"]) {
       (frames.filter((v) => v > 33.4).length / frames.length) *
       100
     ).toFixed(2),
+    framesMs:frames,
     stats: await page.evaluate(() => window.__YAOHUO__.stats()),
   });
   await context.close();
 }
 await fs.writeFile(
-  "qa/performance.json",
+  process.env.QA_REPORT||"qa/performance.json",
   JSON.stringify(
     {
       date: new Date().toISOString(),

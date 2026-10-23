@@ -71,7 +71,7 @@ const piece = async () => {
   const state = await read();
   return state.pieces.find((item) => item.id === state.activeId);
 };
-const shot = (name) => page.screenshot({ path: `qa/immersion-${name}.png` });
+const shot = (name) => page.screenshot({ path: `qa/${process.env.QA_PREFIX||'immersion'}-${name}.png` });
 const act = (name) => page.locator(`[data-act="${name}"]`).click();
 const mean = (values) => values.reduce((sum, n) => sum + n, 0) / values.length;
 const sleep = (ms) => page.waitForTimeout(ms);
@@ -275,7 +275,7 @@ async function test(name, body) {
 }
 try {
   await page.goto(base);
-  await page.waitForFunction(() => window.__YAOHUO__, null, { timeout: 60000 });
+  await page.waitForFunction(() => window.__YAOHUO__, null, { timeout: 120000 });
   await page.locator("#start").click();
   await sleep(700);
   await test("01-knead-contact", async () => {
@@ -515,7 +515,7 @@ try {
     await sleep(4500);
     await page.reload();
     await page.waitForFunction(() => window.__YAOHUO__, null, {
-      timeout: 60000,
+      timeout: 120000,
     });
     const after = await piece();
     assert.equal(after.id, before.id);

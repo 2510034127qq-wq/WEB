@@ -14,6 +14,7 @@ def region(x,z):
 def export_workshop():
  records=[]
  for o in list(bpy.context.scene.objects):
+  if o.get('deliveryExternal'):continue
   if o.type!='MESH' or not o.data.materials:continue
   material=o.data.materials[0]
   if material.name=='courtyard_stone':continue
@@ -50,7 +51,7 @@ def export_workshop():
     if n.type=='TEX_IMAGE':m.node_tree.nodes.remove(n)
  bpy.ops.object.select_all(action='DESELECT')
  for o in bpy.context.scene.objects:
-  if o.type=='MESH':o.select_set(True)
+  if o.type=='MESH' and not o.get('deliveryExternal'):o.select_set(True)
  bpy.ops.export_scene.gltf(filepath=str(ROOT/'public/assets/workshop.glb'),export_format='GLB',export_yup=True,export_apply=True,use_selection=True,export_extras=True)
  (ROOT/'qa/workshop-partition.json').write_text(json.dumps(records,indent=2))
 

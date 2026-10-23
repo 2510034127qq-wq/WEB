@@ -1,22 +1,39 @@
 import * as THREE from "three";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
-export type Surface = "agedwood" | "wall" | "ground" | "brick" | "linen" | "earthenware" | "timber" | "bamboo" | "iron" | "rooftile";
+export type Surface = "agedwood" | "wall" | "ground" | "brick" | "linen" | "earthenware" | "timber" | "bamboo" | "iron" | "rooftile" | "solidwood";
 export type MaterialSet = Record<Surface, THREE.MeshStandardMaterial>;
+
+const gltfMaterialCache=new WeakMap<THREE.MeshStandardMaterial,THREE.MeshStandardMaterial>();
+const gltfTextureCache=new WeakMap<THREE.Texture,THREE.Texture>();
+/** External photographs must follow glTF's top-left UV convention. Keep the
+ * original texture instances for Three-authored floors, sleeves and UVs. */
+export function gltfMaterial(source:THREE.MeshStandardMaterial) {
+  const cached=gltfMaterialCache.get(source);if(cached)return cached;
+  const material=source.clone();
+  for(const key of ['map','normalMap','roughnessMap','aoMap','metalnessMap','displacementMap','bumpMap'] as const){
+    const texture=source[key];if(!texture)continue;
+    let converted=gltfTextureCache.get(texture);
+    if(!converted){converted=texture.clone();converted.flipY=false;converted.needsUpdate=true;gltfTextureCache.set(texture,converted);}
+    material[key]=converted;
+  }
+  material.onBeforeCompile=source.onBeforeCompile;material.customProgramCacheKey=source.customProgramCacheKey;
+  gltfMaterialCache.set(source,material);return material;
+}
 
 /** Photographed, locally shipped maps. Only base colour is decoded as sRGB. */
 export async function loadWorkshopMaterials(
   renderer: THREE.WebGLRenderer,
 ): Promise<MaterialSet> {
   const loader = new THREE.TextureLoader();
-  const surfaces = ["agedwood", "wall", "ground", "brick", "linen", "earthenware", "timber", "bamboo", "iron", "rooftile"] as const;
+  const surfaces = ["agedwood", "wall", "ground", "brick", "linen", "earthenware", "timber", "bamboo", "iron", "rooftile", "solidwood"] as const;
   const result = {} as MaterialSet;
   await Promise.all(
     surfaces.map(async (name) => {
       const entries = await Promise.all(
-        ["diff", "rough", "nor_gl", "ao", "disp"].map(async (channel) => {
+        (name==='solidwood'?["diff", "rough", "nor_gl", "ao"]:["diff", "rough", "nor_gl", "ao", "disp"]).map(async (channel) => {
           const texture = await loader.loadAsync(
-            ["linen", "earthenware", "timber", "bamboo", "iron", "rooftile"].includes(name) ? `/assets/craft-surfaces/${name}_${channel}.jpg` : `/assets/textures/realism/${name}_${channel}.jpg`,
+            ["linen", "earthenware", "timber", "bamboo", "iron", "rooftile", "solidwood"].includes(name) ? `/assets/craft-surfaces/${name}_${channel}.jpg` : `/assets/textures/realism/${name}_${channel}.jpg`,
           );
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           texture.anisotropy = Math.min(

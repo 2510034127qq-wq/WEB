@@ -4,7 +4,7 @@ import json, urllib.request, hashlib
 ROOT=Path(__file__).resolve().parents[1]
 folder=ROOT/'public/assets/vegetation';folder.mkdir(exist_ok=True)
 records=[]
-for asset,key,filename in [('pine_tree_01','twig_alpha','pine-twig-alpha.png'),('grass_bermuda_01','Alpha','grass-alpha.png')]:
+for asset,key,filename in [('pine_tree_01','twig_alpha','pine-twig-alpha.png'),('grass_bermuda_01','Alpha','grass-alpha.png'),('grass_medium_01','Alpha','grass-medium-alpha.png')]:
     request=urllib.request.Request('https://api.polyhaven.com/files/'+asset,headers={'User-Agent':'Mozilla/5.0'})
     with urllib.request.urlopen(request,timeout=60) as r:meta=json.load(r)
     info=meta[key]['4k']['png'];p=folder/filename

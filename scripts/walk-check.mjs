@@ -7,6 +7,7 @@ process.env.PLAYWRIGHT_BROWSERS_PATH = fileURLToPath(
 const { chromium } = await import("@playwright/test");
 const base = process.env.QA_URL || "http://127.0.0.1:5190/";
 const output = fileURLToPath(new URL("../qa/", import.meta.url));
+const prefix = process.env.QA_PREFIX || "walk";
 await fs.mkdir(output + "walk-video", { recursive: true });
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 const context = await browser.newContext({
@@ -33,6 +34,7 @@ const read = () =>
     time: performance.now(),
     player: window.__YAOHUO__.snapshot().player,
     bob: window.__YAOHUO__.snapshot().settings.bob,
+    exposure:window.__YAOHUO__.stats().exposure,
     ...window.__YAOHUO__.view(),
   }));
 const mark = async (label) => {
@@ -60,7 +62,7 @@ async function aim(target) {
 let result;
 try {
   await page.goto(base);
-  await page.waitForFunction(() => window.__YAOHUO__, null, { timeout: 90000 });
+  await page.waitForFunction(() => window.__YAOHUO__, null, { timeout: 120000 });
   await page.locator("#start").click();
   recordingStart = performance.now();
   const sample = (async () => {
@@ -82,7 +84,7 @@ try {
   const settled = await mark("stop-settled");
   await wait(650);
   const stopped = await mark("stop-stable");
-  await page.screenshot({ path: output + "walk-standing.png" });
+  await page.screenshot({ path: output + prefix + "-standing.png" });
   await page.keyboard.down("KeyD");
   await mark("strafe-start");
   await wait(850);
@@ -98,7 +100,7 @@ try {
   await page.keyboard.down("ControlLeft");
   await wait(650);
   const crouched = await mark("crouched");
-  await page.screenshot({ path: output + "walk-crouched.png" });
+  await page.screenshot({ path: output + prefix + "-crouched.png" });
   await page.keyboard.up("ControlLeft");
   await wait(650);
   const standing = await mark("stood-up");
@@ -121,6 +123,18 @@ try {
   const finalFirst = await mark("final-settled");
   await wait(650);
   const finalLast = await mark("final-stable");
+  // Record an actual bright-to-sheltered-to-bright transition. The small meter
+  // must be judged during movement, not only after a static view has settled.
+  await page.locator('[data-act="map"]').click();
+  await page.locator('[data-act="go-supply"]').click();
+  await page.waitForFunction(()=>window.__YAOHUO__.view().nav===0,null,{timeout:60000});
+  await page.keyboard.press('KeyE');await wait(3500);
+  await mark('supply-exposure-settled');
+  await page.screenshot({path:output+prefix+'-sheltered.png'});
+  await page.keyboard.press('Escape');await aim([0,0,0]);
+  await page.keyboard.down('KeyW');await wait(1800);await page.keyboard.up('KeyW');
+  await wait(3000);await mark('courtyard-exposure-settled');
+  await page.screenshot({path:output+prefix+'-daylight.png'});
   sampling = false;
   await sample;
   const walking = frames.filter(
@@ -166,7 +180,7 @@ try {
     url: base,
     viewport: { width: 1440, height: 900 },
     method:
-      "Fresh browser context; real keyboard and right-button mouse input; only read-only __YAOHUO__ camera/player diagnostics. No save import, state writes or test movement hooks.",
+      "Fresh browser context; real keyboard, right-button mouse and public workshop-map navigation; includes entering the supply bay and walking back to daylight. Only read-only camera/player/exposure diagnostics. No save import, state writes or test movement hooks.",
     limitations:
       "No audio recording or listening assessment. Collision confirms stopped translation; footstep event suppression is separately covered by unit tests. This is a locomotion check, not the full craft loop.",
     passed,
@@ -189,6 +203,7 @@ try {
 } finally {
   sampling = false;
   const video = page.video();
+  const actionDuration=recordingStart?(performance.now()-recordingStart)/1000:0;
   await context.close();
   const raw = await video.path();
   const ffmpeg = fileURLToPath(
@@ -200,16 +215,17 @@ try {
   });
   const match = info.stderr?.match(/Duration: (\d+):(\d+):(\d+\.\d+)/);
   const duration = match ? +match[1] * 3600 + +match[2] * 60 + +match[3] : 0;
-  if (duration > 15) {
+  const reviewDuration=Math.min(duration,Math.max(14.5,actionDuration+1));
+  if (duration > reviewDuration) {
     const trim = spawnSync(
       ffmpeg,
       [
         "-ss",
-        String(Math.max(0, duration - 14.5)),
+        String(Math.max(0, duration - reviewDuration)),
         "-i",
         raw,
         "-t",
-        "14.5",
+        String(reviewDuration),
         "-c:v",
         "libvpx-vp9",
         "-deadline",
@@ -219,17 +235,17 @@ try {
         "-b:v",
         "0",
         "-crf",
-        "32",
+        "24",
         "-y",
-        output + "walk-review.webm",
+        output + prefix + "-review.webm",
       ],
       { encoding: "utf8", windowsHide: true },
     );
     if (trim.status !== 0) throw new Error(trim.stderr);
-  } else await fs.copyFile(raw, output + "walk-review.webm");
+  } else await fs.copyFile(raw, output + prefix + "-review.webm");
   const deliveredProbe = spawnSync(
     ffmpeg,
-    ["-i", output + "walk-review.webm"],
+    ["-i", output + prefix + "-review.webm"],
     {
       encoding: "utf8",
       windowsHide: true,
@@ -243,13 +259,13 @@ try {
     : 0;
   result.video = {
     raw,
-    delivered: "qa/walk-review.webm",
+    delivered: `qa/${prefix}-review.webm`,
     rawDurationSeconds: duration,
     deliveredDurationSeconds: deliveredDuration,
-    trimmedLoadingLeadIn: duration > 15,
+    trimmedLoadingLeadIn: duration > reviewDuration,
   };
   await fs.writeFile(
-    output + "walk-check.json",
+    process.env.QA_REPORT||output + "walk-check.json",
     JSON.stringify(result, null, 2),
   );
   console.log(

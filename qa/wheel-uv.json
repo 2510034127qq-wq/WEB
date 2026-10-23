@@ -1,0 +1,40 @@
+{
+  "method": "Count nonzero-area triangles with zero UV area after export. Does not certify seam quality or correct end grain.",
+  "meshes": [
+    {
+      "mesh": "Ground_anchored_post",
+      "material": "wheel_timber",
+      "triangles": 1344,
+      "zeroArea": 0,
+      "degenerateUV": 0
+    },
+    {
+      "mesh": "Ceramic_radial_collar",
+      "material": "wheel_ceramic_bearing",
+      "triangles": 5120,
+      "zeroArea": 0,
+      "degenerateUV": 0
+    },
+    {
+      "mesh": "Seven_turn_hemp_lashing",
+      "material": "wheel_hemp_binding",
+      "triangles": 10240,
+      "zeroArea": 0,
+      "degenerateUV": 0
+    },
+    {
+      "mesh": "Cage_leg",
+      "material": "wheel_timber",
+      "triangles": 12832,
+      "zeroArea": 8,
+      "degenerateUV": 0
+    },
+    {
+      "mesh": "Fitted_disc_board_1",
+      "material": "wheel_working_surface",
+      "triangles": 1624,
+      "zeroArea": 8,
+      "degenerateUV": 0
+    }
+  ]
+}

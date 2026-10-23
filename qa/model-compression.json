@@ -3,11 +3,11 @@
   "reports": [
     {
       "name": "workshop",
-      "inputBytes": 90478060,
-      "outputBytes": 42224616,
+      "inputBytes": 100615540,
+      "outputBytes": 47455600,
       "attributesAndImagesExact": true,
       "transformMaxAbsDiff": 0,
-      "sha256": "1c5433d514022f309d93a784354764b884663301214845eea54897760fa35dd3"
+      "sha256": "de00586e9037a71d25e8130ce7e86f74d58a61be3bf29569ab32e8401bc39661"
     },
     {
       "name": "hands",
@@ -19,11 +19,11 @@
     },
     {
       "name": "craft-tools",
-      "inputBytes": 4325668,
-      "outputBytes": 2260420,
+      "inputBytes": 4342180,
+      "outputBytes": 2268100,
       "attributesAndImagesExact": true,
       "transformMaxAbsDiff": 0,
-      "sha256": "6aa20d95952fda98bc0d4fbdce2355b2bdba4fb8d4562002c651e465dc431d46"
+      "sha256": "7e3e93cdac0ee5a1e6d76505f963d9832aa1a2da22bc59d4c05d2ce23886d92f"
     },
     {
       "name": "woodland-pine",
@@ -32,6 +32,14 @@
       "attributesAndImagesExact": true,
       "transformMaxAbsDiff": 0,
       "sha256": "90e17b3d8a5a3aaefee0b717e334b728a5f226ab5a6e11931b5f75a7ba3f656f"
+    },
+    {
+      "name": "potters-wheel",
+      "inputBytes": 1381204,
+      "outputBytes": 785352,
+      "attributesAndImagesExact": true,
+      "transformMaxAbsDiff": 0,
+      "sha256": "89ae077cc65e1c0c1ea5c22660b98b0892079bedfe66c45950e646ac27570027"
     }
   ]
 }

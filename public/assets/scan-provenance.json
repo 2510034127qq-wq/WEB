@@ -598,5 +598,45 @@
     "asset": "https://polyhaven.com/a/grass_bermuda_01",
     "bytes": 32260,
     "sha256": "b98be48b43afb9d57f6c722d918a49996635064b829b16dc14ef4a48c0f04dae"
+  },
+  {
+    "file": "public/assets/scans/grass_medium_01/grass_medium_01.gltf",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/grass_medium_01/grass_medium_01_4k.gltf",
+    "license": "CC0-1.0",
+    "asset": "https://polyhaven.com/a/grass_medium_01",
+    "bytes": 27110,
+    "sha256": "dae3df5024a4d9e91b2d33fceab035d637b06660b5c0109c89cbfea707ee375f"
+  },
+  {
+    "file": "public/assets/scans/grass_medium_01/textures/grass_medium_01_nor_gl_4k.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/grass_medium_01/grass_medium_01_nor_gl_4k.jpg",
+    "license": "CC0-1.0",
+    "asset": "https://polyhaven.com/a/grass_medium_01",
+    "bytes": 13029348,
+    "sha256": "fc89808178d9119d61916c1815caa94a7f0f7690c881be665e11282fd7c86007"
+  },
+  {
+    "file": "public/assets/scans/grass_medium_01/textures/grass_medium_01_diff_4k.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/grass_medium_01/grass_medium_01_diff_4k.jpg",
+    "license": "CC0-1.0",
+    "asset": "https://polyhaven.com/a/grass_medium_01",
+    "bytes": 3505106,
+    "sha256": "c15c8876a5e2bbee3b2af2d0ad9a0b1db1fb215870e525b56b41a2c82370ab8b"
+  },
+  {
+    "file": "public/assets/scans/grass_medium_01/textures/grass_medium_01_arm_4k.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/grass_medium_01/grass_medium_01_arm_4k.jpg",
+    "license": "CC0-1.0",
+    "asset": "https://polyhaven.com/a/grass_medium_01",
+    "bytes": 7482258,
+    "sha256": "dbd3159795534ad228a85850951ae5ca45dc70f29c4b47244e2c18d9dfe81ad0"
+  },
+  {
+    "file": "public/assets/scans/grass_medium_01/grass_medium_01.bin",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/grass_medium_01/grass_medium_01.bin",
+    "license": "CC0-1.0",
+    "asset": "https://polyhaven.com/a/grass_medium_01",
+    "bytes": 1006632,
+    "sha256": "f4587cabdb96a2e96d8be644923dc954a248edfaaa717a0ff224cacb898bee1f"
   }
 ]

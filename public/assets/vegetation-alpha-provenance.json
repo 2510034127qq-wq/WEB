@@ -14,5 +14,13 @@
     "asset": "https://polyhaven.com/a/grass_bermuda_01",
     "sha256": "d123f50273ca3b3a17391f962c7e4c598f0068b8268433940df9940a68781530",
     "bytes": 203961
+  },
+  {
+    "file": "public/assets/vegetation/grass-medium-alpha.png",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/grass_medium_01/grass_medium_01_alpha_4k.png",
+    "license": "CC0-1.0",
+    "asset": "https://polyhaven.com/a/grass_medium_01",
+    "sha256": "edc5063c8431ba01d456220feedfe04527ae350e3618f69bb306cde04aea6b79",
+    "bytes": 3285653
   }
 ]

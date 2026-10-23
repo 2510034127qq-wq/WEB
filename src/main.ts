@@ -50,7 +50,7 @@ const esc = (s: string) =>
 const root = $("#app");
 root.innerHTML = `<div id="world" aria-label="三维工坊"></div><div id="vignette"></div>
 <div id="hud" class="hidden"><div class="topbar"><div class="brand"><div class="seal">窑<br>火</div><div><strong>窑火</strong><small>JINGDEZHEN · 1743</small></div></div><nav class="topnav"><button data-act="map">工坊图 <small>M</small></button><button data-act="journal">手艺札记 <small>J</small></button><button data-act="collection">藏器</button><button data-act="settings">设置</button></nav></div><div class="objective"><div class="eyebrow" id="day">第一日 · 入窑之前</div><div class="objective-title" id="objective"></div><button data-act="guide">循着工序，去下一处 ↗</button></div><div class="crosshair"></div><div id="prompt" class="hidden"></div><div id="caption"></div><div class="bottom-left" id="control-hint">W A S D 行走 · 鼠标 看向 · E 操作 · Q 放下 · Esc 松开视角</div><div class="bottom-right" id="save-status">本地工坊 · 自动存档</div></div>
-<div id="intro" class="intro"><div class="intro-content"><div class="eyebrow">景德镇 · 清代民间工坊</div><h1>窑火</h1><div class="tagline">一抔泥，一器一生。</div><p>从水土相和，到掌中成形。<br>让你的指痕与笔意，留在一窑青花里。</p><button id="start" class="primary" disabled>正在开启工坊</button><div id="loading" class="small-note" style="margin-top:18px">整理坯房与工具…</div><div class="loading-line"></div></div><div class="edition">一器一生 / THE LIFE OF PORCELAIN &nbsp; — &nbsp; v1.1.0-preview.1</div><div class="intro-aside">真实三维 · 自由制瓷<br>建议桌面 Chrome · 戴上耳机</div></div>
+<div id="intro" class="intro"><div class="intro-content"><div class="eyebrow">景德镇 · 清代民间工坊</div><h1>窑火</h1><div class="tagline">一抔泥，一器一生。</div><p>从水土相和，到掌中成形。<br>让你的指痕与笔意，留在一窑青花里。</p><button id="start" class="primary" disabled>正在开启工坊</button><div id="loading" class="small-note" style="margin-top:18px">整理坯房与工具…</div><div class="loading-line"></div></div><div class="edition">一器一生 / THE LIFE OF PORCELAIN &nbsp; — &nbsp; v1.1.0-preview.2</div><div class="intro-aside">真实三维 · 自由制瓷<br>建议桌面 Chrome · 戴上耳机</div></div>
 <aside id="work" class="work-panel hidden"></aside><div id="toolbar" class="work-toolbar hidden"></div><div id="modal-root"></div><div id="toast" role="status" aria-live="polite"></div><input type="file" id="import" accept="application/json,.json" hidden/>`;
 
 let state: GameState = newState(),
@@ -93,6 +93,7 @@ let dragging = false,
   remap: string | null = null,
   restorePointer = false;
 const keys = new Set<string>();
+let editRevision = 0;
 let shapeUndo: Pick<Piece,'radius'|'thickness'|'height'|'wheelTraces'>[] = [];
 let frames: number[] = [];
 let packing: string | null = null,
@@ -103,18 +104,22 @@ function toast(message: string) {
   toastTimer = window.setTimeout(() => ($("#toast").textContent = ""), 4300);
 }
 function dirty() {
+  editRevision++;
   saved = false;
   game?.sync();
 }
 async function persist() {
-  if (!started) return;
+  if (!started) return false;
+  const revision = editRevision;
   try {
     await save(state);
-    saved = true;
-    $("#save-status").textContent = "已保存于此浏览器";
+    saved = revision === editRevision;
+    $("#save-status").textContent = saved ? "已保存于此浏览器" : "有新改动 · 等待自动保存";
+    return true;
   } catch (e) {
     $("#save-status").textContent = "存档失败 · 请导出备份";
     toast("无法写入本地存档，请在设置中导出备份。");
+    return false;
   }
 }
 function leave() {
@@ -680,10 +685,14 @@ root.addEventListener("click", async (e) => {
       case "import":
         $("#import").click();
         break;
-      case "save":
-        await persist();
-        toast("工坊已保存。");
-        break;
+      case "save": {
+        const saveButton=b as HTMLButtonElement, label=saveButton.textContent;
+        saveButton.disabled=true;saveButton.textContent="正在写入…";
+        $("#save-status").textContent="正在写入本地存档…";
+        try {if(await persist())toast("工坊已保存。");}
+        finally {saveButton.disabled=false;saveButton.textContent=label;}
+        return;
+      }
     }
     dirty();
   } catch (err) {
@@ -1430,7 +1439,7 @@ async function boot() {
       game.load((label) => ($("#loading").textContent = "正在准备 · " + label)),
       physics.init(state.player, state.props),
     ]);
-    controls = new CraftControls(game.scene, game.craftAssets);
+    controls = new CraftControls(game.scene, game.craftAssets,game.controlSurfaces);
     game.applyLocalLighting(controls.group);
     applyLightingAudit(game.scene,new URLSearchParams(location.search).get('lighting-audit')||'');
     const canvas = game.renderer.domElement;
@@ -1557,11 +1566,34 @@ async function boot() {
           const hit=ray.intersectObjects(game.scene.children,true).find(h=>h.object.visible&&h.object instanceof THREE.Mesh);
           if(!hit||!(hit.object instanceof THREE.Mesh))return null;
           const m=(Array.isArray(hit.object.material)?hit.object.material[hit.face?.materialIndex||0]:hit.object.material) as THREE.MeshStandardMaterial;
+          const lm=m.lightMap,uv=hit.uv1,im=lm?.image as {data:Uint16Array|Float32Array;width:number;height:number}|undefined;
+          let lightmapSample:number[]|undefined;
+          if(im?.data&&uv){const x=Math.max(0,Math.min(im.width-1,Math.floor(uv.x*im.width))),y=Math.max(0,Math.min(im.height-1,Math.floor(uv.y*im.height))),i=(y*im.width+x)*4;
+            lightmapSample=[0,1,2].map(c=>im.data instanceof Uint16Array?THREE.DataUtils.fromHalfFloat(im.data[i+c]):im.data[i+c]);}
           return {object:hit.object.name,parent:hit.object.parent?.name,point:hit.point.toArray(),
             normal:hit.face?.normal.clone().transformDirection(hit.object.matrixWorld).toArray(),
             material:m.name,type:m.type,color:m.color?.toArray(),roughness:m.roughness,metalness:m.metalness,
             envMap:m.envMap?.uuid,envMapIntensity:m.envMapIntensity,lightMap:!!m.lightMap,aoMap:!!m.aoMap,
-            shader:m.customProgramCacheKey().slice(0,180),uv:hit.uv?.toArray()};
+            shader:m.customProgramCacheKey().slice(0,180),uv:hit.uv?.toArray(),lightUV:uv?.toArray(),lightmapSample};
+        },
+        inspectMeshes: (name:string) => {
+          const result:unknown[]=[];
+          game.scene.updateMatrixWorld(true);
+          game.scene.traverse(o=>{
+            if(!(o instanceof THREE.Mesh)||!o.name.includes(name))return;
+            o.geometry.computeBoundingBox();
+            const bounds=o.geometry.boundingBox!;
+            const m=(Array.isArray(o.material)?o.material[0]:o.material) as THREE.MeshStandardMaterial;
+            const samples:number[][]=[];
+            if(o instanceof THREE.InstancedMesh)for(let i=0;i<Math.min(o.count,4);i++){
+              const matrix=new THREE.Matrix4();o.getMatrixAt(i,matrix);samples.push(matrix.toArray());
+            }
+            result.push({name:o.name,type:o.type,position:o.getWorldPosition(new THREE.Vector3()).toArray(),
+              bounds:{min:bounds.min.toArray(),max:bounds.max.toArray()},vertices:o.geometry.attributes.position.count,
+              instances:o instanceof THREE.InstancedMesh?o.count:1,samples,
+              material:m.name,color:m.color?.toArray(),alphaTest:m.alphaTest,alphaMap:m.alphaMap?.image?.src,
+              map:m.map?.image?.src,envMap:m.envMap?.uuid,shader:m.customProgramCacheKey().slice(0,200)});
+          });return result;
         },
         stats: () => ({
           fps:

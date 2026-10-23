@@ -5,7 +5,11 @@
     "asset": "https://polyhaven.com/a/rough_linen",
     "license": "CC0-1.0",
     "sha256": "dca61aacd6cf3194681070cede3c16a3b61a32cb3eef5bf4c52db698b2286d3d",
-    "bytes": 13064750
+    "bytes": 13064750,
+    "metres": [
+      0.2707081393,
+      0.271299988
+    ]
   },
   {
     "file": "public/assets/craft-surfaces/linen_rough.jpg",
@@ -13,7 +17,11 @@
     "asset": "https://polyhaven.com/a/rough_linen",
     "license": "CC0-1.0",
     "sha256": "f94c35b6ddf1560783d3cd450810ebe4452a49028d562ce140b3e253b2bbf0b3",
-    "bytes": 18101601
+    "bytes": 18101601,
+    "metres": [
+      0.2707081393,
+      0.271299988
+    ]
   },
   {
     "file": "public/assets/craft-surfaces/linen_nor_gl.jpg",
@@ -21,7 +29,11 @@
     "asset": "https://polyhaven.com/a/rough_linen",
     "license": "CC0-1.0",
     "sha256": "1a591b2acd7e61f3511e483a731c5f18847cce36ec501d669b853b30c203d422",
-    "bytes": 13435511
+    "bytes": 13435511,
+    "metres": [
+      0.2707081393,
+      0.271299988
+    ]
   },
   {
     "file": "public/assets/craft-surfaces/linen_ao.jpg",
@@ -29,7 +41,11 @@
     "asset": "https://polyhaven.com/a/rough_linen",
     "license": "CC0-1.0",
     "sha256": "4254ccb4c4e97b990a4ba3555c1c1ed4dd9432f347ed93a74da030c48d9799bd",
-    "bytes": 12325760
+    "bytes": 12325760,
+    "metres": [
+      0.2707081393,
+      0.271299988
+    ]
   },
   {
     "file": "public/assets/craft-surfaces/linen_disp.jpg",
@@ -37,7 +53,11 @@
     "asset": "https://polyhaven.com/a/rough_linen",
     "license": "CC0-1.0",
     "sha256": "a935957eb1524b83af006acdc863bacd6f76487df14251467134bdce0c7051f7",
-    "bytes": 7822500
+    "bytes": 7822500,
+    "metres": [
+      0.2707081393,
+      0.271299988
+    ]
   },
   {
     "file": "public/assets/craft-surfaces/linen_metal.jpg",
@@ -45,7 +65,11 @@
     "asset": "https://polyhaven.com/a/rough_linen",
     "license": "CC0-1.0",
     "sha256": "9e73ab5bc042979830dd1534aee72c84beb96b658146ca17829394bc7f79aa07",
-    "bytes": 6735869
+    "bytes": 6735869,
+    "metres": [
+      0.2707081393,
+      0.271299988
+    ]
   },
   {
     "file": "public/assets/craft-surfaces/earthenware_diff.jpg",
@@ -294,5 +318,45 @@
     "license": "CC0-1.0",
     "sha256": "7ccd60080e0cf6983824bc4c2205209c2cbd3a84958527770e8a76014b458646",
     "bytes": 12424702
+  },
+  {
+    "file": "public/assets/craft-surfaces/solidwood_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/fine_grained_wood/fine_grained_wood_col_4k.jpg",
+    "asset": "https://polyhaven.com/a/fine_grained_wood",
+    "license": "CC0-1.0",
+    "metres": 0.6,
+    "dimensionNote": "API dimensions 600mm conflict with legacy scale 30x30CM. Use API dimensions and retain the discrepancy.",
+    "sha256": "0c71b4505412216bbe7b2dc2b2bcfe414dfd319d13e48992cdaeb2961f44146f",
+    "bytes": 4744081
+  },
+  {
+    "file": "public/assets/craft-surfaces/solidwood_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/fine_grained_wood/fine_grained_wood_rough_4k.jpg",
+    "asset": "https://polyhaven.com/a/fine_grained_wood",
+    "license": "CC0-1.0",
+    "metres": 0.6,
+    "dimensionNote": "API dimensions 600mm conflict with legacy scale 30x30CM. Use API dimensions and retain the discrepancy.",
+    "sha256": "abd1d509d037c404168fbb23f6cf8ac9bf61bf7dd14b4e4e91a6a022f6d14f37",
+    "bytes": 3094322
+  },
+  {
+    "file": "public/assets/craft-surfaces/solidwood_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/fine_grained_wood/fine_grained_wood_nor_gl_4k.jpg",
+    "asset": "https://polyhaven.com/a/fine_grained_wood",
+    "license": "CC0-1.0",
+    "metres": 0.6,
+    "dimensionNote": "API dimensions 600mm conflict with legacy scale 30x30CM. Use API dimensions and retain the discrepancy.",
+    "sha256": "72e01bb23fd35909c98cfcd08361424b429f6bfb576dd4a97b9e69183859aead",
+    "bytes": 3075600
+  },
+  {
+    "file": "public/assets/craft-surfaces/solidwood_ao.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/fine_grained_wood/fine_grained_wood_ao_4k.jpg",
+    "asset": "https://polyhaven.com/a/fine_grained_wood",
+    "license": "CC0-1.0",
+    "metres": 0.6,
+    "dimensionNote": "API dimensions 600mm conflict with legacy scale 30x30CM. Use API dimensions and retain the discrepancy.",
+    "sha256": "94528d388632e0231dedae10b821ea910243b0dd44fb7f9248c7a1fb34ead9fb",
+    "bytes": 7297393
   }
 ]

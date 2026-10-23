@@ -6,6 +6,11 @@ import bpy,math,json,array,sys
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'public/assets/lighting';OUT.mkdir(exist_ok=True)
 bpy.ops.wm.open_mainfile(filepath=str(ROOT/'art/workshop.blend'))
+for ob in bpy.context.scene.objects:
+ if ob.type=='MESH' and ob.data.materials and ob.data.materials[0].name=='bamboo_leaves':
+  # Leaves are rendered two-sided. Duplicate reversed faces are invalid glTF
+  # topology and do not add physical thickness or visible detail.
+  if ob.data.validate(clean_customdata=False):print('REPAIRED_DUPLICATE_LEAF_FACES',ob.name,flush=True)
 scene=bpy.context.scene;scene.render.engine='CYCLES';scene.cycles.samples=128
 scene.cycles.use_denoising=True;scene.cycles.max_bounces=4;scene.cycles.diffuse_bounces=3
 try:
@@ -87,13 +92,13 @@ for o in list(scene.objects):
   im=bpy.data.images.new(name+'_'+kind,width=size,height=size,alpha=False,float_buffer=True);im.colorspace_settings.name='Non-Color'
   for mat,t in targets:t.image=im;mat.node_tree.nodes.active=t
   print('BAKE_START',name,kind,flush=True)
-  if kind=='ao':bpy.ops.object.bake(type='AO')
+  if kind=='ao':bpy.ops.object.bake(type='AO',uv_layer='LightUV')
   else:
    # Sky is directly visible only through openings. Add only bounced sunlight;
    # the moving actor and all direct sun shadows remain real time.
    bg.inputs[1].default_value=config['skyStrength'] if kind=='sky' else 0
    light.energy=0 if kind=='sky' else config['sunStrength']
-   scene.render.bake.use_pass_direct=kind=='sky';scene.render.bake.use_pass_indirect=True;scene.render.bake.use_pass_color=False;bpy.ops.object.bake(type='DIFFUSE')
+   scene.render.bake.use_pass_direct=kind=='sky';scene.render.bake.use_pass_indirect=True;scene.render.bake.use_pass_color=False;bpy.ops.object.bake(type='DIFFUSE',uv_layer='LightUV')
    pixels=array.array('f',[0])*(size*size*4);im.pixels.foreach_get(pixels)
    if kind=='sky':sky_pixels=pixels
    else:

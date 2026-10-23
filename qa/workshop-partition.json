@@ -49,8 +49,8 @@
   },
   {
     "material": "weathered_wood",
-    "sourceFaces": 158048,
-    "retainedFaces": 158048,
+    "sourceFaces": 277770,
+    "retainedFaces": 277770,
     "regions": [
       "clay",
       "paint",
@@ -97,8 +97,8 @@
   },
   {
     "material": "undyed_linen",
-    "sourceFaces": 2058,
-    "retainedFaces": 2058,
+    "sourceFaces": 3978,
+    "retainedFaces": 3978,
     "regions": [
       "paint",
       "display"
@@ -125,8 +125,8 @@
   },
   {
     "material": "bamboo_leaves",
-    "sourceFaces": 18682,
-    "retainedFaces": 18682,
+    "sourceFaces": 35908,
+    "retainedFaces": 35908,
     "regions": [
       "supply",
       "drying"

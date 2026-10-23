@@ -54,26 +54,33 @@ def box(name,p,size,m,bevel=.01):
     co=o.data.vertices[o.data.loops[li].vertex_index].co
     cross=next(a for a in range(3) if a!=world_axis and abs(f.normal[a])<.8)
     cross_size=max(.02,max(size[a] for a in range(3) if a!=long))
-    u=(co[world_axis]-start)/max(size[long],.03)*.91+.04
-    v=strip+max(0,min(1,(co[cross]-xyz(p)[cross])/cross_size+.5))*.045
+    # The single-board scan has vertical grain and a declared 0.6m span.
+    # Do not stretch a full photograph to fit each arbitrarily long timber.
+    u=(co[cross]-xyz(p)[cross])/.6+strip
+    v=(co[world_axis]-start)/.6+sample*.271
+    if abs(f.normal[world_axis])>.85:
+     # Preserve a real two-dimensional cap UV. A separate end-grain scan remains
+     # an explicit art review item; collapsed cap UVs hid the defect previously.
+     cap_axes=[a for a in range(3) if a!=world_axis]
+     u=co[cap_axes[0]]/.6+strip;v=co[cap_axes[1]]/.6+sample*.271
     o.data.uv_layers[0].data[li].uv=(u,v)
  return o
 
 def beam(name,a,b,r,m):
  A,B=Vector(a),Vector(b);axis=(B-A).normalized();u=axis.cross(Vector((0,1,0)))
  if u.length<.1:u=axis.cross(Vector((1,0,0)))
- u.normalize();v=axis.cross(u).normalized();L=(B-A).length;verts=[];uv=[];faces=[];sides=24;segments=max(4,int(L*5))
+ u.normalize();v=axis.cross(u).normalized();L=(B-A).length;verts=[];uv=[];faces=[];sides=48;segments=max(4,int(L*5))
  for j in range(segments+1):
   t=j/segments;center=A.lerp(B,t)
   # Dressed timber gently tapers, with broad axe facets rather than white-noise damage.
   radius=r*(1-.055*t)
-  for k in range(sides):
+  for k in range(sides+1):
    angle=k/sides*math.tau;facet=1+.014*math.cos(angle*5+.4)*math.sin(math.pi*t)
    q=center+(u*math.cos(angle)+v*math.sin(angle))*radius*facet
-   verts.append(tuple(q));uv.append((t*.94+.03,.13+k/sides*.045))
+   verts.append(tuple(q));uv.append((k/sides*math.tau*r/.6,t*L/.6))
  for j in range(segments):
-  for k in range(sides):faces.append((j*sides+k,j*sides+(k+1)%sides,(j+1)*sides+(k+1)%sides,(j+1)*sides+k))
- faces.extend([tuple(range(sides-1,-1,-1)),tuple(segments*sides+k for k in range(sides))])
+  for k in range(sides):faces.append((j*(sides+1)+k,j*(sides+1)+k+1,(j+1)*(sides+1)+k+1,(j+1)*(sides+1)+k))
+ faces.extend([tuple(range(sides-1,-1,-1)),tuple(segments*(sides+1)+k for k in range(sides))])
  return mesh(name,verts,faces,m,uv,True,0)
 
 def table(x,z,w=2.4,d=1.15,h=.92):

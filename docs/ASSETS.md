@@ -45,3 +45,7 @@ ambientCG [CC0](https://docs.ambientcg.com/license/)：Clay005 和 Clay006 的 4
 地表新增 [Brown Mud 02](https://polyhaven.com/a/brown_mud_02)（1.3m）与 [Forest Leaves 03](https://polyhaven.com/a/forest_leaves_03)（2.3m）4K 全通道，来源与哈希见 `terrain-provenance.json`。松针与草的独立透明度贴图来自相同资产的官方文件，见 `vegetation-alpha-provenance.json`。
 
 松树的完整下载缓存不进入运行包，当前使用的编辑模型为 `art/woodland-pine.blend`，其中已打包依赖贴图。`scripts/prepare-vegetation.py` 保留重建流程。Meshopt 的运行解码器来自 Three.js，压缩器许可另保存在 `licenses/meshoptimizer-MIT.txt`；编码没有改变模型或图片分辨率。
+
+实木柱、架板与陶车使用 Poly Haven [Fine Grained Wood](https://polyhaven.com/a/fine_grained_wood) 的原始 4K Albedo、Roughness、NormalGL、AO。采用 API 中 600mm 的尺寸字段；旧元数据另列 30×30cm，两者冲突已写入来源清单，不将当前尺寸称为独立测量结果。端面仍需专门的端纹材质。林地增加 [Grass Medium 01](https://polyhaven.com/a/grass_medium_01) 的原始 LOD0 网格、4K 材质与官方透明度贴图。
+
+`art/potters-wheel.blend` / `public/assets/potters-wheel.glb`：项目原创分件模型，结构参考吴军明等《明代景德镇制瓷陶车研究》，《故宫博物院院刊》2023 年第 5 期，[图 14–16，32–33 页](https://www.dpm.org.cn/Uploads/File/2023/05/19/u6466da5a467d9.pdf)。包括单木盘、固定立柱、陶质承重/径向轴承、四腿笼架和缠绳；直径 1.1m，游戏中抬高的工作位置属于解释性复原。文献图片仅供观察结构，未作为贴图或随游戏分发。

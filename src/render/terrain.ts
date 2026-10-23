@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { pathCenter, terrainHeight } from './woodland';
+import { pathCenter, terrainHeight } from './ground-layout';
 
 /** A worn carrying lane through leaf litter. Both surfaces keep their measured scale. */
 export async function makeTerrain(scene: THREE.Scene) {
@@ -18,7 +18,7 @@ export async function makeTerrain(scene: THREE.Scene) {
     const {data}=context.getImageData(0,0,image.width,image.height);
     return (x:number,z:number,metres:number)=>{
       const u=((x/metres)%1+1)%1,v=((z/metres)%1+1)%1;
-      return data[(Math.floor(v*image.height)*image.width+Math.floor(u*image.width))*4]/255;
+      return data[(Math.min(image.height-1,Math.floor((1-v)*image.height))*image.width+Math.floor(u*image.width))*4]/255;
     };
   };
   const pathHeight=sampleHeight(maps.path_height),litterHeight=sampleHeight(maps.litter_height);
@@ -32,6 +32,16 @@ export async function makeTerrain(scene: THREE.Scene) {
     points.setY(i,terrainHeight(x,z)+relief);
   }
   geometry.computeVertexNormals();
+  // Keep the actual triangulated support surface for roots and small grass.
+  // Using only the smooth bank function buried short plants in the scanned relief.
+  const heights=Float32Array.from({length:points.count},(_,i)=>points.getY(i));
+  const supportHeight=(x:number,z:number)=>{
+    const gx=THREE.MathUtils.clamp((x+90)/.375,0,479.999),gz=THREE.MathUtils.clamp((z+90)/.375,0,479.999),
+      ix=Math.floor(gx),iz=Math.floor(gz),u=gx-ix,v=gz-iz,
+      a=heights[iz*481+ix],b=heights[(iz+1)*481+ix],c=heights[(iz+1)*481+ix+1],d=heights[iz*481+ix+1];
+    return u+v<=1?a+(d-a)*u+(b-a)*v:c+(b-c)*(1-u)+(d-c)*(1-v);
+  };
+  maps.path_height.dispose();maps.litter_height.dispose();delete maps.path_height;delete maps.litter_height;
   const material=new THREE.MeshStandardMaterial({map:maps.path_diff,normalMap:maps.path_normal,roughnessMap:maps.path_rough,
     aoMap:maps.path_ao,aoMapIntensity:.6,roughness:1,normalScale:new THREE.Vector2(.75,.75)});
   material.onBeforeCompile=shader=>{
@@ -49,11 +59,12 @@ export async function makeTerrain(scene: THREE.Scene) {
       float roughnessFactor=roughness*mix(texture2D(roughnessMap,pathUV).g,texture2D(litter_rough,litterUV).g,leafCover);
     `).replace('#include <normal_fragment_maps>',`
       vec3 mapN=normalize(mix(texture2D(normalMap,pathUV).xyz*2.-1.,texture2D(litter_normal,litterUV).xyz*2.-1.,leafCover));
-      mapN.xy*=normalScale;normal=normalize(tbn*mapN);
+      mapN.xy*=normalScale;normal=normalize(getTangentFrame(-vViewPosition,normal,pathUV)*mapN);
     `).replace('#include <aomap_fragment>',`
       float terrainAO=mix(texture2D(aoMap,pathUV).r,texture2D(litter_ao,litterUV).r,leafCover);
       reflectedLight.indirectDiffuse*=mix(1.,terrainAO,aoMapIntensity);
     `);
   };
   const soil=new THREE.Mesh(geometry,material);soil.name='woodland_litter_and_carrying_path';soil.receiveShadow=true;scene.add(soil);
+  return supportHeight;
 }

@@ -37,7 +37,7 @@ function evidence(doc) {
 }
 await fs.mkdir('art/exports',{recursive:true});
 const reports=JSON.parse(await fs.readFile('qa/model-compression.json','utf8').catch(()=>'{}')).reports||[];
-for(const name of process.argv.slice(2).length?process.argv.slice(2):['workshop','hands','craft-tools','woodland-pine']) {
+for(const name of process.argv.slice(2).length?process.argv.slice(2):['workshop','hands','craft-tools','woodland-pine','potters-wheel']) {
   const output=`public/assets/${name}.glb`,source=`art/exports/${name}.glb`;
   let doc=await io.read(output);
   const compressed=doc.getRoot().listExtensionsUsed().some(e=>e.extensionName==='EXT_meshopt_compression');

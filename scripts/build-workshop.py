@@ -15,7 +15,7 @@ def mat(name,color,rough=0.8,texture=None):
     n=m.node_tree.nodes; p=next((v for v in n if v.type=='BSDF_PRINCIPLED'),None) or n.new('ShaderNodeBsdfPrincipled');p.inputs['Base Color'].default_value=(*color,1);p.inputs['Roughness'].default_value=rough
     if texture:
         for channel,inputname in [('diff','Base Color'),('rough','Roughness'),('nor_gl','Normal')]:
-            f=OUT/'textures'/'realism'/f'{texture}_{channel}.jpg'
+            f=(OUT/'craft-surfaces' if texture=='solidwood' else OUT/'textures'/'realism')/f'{texture}_{channel}.jpg'
             if f.exists():
                 t=n.new('ShaderNodeTexImage');t.image=bpy.data.images.load(str(f),check_existing=True)
                 if channel!='diff':t.image.colorspace_settings.name='Non-Color'
@@ -23,7 +23,7 @@ def mat(name,color,rough=0.8,texture=None):
                     normal=n.new('ShaderNodeNormalMap');normal.inputs['Strength'].default_value=0.55;m.node_tree.links.new(t.outputs['Color'],normal.inputs['Color']);m.node_tree.links.new(normal.outputs[0],p.inputs[inputname])
                 else:m.node_tree.links.new(t.outputs['Color'],p.inputs[inputname])
     return m
-wood=mat('weathered_wood',(0.25,0.16,0.09),texture='agedwood')
+wood=mat('weathered_wood',(0.25,0.16,0.09),texture='solidwood')
 wall=mat('lime_plaster',(0.73,0.71,0.62),texture='wall')
 ground=mat('courtyard_stone',(0.38,0.38,0.34),texture='ground')
 brick=mat('kiln_firebrick',(0.4,0.22,0.12),texture='brick')
@@ -127,12 +127,14 @@ roof_shed(-5.8,5.7,4.3,3.1,2.85)
 roof_shed(0,6.5,3.6,2.1,2.8)
 for x in [-5.6,5.4]:table(x,-5.6)
 table(7.2,-0.2,1.35,2.0,0.92);table(-6,5,2.8,1.3,0.9);table(0,5.8,2.8,1.1,0.92)
-# Wheel: heavy wooden flywheel, raised spindle and thrown head, no electric machinery.
-cyl('wheel_base',(0,0.11,-5.6),0.63,0.16,wood,verts=64)
-cyl('wheel_spindle',(0,0.41,-5.6),0.065,0.55,wood)
-cyl('wheel_head',(0,0.72,-5.6),0.38,0.10,wood,verts=64)
-for j in range(8):
-    a=j*math.tau/8;beam('wheel_spoke',(0,0.15,-5.6),(math.cos(a)*0.56,0.15,-5.6+math.sin(a)*0.56),0.026,wood)
+# Include the same detailed wheel in offline lighting; the runtime animates its
+# separate delivery asset. The old double discs/spokes are intentionally removed.
+with bpy.data.libraries.load(str(ROOT/'art/potters-wheel.blend'),link=False) as (src,dst):dst.objects=src.objects
+for ob in dst.objects:
+ if ob:
+  bpy.context.collection.objects.link(ob);ob['deliveryExternal']='potters-wheel'
+for ob in dst.objects:
+ if ob and ob.parent is None:ob.location=xyz((0,.78,-5.6))
 box('wheel_bench',(0,0.40,-4.62),(0.9,0.10,0.32),wood)
 for x in [-0.32,0.32]:box('bench_leg',(x,0.2,-4.62),(0.08,0.4,0.22),wood)
 # Drying shelves and porcelain blanks.
@@ -183,7 +185,7 @@ for i in range(13):
             beam('bamboo_branch',(x,y,z),tip,0.006,leaf)
             for k in range(3):
                 verts=[xyz((tip[0],tip[1],tip[2])),xyz((tip[0]+side*0.16,tip[1]+0.04,tip[2]+0.04+k*0.06)),xyz((tip[0]+side*0.32,tip[1]-0.12,tip[2]+0.1+k*0.06))]
-                me=bpy.data.meshes.new('leaf');me.from_pydata(verts,[],[(0,1,2),(2,1,0)]);ob=bpy.data.objects.new('leaf',me);bpy.context.collection.objects.link(ob);finish(ob,'leaf',leaf)
+                me=bpy.data.meshes.new('leaf');me.from_pydata(verts,[],[(0,1,2)]);ob=bpy.data.objects.new('leaf',me);bpy.context.collection.objects.link(ob);finish(ob,'leaf',leaf)
 for i in range(20):
     x=-.95+random.uniform(-.12,.12);z=5.8+random.uniform(-.04,.04);beam('packaging_straw',(x,.976,z),(x+.08,.981,z+.36),0.002,linen)
 
@@ -207,7 +209,7 @@ for material in list(bpy.data.materials):
         if o.data.uv_layers:o.data.uv_layers[0].name='SurfaceUV'
     bpy.context.view_layer.objects.active=objects[0];bpy.ops.object.join();bpy.context.object.name='workshop_'+material.name
 for image in bpy.data.images:
-    if image.source=='FILE': image.filepath='//../public/assets/textures/realism/'+Path(image.filepath).name
+    if image.source=='FILE': image.filepath=bpy.path.relpath(bpy.path.abspath(image.filepath),start=str(ROOT/'art'))
 bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'art/workshop.blend'))
 # PBR maps are external, shared runtime assets. Avoid repacking them into a second
 # copy in GLB; Blender source retains the complete connected material graphs.

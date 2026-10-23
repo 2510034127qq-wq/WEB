@@ -8,6 +8,7 @@ const context = await browser.newContext({
   viewport: { width: 1440, height: 900 },
 });
 const page = await context.newPage();
+const prefix = process.env.QA_PREFIX || "kiln-controls";
 const errors = [],
   checks = [],
   observations = [];
@@ -155,7 +156,7 @@ try {
     "brick release at mouth loads the same piece",
     loaded.state.pieces[0].stage,
   );
-  await page.screenshot({ path: "qa/kiln-controls-loaded.png" });
+  await page.screenshot({ path: `qa/${prefix}-loaded.png` });
   const lit = await drag(
     "tinder to fire mouth",
     [5.18, 0.442, 3.74],
@@ -196,7 +197,7 @@ try {
     "wood release adds fuel while time continues",
     { before: beforeFuel.state.kiln.fuel, after: fuelled.state.kiln.fuel },
   );
-  await page.screenshot({ path: "qa/kiln-controls-firing.png" });
+  await page.screenshot({ path: `qa/${prefix}-firing.png` });
   const beforeWait = await read();
   await page.keyboard.down("KeyR");
   await wait(2200);
@@ -216,7 +217,7 @@ try {
     "C stops firing and enters natural cooling",
     cooling.state.kiln,
   );
-  await page.screenshot({ path: "qa/kiln-controls-cooling.png" });
+  await page.screenshot({ path: `qa/${prefix}-cooling.png` });
   assert(!errors.length, "no uncaught runtime errors", errors);
   report = {
     passed: true,
@@ -232,7 +233,7 @@ try {
   };
 } catch (error) {
   try {
-    await page.screenshot({ path: "qa/kiln-controls-failure.png" });
+    await page.screenshot({ path: `qa/${prefix}-failure.png` });
   } catch {}
   report = {
     passed: false,
@@ -244,7 +245,7 @@ try {
   };
 } finally {
   await fs.writeFile(
-    "qa/kiln-controls-check.json",
+    process.env.QA_REPORT||"qa/kiln-controls-check.json",
     JSON.stringify(report, null, 2),
   );
   console.log(

@@ -48,6 +48,30 @@
     "file": "public/assets/lighting/lime_plaster_indirect.hdr"
   },
   {
+    "material": "grey_fired_roof_tiles",
+    "type": "ao",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/grey_fired_roof_tiles_ao.png"
+  },
+  {
+    "material": "grey_fired_roof_tiles",
+    "type": "sky",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/grey_fired_roof_tiles_sky.png"
+  },
+  {
+    "material": "grey_fired_roof_tiles",
+    "type": "indirect",
+    "size": 2048,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/grey_fired_roof_tiles_indirect.hdr"
+  },
+  {
     "material": "stone_plinth",
     "type": "ao",
     "size": 2048,
@@ -94,54 +118,6 @@
     "samples": 128,
     "denoised": true,
     "file": "public/assets/lighting/weathered_wood_indirect.hdr"
-  },
-  {
-    "material": "kiln_firebrick",
-    "type": "ao",
-    "size": 2048,
-    "samples": 128,
-    "denoised": false,
-    "file": "public/assets/lighting/kiln_firebrick_ao.png"
-  },
-  {
-    "material": "kiln_firebrick",
-    "type": "sky",
-    "size": 2048,
-    "samples": 128,
-    "denoised": false,
-    "file": "public/assets/lighting/kiln_firebrick_sky.png"
-  },
-  {
-    "material": "kiln_firebrick",
-    "type": "indirect",
-    "size": 2048,
-    "samples": 128,
-    "denoised": true,
-    "file": "public/assets/lighting/kiln_firebrick_indirect.hdr"
-  },
-  {
-    "material": "grey_fired_roof_tiles",
-    "type": "ao",
-    "size": 2048,
-    "samples": 128,
-    "denoised": false,
-    "file": "public/assets/lighting/grey_fired_roof_tiles_ao.png"
-  },
-  {
-    "material": "grey_fired_roof_tiles",
-    "type": "sky",
-    "size": 2048,
-    "samples": 128,
-    "denoised": false,
-    "file": "public/assets/lighting/grey_fired_roof_tiles_sky.png"
-  },
-  {
-    "material": "grey_fired_roof_tiles",
-    "type": "indirect",
-    "size": 2048,
-    "samples": 128,
-    "denoised": true,
-    "file": "public/assets/lighting/grey_fired_roof_tiles_indirect.hdr"
   },
   {
     "material": "ivory_porcelain",
@@ -214,5 +190,29 @@
     "samples": 128,
     "denoised": true,
     "file": "public/assets/lighting/undyed_linen_indirect.hdr"
+  },
+  {
+    "material": "kiln_firebrick",
+    "type": "ao",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/kiln_firebrick_ao.png"
+  },
+  {
+    "material": "kiln_firebrick",
+    "type": "sky",
+    "size": 2048,
+    "samples": 128,
+    "denoised": false,
+    "file": "public/assets/lighting/kiln_firebrick_sky.png"
+  },
+  {
+    "material": "kiln_firebrick",
+    "type": "indirect",
+    "size": 2048,
+    "samples": 128,
+    "denoised": true,
+    "file": "public/assets/lighting/kiln_firebrick_indirect.hdr"
   }
 ]

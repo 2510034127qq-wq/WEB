@@ -35,16 +35,20 @@ try {
     await backup;
     await page.waitForFunction(()=>window.__YAOHUO__?.view().modal==='');
     if(stations[name]) await page.keyboard.press('KeyE');
-    await page.waitForTimeout(4200);
+    await page.waitForTimeout(4600);
     const image=`qa/${prefix}-${name}.png`;
     await page.screenshot({path:image});
-    views.push({name,image,...await page.evaluate(()=>({view:window.__YAOHUO__.view(),stats:window.__YAOHUO__.stats(),
-      surfaces:['display','supply'].includes(window.__YAOHUO__.view().focus)?[window.__YAOHUO__.inspectSurface(950,600),window.__YAOHUO__.inspectSurface(1000,760)]:undefined}))});
+    views.push({name,image,...await page.evaluate((name)=>({view:window.__YAOHUO__.view(),stats:window.__YAOHUO__.stats(),
+      surfaces:['display','supply'].includes(window.__YAOHUO__.view().focus)?[[810,700],[950,600],[1000,760],[1020,470]].map(([x,y])=>({screen:[x,y],...window.__YAOHUO__.inspectSurface(x,y)})):undefined,
+      terrain:name==='gate'?window.__YAOHUO__.inspectMeshes?.('woodland_litter'):undefined,
+      grass:name==='gate'?(()=>{const cells=window.__YAOHUO__.inspectMeshes?.('Bank_grass')||[];return {cells:cells.length,instances:cells.reduce((n,c)=>n+c.instances,0),sample:cells.slice(0,3)};})():undefined,
+    }),name)});
     console.log('CAPTURED',name);
     if(stations[name]) await page.keyboard.press('Escape');
   }
 } finally {
-  await fs.writeFile(`qa/${prefix}.json`,JSON.stringify({date:new Date().toISOString(),url:base,method:'Public JSON import fixtures; real E/Escape input; read-only diagnostics. Images require visual review.',errors,views},null,2));
+  const bundles=await page.evaluate(()=>performance.getEntriesByType('resource').map(r=>r.name).filter(n=>/\/assets\/.*\.js$/.test(n))).catch(()=>[]);
+  await fs.writeFile(`qa/${prefix}.json`,JSON.stringify({date:new Date().toISOString(),url:base,bundles,method:'Public JSON import fixtures; real E/Escape input; read-only diagnostics. Images require visual review.',errors,views},null,2));
   await browser.close();
 }
 if(errors.length)process.exitCode=1;

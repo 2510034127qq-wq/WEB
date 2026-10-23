@@ -12,59 +12,45 @@ function random(seed: number) {
 
 /** Physical leaves and branches, instanced to keep the courtyard GPU budget bounded. */
 export async function makeGarden(scene: THREE.Scene) {
-  await makeWoodland(scene);
-  await makeTerrain(scene);
+  const supportHeight=await makeTerrain(scene);
+  await makeWoodland(scene,supportHeight);
 }
 
 export function makeWear(scene: THREE.Scene) {
-  const rand = random(373);
-  const c = document.createElement("canvas");
-  c.width = c.height = 512;
-  const ctx = c.getContext("2d")!;
-  const grad = ctx.createRadialGradient(256, 256, 40, 256, 256, 250);
-  grad.addColorStop(0, "rgba(24,28,20,.42)");
-  grad.addColorStop(0.5, "rgba(36,36,22,.24)");
-  grad.addColorStop(1, "rgba(30,38,22,0)");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, 512, 512);
-  ctx.globalCompositeOperation = "destination-out";
-  for (let i = 0; i < 350; i++) {
-    ctx.fillStyle = `rgba(0,0,0,${rand() * 0.18})`;
-    ctx.beginPath();
-    ctx.arc(rand() * 512, rand() * 512, rand() * 20, 0, 7);
-    ctx.fill();
-  }
-  const texture = new THREE.CanvasTexture(c);
-  const mat = new THREE.MeshBasicMaterial({
-    map: texture,
-    transparent: true,
-    depthWrite: false,
-    polygonOffset: true,
-    polygonOffsetFactor: -2,
-    toneMapped: false,
+  const clay=new THREE.TextureLoader().load('/assets/clay-surfaces/Clay006_4K-JPG_Color.jpg');
+  clay.colorSpace=THREE.SRGBColorSpace;clay.wrapS=clay.wrapT=THREE.RepeatWrapping;clay.anisotropy=16;
+  scene.traverse(o=>{
+    if(!(o instanceof THREE.Mesh)||o.userData.sourceMaterial!=='courtyard_stone')return;
+    const material=o.material as THREE.MeshStandardMaterial;
+    const compile=material.onBeforeCompile,key=material.customProgramCacheKey();
+    material.onBeforeCompile=(shader,renderer)=>{
+      compile.call(material,shader,renderer);shader.uniforms.floorClay={value:clay};
+      shader.vertexShader='varying vec3 floorPosition;\n'+shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nfloorPosition=position;');
+      shader.fragmentShader=`varying vec3 floorPosition;uniform sampler2D floorClay;
+        float clayDust,wetFloor;
+        float workFalloff(vec2 p,vec2 centre,vec2 extent){return 1.-smoothstep(.25,1.,length((p-centre)/extent));}
+        \n`+shader.fragmentShader;
+      shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
+        vec2 floorXZ=floorPosition.xz;
+        // Trampled clay accumulates around kneading, throwing and raw storage;
+        // glaze water stays close to the vat, wash jars and wall bases.
+        clayDust=.28*workFalloff(floorXZ,vec2(-5.6,-5.35),vec2(1.9,1.25))
+          +.22*workFalloff(floorXZ,vec2(0.,-5.5),vec2(1.25,1.15))
+          +.12*workFalloff(floorXZ,vec2(-6.,4.9),vec2(1.5,1.1))
+          +.08*workFalloff(floorXZ,vec2(-7.4,-.2),vec2(1.,2.3));
+        wetFloor=.22*workFalloff(floorXZ,vec2(7.4,-.2),vec2(1.05,1.4))
+          +.20*workFalloff(floorXZ,vec2(-6.9,-5.5),vec2(.65,.7))
+          +.10*smoothstep(8.1,8.95,abs(floorXZ.x));
+        vec3 settledClay=texture2D(floorClay,floorXZ/.2).rgb;
+        diffuseColor.rgb=mix(diffuseColor.rgb,settledClay,clayDust);
+        diffuseColor.rgb*=1.-wetFloor*.45;
+      `).replace('#include <roughnessmap_fragment>',`#include <roughnessmap_fragment>
+        roughnessFactor=mix(roughnessFactor,.96,clayDust);
+        roughnessFactor=mix(roughnessFactor,.44,wetFloor);
+      `);
+    };
+    material.customProgramCacheKey=()=>key+'-physical-work-floor-v1';
   });
-  for (const [x, z, w, d] of [
-    [-5.6, -5.6, 4, 2.7],
-    [0, -5.6, 2.8, 2.6],
-    [5.4, -5.6, 3.4, 2.4],
-    [-7.4, -0.2, 2, 5],
-    [7.4, -0.2, 2.3, 3.5],
-    [6, 4, 4, 3],
-    [-6, 5, 3.6, 2],
-    [0, 5.8, 3.6, 2],
-  ]) {
-    const patch = new THREE.Mesh(new THREE.PlaneGeometry(w, d), mat);
-    patch.rotation.x = -Math.PI / 2;
-    patch.position.set(x, 0.006, z);
-    scene.add(patch);
-  }
-  // Narrow damp line at the base of lime walls; dirt is attached to real surfaces.
-  for (const side of [-1, 1]) {
-    const patch = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 16), mat);
-    patch.rotation.x = -Math.PI / 2;
-    patch.position.set(side * 8.7, 0.008, 0);
-    scene.add(patch);
-  }
   const brickMap = new THREE.TextureLoader().load(
     "/assets/textures/brick_diff.jpg",
   );

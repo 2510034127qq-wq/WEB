@@ -59,6 +59,8 @@ node scripts/serve.mjs --open
 
 ## 开发与复现
 
+二进制模型、Blender 源文件与贴图由 Git LFS 管理。Git 克隆后先执行 `git lfs install`、`git lfs pull`；下载源代码 ZIP 可能只有 LFS 指针，不能代替完整资源。便携发布包由实际工作目录文件打包，不依赖 Git 或 LFS 服务。
+
 ```powershell
 npm ci
 npm run dev
@@ -67,7 +69,11 @@ npm run build
 npm run qa
 ```
 
-当前手势回归脚本默认使用开发服务 5190；可先运行 `npm run dev -- --port 5190`，或设置 `QA_URL` 为实际地址。`npm run qa:walk` 录制步态；`npm run qa:kiln` 检查实物窑前控件。新手势脚本用公开导入的工位样本，属于分工位回归；旧完整游玩脚本保留作历史证据，已不适用于新输入布局。
+当前手势回归脚本默认使用开发服务 5190；可先运行 `npm run dev -- --port 5190`，或设置 `QA_URL` 为实际地址。`npm run qa:walk` 录制步态；`npm run qa:kiln` 检查实物窑前控件。手势回归用公开导入的工位样本，属于分工位检查。
+
+`node scripts/craft-chain-check.mjs` 在空白浏览器中通过真实输入完成碗、瓶两条生产链，检查中途刷新、入釉与净足、烧成、GLB/PNG 导出和存档往返；不导入工序样本或通过隐藏接口推进状态。默认连接冻结的生产服务 5173，使用正常游戏提供的加速等候和师傅扶火。设置 `QA_PREFIX` 可保留各轮截图及 JSON，避免覆盖失败证据。静帧审查使用 `scripts/photographic-check.mjs`，与操作测试分开。
+
+本轮完整链通过记录为 `qa/craft-chain-r19.json`。`node scripts/audit-craft-exports.mjs` 重新解码该流程实际下载的 GLB，检查结构、纹理和工艺记录；不把文件格式有效等同于视觉验收。行走录像增加了进出供料棚的连续曝光检查，并保留整段实际输入。
 
 Chrome 用于实机测试。QA 录像还需要 Playwright 的 FFmpeg：
 
@@ -88,7 +94,7 @@ npx playwright install ffmpeg
 | `scripts/` | 资产重建、开发 QA、性能测试、本地服务与打包 |
 | `qa/` | Chrome 截图、实测报告和实际游玩导出样品 |
 
-重建模型需 Blender。工坊依次执行 `build-workshop.py`、`bake-workshop-light.py`、`bake-local-probes.py`；当前手资产使用 `adapt-fab-hands.py`（旧 `build-hands.py` 只供旧版复现）；工具为 `build-craft-tools.py`，林地为 `prepare-vegetation.py`。这些文件均在 `scripts/`。最后运行 `node scripts/compress-models.mjs` 校验并压缩 GLB。`.blend` 保留可编辑材质；改动后须同步导出、烘焙与视觉复查。各 `fetch-*-surfaces.py` / `fetch-scan-assets.py` 保存可复现下载流程及来源校验清单。
+重建模型需 Blender。工坊依次执行 `build-potters-wheel.py`、`build-workshop.py`、`bake-workshop-light.py`、`bake-local-probes.py`；陶车作为独立旋转组件导出，仍参与工坊离线光照。当前手资产使用 `adapt-fab-hands.py`（旧 `build-hands.py` 只供旧版复现）；工具为 `build-craft-tools.py`，林地为 `prepare-vegetation.py`。这些文件均在 `scripts/`。最后运行 `node scripts/compress-models.mjs` 校验并压缩 GLB。`.blend` 保留可编辑材质；改动后须同步导出、烘焙与视觉复查。各 `fetch-*-surfaces.py` / `fetch-scan-assets.py` 保存可复现下载流程及来源校验清单。新增实木材质由 `fetch-workshop-timber.py` 下载，林地高草为 `fetch-scan-assets.py grass_medium_01`，独立透明度贴图由 `fetch-vegetation-alpha.py` 下载。
 
 ## 范围和依据
 

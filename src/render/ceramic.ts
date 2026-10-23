@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import type { Piece, Mark } from "../simulation/model";
 import { glazeMean } from "../simulation/model";
+const ceramicAudit = typeof location === 'undefined' ? '' : new URLSearchParams(location.search).get('ceramic-audit');
 const mineralSources = new Map<string, THREE.Texture>();
 function clayMap(channel: string) {
   let source=mineralSources.get(channel);
@@ -172,6 +173,9 @@ export class Ceramic extends THREE.Group {
       ior: 1.5,
       specularIntensity: 0.92,
       side: THREE.DoubleSide,
+      // The vessel is a closed shell with a real inner wall. Back-face shadow
+      // casting avoids treating its lit outer surface as its own occluder.
+      shadowSide: THREE.BackSide,
     });
     // Clay005 is a 20cm fine clay sample. Wheel traces belong to the geometry,
     // while the mineral surface provides fine fingerprints and micro roughness.
@@ -182,6 +186,7 @@ export class Ceramic extends THREE.Group {
     mat.roughnessMap = this.roughnessTexture;
     mat.clearcoatRoughnessMap = this.roughnessTexture;
     mat.normalMap = this.mineralNormal;
+    if(ceramicAudit==='normal-off')mat.normalMap=null;
     mat.onBeforeCompile = (shader) => {
       shader.uniforms.mineralAlbedo = { value: this.mineralAlbedo };
       shader.uniforms.mineralScale = { value: this.mineralAlbedo.repeat };
@@ -189,19 +194,28 @@ export class Ceramic extends THREE.Group {
       shader.fragmentShader = `uniform sampler2D mineralAlbedo; uniform vec2 mineralScale; varying vec3 ceramicLocal;\n${shader.fragmentShader}`
         .replace("#include <map_fragment>", `#include <map_fragment>
           float mineralValue = dot(texture2D(mineralAlbedo, vMapUv * mineralScale).rgb, vec3(.2126,.7152,.0722));
-          diffuseColor.rgb *= .91 + clamp(mineralValue,0.,1.) * .18;
+          // Preserve measured surface variation while replacing red-clay pigment
+          // with the stage's kaolin colour. Clay005's median linear luminance is .215.
+          diffuseColor.rgb *= mix(1.,clamp(mineralValue/.215,.75,1.25),.65);
           // Uncoated trimmed foot is porous, even on a fully glazed vessel.
           float foot = 1. - smoothstep(.009,.019,ceramicLocal.y);
           diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(.90,.88,.82),foot*.55);
         `)
         .replace('#include <lights_physical_fragment>',THREE.ShaderChunk.lights_physical_fragment.replace('material.clearcoat = clearcoat;',
           'material.clearcoat = clearcoat * smoothstep(.009,.019,ceramicLocal.y);'))
-        .replace("#include <roughnessmap_fragment>", `#include <roughnessmap_fragment>
+        .replace("#include <roughnessmap_fragment>", `
+          // The scan averages .49: multiplying it by 1 made dry clay as smooth
+          // as wet clay. Keep scan variation around each state's physical value.
+          float roughnessFactor=roughness;
+          #ifdef USE_ROUGHNESSMAP
+          roughnessFactor=clamp(roughness+(texture2D(roughnessMap,vRoughnessMapUv).g-.49)*.22,.08,1.);
+          #endif
           roughnessFactor = mix(roughnessFactor,.91,1.-smoothstep(.009,.019,ceramicLocal.y));
         `);
     };
     this.mesh = new THREE.Mesh(ceramicGeometry(piece), mat);
     this.mesh.castShadow = this.mesh.receiveShadow = true;
+    if(ceramicAudit==='shadow-off')this.mesh.receiveShadow=false;
     this.add(this.mesh);
     this.update(true);
   }
@@ -211,9 +225,10 @@ export class Ceramic extends THREE.Group {
       wet = ["raw", "prepared", "thrown"].includes(p.stage),
       glazed = ["glazed", "dry", "loaded"].includes(p.stage),mat=this.mesh.material;
     // Drying changes wet sheen even when the geometry is unchanged.
-    mat.roughness = fired ? (p.defects.some(d=>d.startsWith('欠火'))?.74:.30) : wet ? .94-.16*Math.min(1,p.moisture/.7) : glazed ? .85 : 1;
+    mat.roughness = fired ? (p.defects.some(d=>d.startsWith('欠火'))?.82:.30) : wet ? .64-.14*Math.min(1,p.moisture/.7) : glazed ? .88 : .94;
     mat.clearcoat = fired ? 1 : wet ? .24 * Math.min(1,p.moisture/.7) : 0;
     mat.clearcoatRoughness = fired ? (glazeMean(p)>1.2?.28:.12) : .32;
+    if(ceramicAudit==='matte'){mat.normalMap=null;mat.roughnessMap=null;mat.clearcoatRoughnessMap=null;mat.roughness=1;mat.clearcoat=0;}
     const sig = [
       p.stage,
       p.height,
@@ -239,7 +254,7 @@ export class Ceramic extends THREE.Group {
           ? "#c4c6b8"
           : "#b9b6a6";
     ctx.fillRect(0, 0, 2048, 1024);
-    mat.normalScale.setScalar(fired ? .025 : wet ? .18 : .30);
+    mat.normalScale.setScalar(fired ? .025 : wet ? .45 : .75);
     const circumference=p.radius.reduce((a,b)=>a+b,0)/p.radius.length*Math.PI*2;
     for(const t of [this.roughnessTexture,this.mineralNormal,this.mineralAlbedo])
       t.repeat.set(circumference/.2*2,p.height/.2);

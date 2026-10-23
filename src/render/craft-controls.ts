@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { fineNoise } from "./details";
+import type {MaterialSet} from './materials';
 import type { StationId } from "../simulation/model";
 
 export type CraftAction =
@@ -76,7 +77,7 @@ export class CraftControls {
   private paper: THREE.MeshStandardMaterial;
   private iron: THREE.MeshStandardMaterial;
 
-  constructor(scene: THREE.Scene, private assets: Map<string, THREE.Object3D>) {
+  constructor(scene: THREE.Scene, private assets: Map<string, THREE.Object3D>,private surfaces:MaterialSet) {
     this.group.name = "physical-craft-controls";
     const noise = fineNoise();
     this.textures.add(noise);
@@ -159,8 +160,8 @@ export class CraftControls {
     );
     this.makeSupply();
     this.makeWater("clay-water", "clay", [-5.18, 0.964, -5.55], 0.15);
-    this.makeWater("wheel-water", "wheel", [-0.43, 0.81, -5.55], 0.125);
-    this.makeSupport([-0.43, 0.81, -5.55], 0.37, 0.38);
+    this.makeWater("wheel-water", "wheel", [-0.78, 0.81, -5.55], 0.125);
+    this.makeSupport([-0.78, 0.81, -5.55], 0.30, 0.38);
     this.makeWater("paint-water", "paint", [5.84, 0.964, -5.58], 0.095);
     this.makeInk();
     this.makeGlazeTarget();
@@ -360,10 +361,24 @@ export class CraftControls {
       "hold",
       [-5.74, 0.945, 4.98],
     );
+    const clothMaterial=this.material(this.surfaces.linen.clone());
+    clothMaterial.color.set('#b6af97');clothMaterial.side=THREE.DoubleSide;
+    clothMaterial.normalScale.setScalar(.55);
+    const clothGeometry=new THREE.PlaneGeometry(.72,.58,72,58),positions=clothGeometry.attributes.position,uv=clothGeometry.attributes.uv;
+    for(let i=0;i<positions.count;i++){
+      const x=positions.getX(i),y=positions.getY(i);
+      // A stored fold across the cloth relaxes under the weight of both billets.
+      const loaded=Math.exp(-(((x+.09)/.11)**2)-((y+.025)/.14)**2)+Math.exp(-(((x-.11)/.10)**2)-((y-.035)/.13)**2);
+      const fold=.0035*Math.exp(-((y/.018)**2))*Math.max(0,1-loaded);
+      const hem=.0008*(Math.exp(-(((Math.abs(x)-.351)/.004)**2))+Math.exp(-(((Math.abs(y)-.281)/.004)**2)));
+      // Poly Haven scan dimensions: 270.708 x 271.300 mm.
+      positions.setZ(i,fold+hem);uv.setXY(i,(x+.36)/.270708,(y+.29)/.271300);
+    }
+    clothGeometry.computeVertexNormals();
     const cloth = this.mesh(
       root,
-      new THREE.PlaneGeometry(0.72, 0.58, 18, 14),
-      this.paper,
+      clothGeometry,
+      clothMaterial,
       [0, 0.003, 0],
     );
     cloth.rotation.x = -Math.PI / 2;
@@ -498,22 +513,21 @@ export class CraftControls {
       "drag",
       [6.95, 0.48, 3.5],
     );
-    const brick = this.material(
-      new THREE.MeshStandardMaterial({
-        color: "#a18b74",
-        roughness: 1,
-        map: this.texture("brick_diff", true),
-        normalMap: this.texture("brick_nor_gl"),
-        normalScale: new THREE.Vector2(0.45, 0.45),
-      }),
-    );
+    const brick=this.material(this.surfaces.brick.clone());
+    brick.normalScale.setScalar(.65);
     for (let i = 0; i < 3; i++)
+      {
+      const geometry=new RoundedBoxGeometry(0.25,0.085,0.12,4,.004),uv=geometry.attributes.uv;
+      // Sample the interior of one photographed brick, excluding mortar. The
+      // original 0..1 UVs pasted an entire wall onto every individual face.
+      for(let j=0;j<uv.count;j++)uv.setXY(j,.315+uv.getX(j)*.165,.652+uv.getY(j)*.038);
       this.mesh(
         seal,
-        new RoundedBoxGeometry(0.25, 0.085, 0.12, 2, 0.008),
+        geometry,
         brick,
         [0, i * 0.088, 0],
       );
+      }
 
     const light = this.control(
       "kiln-light",

@@ -150,16 +150,29 @@ for k,(cx,cz,length,width,angle) in enumerate([(-.09,.025,.27,.15,-.22),(.11,-.0
             seam=.008*math.exp(-((t-.56)/.075)**2)*max(0,math.sin(a))**6
             y=.061+yy+seam-.006*math.cos(a)**2*(1-(2*t-1)**2)
             verts.append((cx+x*math.cos(angle)+z*math.sin(angle),y,cz+z*math.cos(angle)-x*math.sin(angle)))
-            uv.append((i/n*1.3,t*.8))
+            uv.append((0,t*length/.2))
+        # Clay006 is a 20cm scan. Follow the actual cross-section arc length,
+        # including its rounded square corners, rather than a unit UV cylinder.
+        start=j*(n+1);arc=0
+        for i in range(1,n+1):
+            arc+=(Vector(verts[start+i])-Vector(verts[start+i-1])).length
+            uv[start+i]=(arc/.2,t*length/.2)
     for j in range(rings-1):
         for i in range(n):
             a=j*(n+1)+i; faces.append((a,a+1,a+n+2,a+n+1))
-    # Flat wire-cut end caps, subdivided into concentric rings for smooth contact shading.
+    # Wire-cut end faces have their own planar UVs and normals. Sharing the side
+    # ring stretched the cap into a line and rounded the entire cut face.
     for j in [0,rings-1]:
         center=Vector((0,0,0))
         for i in range(n): center+=Vector(verts[j*(n+1)+i])/n
-        idx=len(verts); verts.append(tuple(center)); uv.append((.5,.5))
-        for i in range(n): faces.append((idx,j*(n+1)+i,j*(n+1)+i+1))
+        def capuv(v):
+            localx=(v[0]-cx)*math.cos(angle)-(v[2]-cz)*math.sin(angle)
+            return ((localx+width*.5)/.2,v[1]/.2)
+        idx=len(verts);verts.append(tuple(center));uv.append(capuv(center))
+        rim=len(verts)
+        for i in range(n+1):
+            v=verts[j*(n+1)+i];verts.append(v);uv.append(capuv(v))
+        for i in range(n):faces.append((idx,rim+i,rim+i+1))
     mesh('folded_clay_billet_%d'%k,verts,faces,clay,clayroot,uv)
 
 for obj in bpy.context.scene.objects:
