@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.tmp/
+test-results/
+*.blend1
+*.log
+.DS_Store
