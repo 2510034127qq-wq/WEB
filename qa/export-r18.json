@@ -1,0 +1,18 @@
+{
+  "method": "Public import of the actual r17 playthrough state solely to isolate export; not a full-chain pass.",
+  "passed": true,
+  "exports": [
+    {
+      "action": "export-glb",
+      "path": "qa/exports/export-r18.glb",
+      "bytes": 90974712
+    },
+    {
+      "action": "photo",
+      "path": "qa/exports/export-r18.png",
+      "bytes": 2579411
+    }
+  ],
+  "errors": [],
+  "failure": null
+}

@@ -1,0 +1,16 @@
+{
+  "source": "qa/walk-r21.json",
+  "method": "Read-only analysis of recorded exposure and locomotion telemetry; eight decoded video frames reviewed separately. No claim of uninterrupted audio or motion viewing.",
+  "sampleCount": 933,
+  "exposureMin": 1.259597838545932,
+  "exposureMax": 15.999396412132242,
+  "maxConsecutiveExposureChangeStops": 0.2789960439727769,
+  "gapAtMaxChangeMs": 33.5,
+  "shelteredExposure": 15.997621830942812,
+  "daylightExposure": 1.295095185343087,
+  "observations": [
+    "No character translation after final settle; contact frames show consistent courtyard geometry and continuous viewpoint changes.",
+    "The exit from shade is temporarily bright around 30s; daylight returns to normal by 33s. This is gradual metered response, not proof of a photorealistic result.",
+    "Forest density, horizon transition, repeated storage wares and near material wear remain open visual work."
+  ]
+}

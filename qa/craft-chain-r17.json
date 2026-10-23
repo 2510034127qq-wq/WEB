@@ -1,0 +1,1840 @@
+{
+  "date": "2026-10-23T19:54:58.844Z",
+  "base": "http://127.0.0.1:5173/",
+  "browser": "156.0.8078.48",
+  "revision": "ac755d18debd80930a317866f3f5d1ab3fda654b",
+  "workingTree": "M README.md\n M art/workshop-components.blend\n M art/workshop.blend\n M docs/ASSETS.md\n M docs/PHOTOGRAPHIC-REVISION.md\n M public/assets/craft-surface-provenance.json\n M public/assets/lighting/courtyard_stone_ao.png\n M public/assets/lighting/courtyard_stone_indirect.hdr\n M public/assets/lighting/courtyard_stone_sky.png\n M public/assets/lighting/grey_fired_roof_tiles_ao.png\n M public/assets/lighting/grey_fired_roof_tiles_indirect.hdr\n M public/assets/lighting/grey_fired_roof_tiles_sky.png\n M public/assets/lighting/ivory_porcelain_ao.png\n M public/assets/lighting/ivory_porcelain_indirect.hdr\n M public/assets/lighting/ivory_porcelain_sky.png\n M public/assets/lighting/kiln_firebrick_ao.png\n M public/assets/lighting/kiln_firebrick_indirect.hdr\n M public/assets/lighting/kiln_firebrick_sky.png\n M public/assets/lighting/lime_plaster_ao.png\n M public/assets/lighting/lime_plaster_indirect.hdr\n M public/assets/lighting/lime_plaster_sky.png\n M public/assets/lighting/manifest.json\n M public/assets/lighting/probes/clay.hdr\n M public/assets/lighting/probes/display.hdr\n M public/assets/lighting/probes/drying.hdr\n M public/assets/lighting/probes/glaze.hdr\n M public/assets/lighting/probes/kiln.hdr\n M public/assets/lighting/probes/paint.hdr\n M public/assets/lighting/probes/supply.hdr\n M public/assets/lighting/probes/wheel.hdr\n M public/assets/lighting/stone_plinth_ao.png\n M public/assets/lighting/stone_plinth_indirect.hdr\n M public/assets/lighting/stone_plinth_sky.png\n M public/assets/lighting/undyed_linen_ao.png\n M public/assets/lighting/undyed_linen_indirect.hdr\n M public/assets/lighting/undyed_linen_sky.png\n M public/assets/lighting/unglazed_stoneware_ao.png\n M public/assets/lighting/unglazed_stoneware_indirect.hdr\n M public/assets/lighting/unglazed_stoneware_sky.png\n M public/assets/lighting/weathered_wood_ao.png\n M public/assets/lighting/weathered_wood_indirect.hdr\n M public/assets/lighting/weathered_wood_sky.png\n M public/assets/scan-provenance.json\n M public/assets/vegetation-alpha-provenance.json\n M public/assets/workshop.glb\n M qa/model-compression.json\n M qa/workshop-partition.json\n M scripts/bake-workshop-light.py\n M scripts/benchmark.mjs\n M scripts/build-workshop.py\n M scripts/compress-models.mjs\n M scripts/fetch-vegetation-alpha.py\n M scripts/immersion-check.mjs\n M scripts/kiln-controls-check.mjs\n M scripts/photographic-check.mjs\n M scripts/structural-meshes.py\n M scripts/walk-check.mjs\n M scripts/workshop_export.py\n M src/main.ts\n M src/render/ceramic.ts\n M src/render/craft-assets.ts\n M src/render/craft-controls.ts\n M src/render/details.ts\n M src/render/materials.ts\n M src/render/terrain.ts\n M src/render/woodland.ts\n M src/render/workshop.ts\n M src/simulation/storage.ts\n?? art/potters-wheel.blend\n?? public/assets/craft-surfaces/solidwood_ao.jpg\n?? public/assets/craft-surfaces/solidwood_diff.jpg\n?? public/assets/craft-surfaces/solidwood_nor_gl.jpg\n?? public/assets/craft-surfaces/solidwood_rough.jpg\n?? public/assets/potters-wheel.glb\n?? public/assets/scans/grass_medium_01/\n?? public/assets/vegetation/grass-medium-alpha.png\n?? public/assets/wheel-provenance.json\n?? qa/ao-off-r16.json\n?? qa/ceramic-shadow-off-r14.json\n?? qa/craft-chain-r13.json\n?? qa/landscape-r12.json\n?? qa/photographic-r13.json\n?? qa/photographic-r14.json\n?? qa/shadow-shell-r15.json\n?? qa/surface-light-r16.json\n?? qa/wheel-uv.json\n?? scripts/audit-wheel-uv.mjs\n?? scripts/build-potters-wheel.py\n?? scripts/craft-chain-check.mjs\n?? scripts/fetch-workshop-timber.py\n?? scripts/refresh-workshop-wheel.py\n?? src/render/ground-layout.ts\n?? src/render/potters-wheel.ts\n?? src/render/workshop-ao.ts",
+  "method": "Fresh empty Chrome context; real navigation, mouse and keyboard input through both craft chains. No stage fixtures or state mutation. Read-only diagnostics locate visible surfaces and assert results. Assisted firing and accelerated waiting remain normal user settings.",
+  "passed": false,
+  "steps": [
+    {
+      "name": "bowl: take real clay billet",
+      "at": "2026-10-23T19:51:50.628Z",
+      "detail": {
+        "id": "0feb7b9f-7b42-4c50-9c07-00c791fc0f91"
+      }
+    },
+    {
+      "name": "bowl: knead to prepared",
+      "at": "2026-10-23T19:52:01.849Z",
+      "detail": {
+        "preparation": 1
+      }
+    },
+    {
+      "name": "bowl: real opening and shape",
+      "at": "2026-10-23T19:52:29.865Z",
+      "detail": {
+        "height": 0.14608328045728675,
+        "maxRadius": 0.15834447798787457,
+        "traces": 7
+      }
+    },
+    {
+      "name": "bowl: dry and trim",
+      "at": "2026-10-23T19:52:55.841Z",
+      "detail": {
+        "trimmed": 1
+      }
+    },
+    {
+      "name": "bowl: brush marks",
+      "at": "2026-10-23T19:53:13.710Z",
+      "detail": {
+        "marks": 95
+      }
+    },
+    {
+      "name": "painted piece reload preserves shape, marks and wheel traces",
+      "at": "2026-10-23T19:53:45.613Z",
+      "detail": {}
+    },
+    {
+      "name": "bowl: dip, lift and clean foot",
+      "at": "2026-10-23T19:54:06.822Z",
+      "detail": {
+        "meanGlaze": 0.8668714999999985
+      }
+    },
+    {
+      "name": "bowl: physical kiln controls and cooled firing",
+      "at": "2026-10-23T19:54:46.497Z",
+      "detail": {
+        "peak": 1290,
+        "score": 97
+      }
+    }
+  ],
+  "completed": [],
+  "exports": [],
+  "errors": [],
+  "failedRequests": [],
+  "failure": {
+    "message": "download.saveAs: canceled",
+    "stack": "download.saveAs: canceled\n    at download (D:\\WEB\\scripts\\craft-chain-check.mjs:98:11)\n    at async file:///D:/WEB/scripts/craft-chain-check.mjs:161:15",
+    "state": {
+      "version": 1,
+      "pieces": [
+        {
+          "id": "0feb7b9f-7b42-4c50-9c07-00c791fc0f91",
+          "name": "青花碗 · 01",
+          "form": "bowl",
+          "stage": "fired",
+          "location": "display",
+          "position": [
+            0,
+            0.96,
+            5.8
+          ],
+          "radius": [
+            0.095,
+            0.09600188950617683,
+            0.09699930433060669,
+            0.09798778977655755,
+            0.09896293102806929,
+            0.09992037286759353,
+            0.10085583912745243,
+            0.10176515178824153,
+            0.10264424963887876,
+            0.10348920641495893,
+            0.10429624833440368,
+            0.10506177095208835,
+            0.10578235525816894,
+            0.10645478294820998,
+            0.10707605079691368,
+            0.10764338407125479,
+            0.10815424892312335,
+            0.10860636370619042,
+            0.10899770916684623,
+            0.10932653746598363,
+            0.10959138000347758,
+            0.10979105406933408,
+            0.10992466855257148,
+            0.10999162973337728,
+            0.10999165098090075,
+            0.10992477907272333,
+            0.1097914751722347,
+            0.10959285241761407,
+            0.10933131313110751,
+            0.10901209426425479,
+            0.10864663577509806,
+            0.10825912508917211,
+            0.10789768355382265,
+            0.10765078622223145,
+            0.10766689009649098,
+            0.10817065855901473,
+            0.10946376283080178,
+            0.1118950158014202,
+            0.1157876766826824,
+            0.12132423289842893,
+            0.12841002332533547,
+            0.13656018162253974,
+            0.14486787794681188,
+            0.152102845570623,
+            0.15695083961918202,
+            0.15834447798787457,
+            0.1557792197168975,
+            0.14948960895210717
+          ],
+          "height": 0.14608328045728675,
+          "thickness": [
+            0.0158610282806744,
+            0.015861028171152005,
+            0.015861027838750763,
+            0.015861026870560156,
+            0.015861024164111767,
+            0.015861016903342965,
+            0.015860998208913433,
+            0.015860952014391416,
+            0.015860842463048613,
+            0.01586059312325809,
+            0.015860048487857034,
+            0.01585890679692992,
+            0.015856610121536996,
+            0.015852176812617535,
+            0.015843965971719914,
+            0.01582937741132653,
+            0.01580451692658674,
+            0.015763895901256167,
+            0.015700280674029263,
+            0.015604846853196021,
+            0.015467805268364875,
+            0.015279625046204962,
+            0.015032868065335228,
+            0.014724470273243834,
+            0.014358091572576967,
+            0.013945970682322666,
+            0.013509645242742374,
+            0.013079000230415846,
+            0.01268941390243206,
+            0.012377233132941697,
+            0.012174309256160958,
+            0.012102699188038017,
+            0.01217073719695501,
+            0.012371439777444497,
+            0.012683665402462758,
+            0.013075768741173497,
+            0.013510878757154055,
+            0.013952582480414281,
+            0.014369806424924372,
+            0.014740023515493467,
+            0.015050436718130928,
+            0.015297318641997492,
+            0.015484064021708717,
+            0.015618661878807031,
+            0.01571122813120355,
+            0.01577203366301688,
+            0.01581021526075125,
+            0.015833147937235937
+          ],
+          "moisture": 0.02,
+          "purity": 0.9550331623173839,
+          "air": 0.10324490048698433,
+          "preparation": 1,
+          "opened": true,
+          "trimmed": 1,
+          "marks": [
+            {
+              "u": 0.9687934650494979,
+              "v": 0.5436079842949351,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9696125182517816,
+              "v": 0.549831488452569,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9707451454709197,
+              "v": 0.5568933456942462,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9730857907152165,
+              "v": 0.5581926809958477,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9742441019395586,
+              "v": 0.5650751615663765,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.975411509273217,
+              "v": 0.5657202369404524,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9777641181105573,
+              "v": 0.5728832431559179,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9789316686312493,
+              "v": 0.573321337074954,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.98010075412099,
+              "v": 0.5798689364407905,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9824528155232108,
+              "v": 0.5806645572038468,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9836254648447882,
+              "v": 0.5871516501464801,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.984799449724056,
+              "v": 0.5874894790428569,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9871379586206915,
+              "v": 0.5940154125528375,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9883089407591664,
+              "v": 0.5942495389604544,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9894772454597369,
+              "v": 0.6005153163353965,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9918210587027282,
+              "v": 0.6009715678108946,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9929876646044244,
+              "v": 0.6071016820116957,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9941561949785529,
+              "v": 0.6071787562571535,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9964920764300325,
+              "v": 0.6133129285583787,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": true
+            },
+            {
+              "u": 0.98707604811757,
+              "v": 0.49483324907635806,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9882767030929779,
+              "v": 0.5004287036086446,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9894583739221264,
+              "v": 0.5071652607929431,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9906325970763254,
+              "v": 0.5074164162772326,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9929820987427742,
+              "v": 0.5142487387983563,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9941518178720117,
+              "v": 0.5143315243962205,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9953237072987365,
+              "v": 0.5208109306599423,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9976620916802245,
+              "v": 0.5209747743429552,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9988313847020838,
+              "v": 0.5274177472715468,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 1.4702673555835615e-7,
+              "v": 0.527498894049015,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.0023364648507616915,
+              "v": 0.533667008361428,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.0035047255137510744,
+              "v": 0.5335866086944079,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.004671781839717394,
+              "v": 0.5398067247910255,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.007008573515459965,
+              "v": 0.5396467586918141,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.00817638552540427,
+              "v": 0.5457894447746063,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.009347675100054726,
+              "v": 0.5455503764760836,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.011689378539111075,
+              "v": 0.5513200016723824,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.012861358459145517,
+              "v": 0.5510822411209451,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.014032415934902273,
+              "v": 0.5570664714322136,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": true
+            },
+            {
+              "u": 0.005206268337633402,
+              "v": 0.43776984290003196,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.005903463758995403,
+              "v": 0.44166922668078434,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.00825677045410979,
+              "v": 0.4482164402831641,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.009440212912024026,
+              "v": 0.44795033742939255,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.010611957569527635,
+              "v": 0.45444366890353927,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.012977488720970386,
+              "v": 0.4539147304069373,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.014144918518746562,
+              "v": 0.4603775921416118,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.015326833795276336,
+              "v": 0.4601147644154193,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.01768633107273867,
+              "v": 0.4659792486894032,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.01887539863872868,
+              "v": 0.465541869249709,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.02004531804236761,
+              "v": 0.47177338629534427,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.022422900870887736,
+              "v": 0.47090371628854943,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.023592366856404447,
+              "v": 0.47708729441384673,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.024791819161693318,
+              "v": 0.4764781520591149,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.027169131300145026,
+              "v": 0.48187986417630274,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.028369108482593868,
+              "v": 0.481273899432556,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.029545982600308725,
+              "v": 0.4872608526772647,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.03195489708381909,
+              "v": 0.48595176211998004,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.033146366515080794,
+              "v": 0.49173264411840595,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": true
+            },
+            {
+              "u": 0.02391880562372223,
+              "v": 0.3708210740091023,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.02529208676578865,
+              "v": 0.37969139307224736,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.026518884088480014,
+              "v": 0.3790106996985927,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.02769251122905793,
+              "v": 0.3855350858544931,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.030144407989720328,
+              "v": 0.38418157721293134,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.03131220124880782,
+              "v": 0.39067003810631973,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.032553934490284715,
+              "v": 0.38979683519158476,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.0349750884984414,
+              "v": 0.3952089391186888,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.036217012659956256,
+              "v": 0.39434020937631103,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.03739294951679984,
+              "v": 0.4005995001222527,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.03989019012588115,
+              "v": 0.39873688570573684,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.04108082488828473,
+              "v": 0.40478495433087064,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.04234388675522131,
+              "v": 0.40372028566203905,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.04479598920847355,
+              "v": 0.40868667505212664,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.04606050064295533,
+              "v": 0.4076250977678519,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.047254093378691936,
+              "v": 0.4135748197080558,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.04983381395225176,
+              "v": 0.41104271246173496,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.05104147884225759,
+              "v": 0.4168454501042248,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.05233200697466231,
+              "v": 0.41558544401314357,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": true
+            },
+            {
+              "u": 0.04427762339113558,
+              "v": 0.2905187826465605,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.045115551851439575,
+              "v": 0.29817953907466377,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.046433734708124556,
+              "v": 0.29697258027685886,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.04896843916582817,
+              "v": 0.30201565280657827,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.05031701611901862,
+              "v": 0.3005719950445893,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.0515056601889789,
+              "v": 0.30696217576719687,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.05420316339122388,
+              "v": 0.3040883583791287,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.055403199381266026,
+              "v": 0.3103347494209437,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.05678629688066121,
+              "v": 0.3086540028922652,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.059379579640087846,
+              "v": 0.31311535487784464,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.06076765421548716,
+              "v": 0.3114349212964043,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.06196953536452326,
+              "v": 0.31756461640197337,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.06481239408140092,
+              "v": 0.31379149186020217,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.06604441875041087,
+              "v": 0.3196872622358208,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.06747754046439991,
+              "v": 0.3177530845575181,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.07013967053780659,
+              "v": 0.3217079432068865,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.07161820168022064,
+              "v": 0.3195313641133881,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.07288278374825004,
+              "v": 0.32517236207063305,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.07586267013665865,
+              "v": 0.3207537330194482,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": true
+            }
+          ],
+          "glaze": [
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.969715999999999,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9476719999999995,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9293020000000011,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.9146280000000001,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8999319999999994,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8742799999999996,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8521699999999995,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8374960000000002,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8227779999999999,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.8007560000000001,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7860599999999995,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999,
+            0.7676679999999999
+          ],
+          "footClean": true,
+          "dryTime": 0,
+          "heat": 11.028997440501223,
+          "peak": 1290,
+          "stress": 0,
+          "shrink": 0.903,
+          "kilnPosition": "middle",
+          "defects": [],
+          "score": 97,
+          "history": [
+            "领取瓷石与高岭土配成的原泥；来源工序在原料房札记中说明。",
+            "淘洗练泥：纯度 96%，含水 65%。",
+            "竹杖起轮，定中心后开孔。",
+            "置架阴干，达到利坯的半干状态。",
+            "半干利坯，旋削圈足。",
+            "手持湿布沿圈足来回擦净。",
+            "清足后充分阴干，备妥匣钵。",
+            "装入匣钵，选中窑位。",
+            "自然冷却开窑，最高模拟温度 1290 ℃，收缩 10%。"
+          ],
+          "created": 1792785109995,
+          "wheelTraces": [
+            {
+              "v": 0.9024929401588988,
+              "width": 0.009600000000000001,
+              "depth": 0.0001558739841514618
+            },
+            {
+              "v": 0.8882724931071192,
+              "width": 0.009600000000000001,
+              "depth": 0.00007453509730191065
+            },
+            {
+              "v": 0.9168578494692167,
+              "width": 0.009600000000000001,
+              "depth": 0.00011084556962902422
+            },
+            {
+              "v": 0.9386523075182989,
+              "width": 0.009600000000000001,
+              "depth": 0.00022250827429971164
+            },
+            {
+              "v": 0.968546444879683,
+              "width": 0.009600000000000001,
+              "depth": 0.0003499754262932975
+            },
+            {
+              "v": 0.986666395674618,
+              "width": 0.009600000000000001,
+              "depth": 0.0003499944354434489
+            },
+            {
+              "v": 0.9543470624498979,
+              "width": 0.009600000000000001,
+              "depth": 0.00002915055407073395
+            }
+          ]
+        }
+      ],
+      "activeId": "0feb7b9f-7b42-4c50-9c07-00c791fc0f91",
+      "held": null,
+      "player": [
+        -0.0016659488901495934,
+        1.6349883556365967,
+        3.6547904014587402
+      ],
+      "yaw": 3.1725679674084852,
+      "day": 5,
+      "props": {
+        "brush": [
+          5.849999904632568,
+          1.010934829711914,
+          -5.300000190734863
+        ],
+        "knife": [
+          0.6499999761581421,
+          0.810934841632843,
+          -5.449999809265137
+        ],
+        "sagger": [
+          4.868962287902832,
+          0.29893964529037476,
+          5.699999809265137
+        ],
+        "bamboo": [
+          -0.8500000238418579,
+          0.010934829711914062,
+          -5.5
+        ]
+      },
+      "kiln": {
+        "phase": "idle",
+        "temperature": 64.68282092262132,
+        "fuel": 0,
+        "draft": 0.52,
+        "elapsed": 104.7507999999995,
+        "curve": [
+          [
+            0.02,
+            24.5
+          ],
+          [
+            1.1,
+            54
+          ],
+          [
+            2.17,
+            83
+          ],
+          [
+            3.24,
+            111.7
+          ],
+          [
+            4.31,
+            140.3
+          ],
+          [
+            5.38,
+            168.8
+          ],
+          [
+            6.45,
+            197
+          ],
+          [
+            7.51,
+            225.1
+          ],
+          [
+            8.58,
+            253.1
+          ],
+          [
+            9.65,
+            280.8
+          ],
+          [
+            10.72,
+            308.5
+          ],
+          [
+            11.79,
+            335.9
+          ],
+          [
+            12.86,
+            363.3
+          ],
+          [
+            13.93,
+            390.4
+          ],
+          [
+            14.99,
+            417.4
+          ],
+          [
+            16.06,
+            444.3
+          ],
+          [
+            17.13,
+            470.9
+          ],
+          [
+            18.2,
+            497.5
+          ],
+          [
+            19.27,
+            523.8
+          ],
+          [
+            20.34,
+            550.1
+          ],
+          [
+            21.4,
+            576.1
+          ],
+          [
+            22.47,
+            602.1
+          ],
+          [
+            23.54,
+            627.9
+          ],
+          [
+            24.61,
+            653.5
+          ],
+          [
+            25.68,
+            679
+          ],
+          [
+            26.75,
+            704.3
+          ],
+          [
+            27.82,
+            729.5
+          ],
+          [
+            28.89,
+            754.6
+          ],
+          [
+            29.95,
+            779.5
+          ],
+          [
+            31.02,
+            804.2
+          ],
+          [
+            32.09,
+            828.8
+          ],
+          [
+            33.16,
+            853.3
+          ],
+          [
+            34.23,
+            877.7
+          ],
+          [
+            35.3,
+            901.9
+          ],
+          [
+            36.36,
+            921.1
+          ],
+          [
+            37.43,
+            940.3
+          ],
+          [
+            38.5,
+            959.3
+          ],
+          [
+            39.57,
+            978.2
+          ],
+          [
+            40.64,
+            997
+          ],
+          [
+            41.71,
+            1015.7
+          ],
+          [
+            42.78,
+            1034.3
+          ],
+          [
+            43.84,
+            1052.8
+          ],
+          [
+            44.91,
+            1071.2
+          ],
+          [
+            45.98,
+            1089.5
+          ],
+          [
+            47.05,
+            1107.7
+          ],
+          [
+            48.12,
+            1125.8
+          ],
+          [
+            49.19,
+            1143.7
+          ],
+          [
+            50.26,
+            1161.6
+          ],
+          [
+            51.32,
+            1179.4
+          ],
+          [
+            52.39,
+            1197
+          ],
+          [
+            53.46,
+            1214.6
+          ],
+          [
+            54.53,
+            1232.1
+          ],
+          [
+            55.6,
+            1249.4
+          ],
+          [
+            56.67,
+            1266.7
+          ],
+          [
+            57.74,
+            1283.8
+          ],
+          [
+            58.8,
+            1290
+          ],
+          [
+            59.87,
+            1290
+          ],
+          [
+            60.94,
+            1290
+          ],
+          [
+            62.01,
+            1290
+          ],
+          [
+            63.08,
+            1290
+          ],
+          [
+            64.15,
+            1290
+          ],
+          [
+            65.21,
+            1240
+          ],
+          [
+            66.28,
+            1145.9
+          ],
+          [
+            67.35,
+            1059.1
+          ],
+          [
+            68.42,
+            979
+          ],
+          [
+            69.49,
+            905.1
+          ],
+          [
+            70.56,
+            836.9
+          ],
+          [
+            71.63,
+            774
+          ],
+          [
+            72.69,
+            715.9
+          ],
+          [
+            73.76,
+            662.4
+          ],
+          [
+            74.83,
+            613
+          ],
+          [
+            75.9,
+            567.4
+          ],
+          [
+            76.97,
+            525.4
+          ],
+          [
+            78.04,
+            486.6
+          ],
+          [
+            79.11,
+            450.8
+          ],
+          [
+            80.17,
+            417.8
+          ],
+          [
+            81.24,
+            387.3
+          ],
+          [
+            82.31,
+            359.2
+          ],
+          [
+            83.38,
+            333.2
+          ],
+          [
+            84.45,
+            309.3
+          ],
+          [
+            85.52,
+            287.2
+          ],
+          [
+            86.59,
+            266.8
+          ],
+          [
+            87.65,
+            248.1
+          ],
+          [
+            88.72,
+            230.7
+          ],
+          [
+            89.79,
+            214.7
+          ],
+          [
+            90.86,
+            200
+          ],
+          [
+            91.93,
+            186.3
+          ],
+          [
+            93,
+            173.8
+          ],
+          [
+            94.07,
+            162.2
+          ],
+          [
+            95.13,
+            151.5
+          ],
+          [
+            96.2,
+            141.6
+          ],
+          [
+            97.27,
+            132
+          ],
+          [
+            98.34,
+            122.4
+          ],
+          [
+            99.41,
+            112.8
+          ],
+          [
+            100.48,
+            103.1
+          ],
+          [
+            101.55,
+            93.5
+          ],
+          [
+            102.61,
+            83.9
+          ],
+          [
+            103.68,
+            74.3
+          ]
+        ],
+        "assisted": true
+      },
+      "settings": {
+        "sound": true,
+        "volume": 0.4,
+        "quality": "high",
+        "sensitivity": 1,
+        "bob": true,
+        "assist": true,
+        "subtitles": true,
+        "bindings": {
+          "forward": "KeyW",
+          "back": "KeyS",
+          "left": "KeyA",
+          "right": "KeyD",
+          "interact": "KeyE",
+          "drop": "KeyQ",
+          "journal": "KeyJ",
+          "map": "KeyM"
+        }
+      }
+    },
+    "view": {
+      "focus": "display",
+      "modal": "",
+      "nav": 0,
+      "camera": [
+        -9.125684736349476e-11,
+        1.4200000056221846,
+        5.079999964123805
+      ],
+      "cameraQuaternion": [
+        1.6078123948585552e-11,
+        0.9707111001914522,
+        0.24024978660781524,
+        -1.4439309558248523e-9
+      ],
+      "cameraFov": 54.00000000585155,
+      "look": {
+        "yaw": 3.1725679674084852,
+        "pitch": -0.06
+      },
+      "pieceBounds": {
+        "x": 527.2904310270288,
+        "y": 325.30576823060005,
+        "w": 385.4191428628443,
+        "h": 292.4871937032484
+      },
+      "hands": [
+        {
+          "name": "player_left_hand",
+          "visible": false,
+          "mirror": 1,
+          "wrist": [
+            0.20000000110246868,
+            0.8990633827599572,
+            5.381869198202748
+          ],
+          "thumb": [
+            0.22165159125577788,
+            0.9667579681539602,
+            5.426734772559796
+          ],
+          "index": [
+            0.24206917082125934,
+            0.9258333681926588,
+            5.457470278472711
+          ],
+          "palm": [
+            0.06929792995041455,
+            0.8063494435353017,
+            0.587365620218699
+          ]
+        },
+        {
+          "name": "player_right_hand",
+          "visible": false,
+          "mirror": -1,
+          "wrist": [
+            -0.19999999889753164,
+            0.8990633824949197,
+            5.3818691993271495
+          ],
+          "thumb": [
+            -0.22165158888831415,
+            0.9667579678602302,
+            5.426734773805924
+          ],
+          "index": [
+            -0.24206916822676752,
+            0.9258333678718716,
+            5.457470279833627
+          ],
+          "palm": [
+            -0.06929792771680321,
+            0.8063494434434689,
+            0.5873656206082927
+          ]
+        }
+      ]
+    }
+  }
+}

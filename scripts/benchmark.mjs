@@ -104,7 +104,7 @@ for (const shadowMode of process.env.QA_SHADOW_MODES?.split(",") || ["on"]) {
       medianFrameMs: +at(0.5).toFixed(2),
       p95FrameMs: +at(0.95).toFixed(2),
       p99FrameMs: +at(0.99).toFixed(2),
-      over33msPercent: +(
+      over33_4msPercent: +(
         (frames.filter((v) => v > 33.4).length / frames.length) *
         100
       ).toFixed(2),
@@ -125,6 +125,7 @@ await fs.writeFile(
       resolution: "1920 x 1080",
       pixelRatio: 1,
       recording: false,
+      slowFrameThresholdMs: 33.4,
       method:
         "Fresh Chrome context per quality/shadow mode, local HTTP, two-second warmup, 12-second RAF sample during the same WASD/right-drag route (30 pointer steps per turn); route duration is recorded separately; no video capture. Shadow off disables caching, not shadows.",
       errors,

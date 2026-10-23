@@ -1,0 +1,104 @@
+{
+  "passed": true,
+  "method": "Decode downloaded GLBs with glTF Transform; validate mesh/UV/normal data, physical dimensions, embedded textures and craft history. This is a structural roundtrip, not a visual equivalence test for custom runtime shaders.",
+  "models": [
+    {
+      "form": "bowl",
+      "path": "qa/exports/craft-chain-r19/bowl.glb",
+      "bytes": 90974868,
+      "sha256": "e078388de1e638743c7fa19a356d0cf61a8bf28f4ed91789143cdf182ae029ba",
+      "primitives": [
+        {
+          "vertices": 50568,
+          "triangles": 100096,
+          "heightBeforeShrink": 0.16583991050720215,
+          "material": ""
+        }
+      ],
+      "textures": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "bytes": 19421580,
+          "mime": "image/png"
+        },
+        {
+          "size": [
+            2048,
+            1024
+          ],
+          "bytes": 62948,
+          "mime": "image/png"
+        },
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "bytes": 49223468,
+          "mime": "image/png"
+        },
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "bytes": 20044712,
+          "mime": "image/png"
+        }
+      ],
+      "historyEntries": 9
+    },
+    {
+      "form": "vase",
+      "path": "qa/exports/craft-chain-r19/vase.glb",
+      "bytes": 90972464,
+      "sha256": "80659abd4abcf99ee6b72e0b9335992d3c017b0aff4889ba968bd124f8b4b5b2",
+      "primitives": [
+        {
+          "vertices": 50568,
+          "triangles": 100096,
+          "heightBeforeShrink": 0.21671566367149353,
+          "material": ""
+        }
+      ],
+      "textures": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "bytes": 19421580,
+          "mime": "image/png"
+        },
+        {
+          "size": [
+            2048,
+            1024
+          ],
+          "bytes": 60476,
+          "mime": "image/png"
+        },
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "bytes": 49223468,
+          "mime": "image/png"
+        },
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "bytes": 20044712,
+          "mime": "image/png"
+        }
+      ],
+      "historyEntries": 9
+    }
+  ]
+}

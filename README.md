@@ -73,7 +73,7 @@ npm run qa
 
 `node scripts/craft-chain-check.mjs` 在空白浏览器中通过真实输入完成碗、瓶两条生产链，检查中途刷新、入釉与净足、烧成、GLB/PNG 导出和存档往返；不导入工序样本或通过隐藏接口推进状态。默认连接冻结的生产服务 5173，使用正常游戏提供的加速等候和师傅扶火。设置 `QA_PREFIX` 可保留各轮截图及 JSON，避免覆盖失败证据。静帧审查使用 `scripts/photographic-check.mjs`，与操作测试分开。
 
-本轮完整链通过记录为 `qa/craft-chain-r19.json`。`node scripts/audit-craft-exports.mjs` 重新解码该流程实际下载的 GLB，检查结构、纹理和工艺记录；不把文件格式有效等同于视觉验收。行走录像增加了进出供料棚的连续曝光检查，并保留整段实际输入。
+本轮完整链通过记录为 `qa/craft-chain-r19.json`。`node scripts/audit-craft-exports.mjs` 重新解码该流程实际下载的 GLB，检查结构、纹理和工艺记录；不把文件格式有效等同于视觉验收。行走录像 `qa/walk-r21-review.webm` 保留约 35.55 秒实际输入及进出供料棚的曝光变化；最新手动窑前控件记录为 `qa/kiln-r22.json`。各次检查的构建范围与未通过项见 [写实修订记录](docs/PHOTOGRAPHIC-REVISION.md)。
 
 Chrome 用于实机测试。QA 录像还需要 Playwright 的 FFmpeg：
 
@@ -83,6 +83,8 @@ npx playwright install ffmpeg
 ```
 
 `npm run benchmark` 对发布服务的 1080p 高 / 轻画质做固定路线采样；先用 `node scripts/serve.mjs --port 4173` 启动服务。`npm run package` 生成源码与可运行发布包。
+
+设置 `QA_QUALITIES=high`、`QA_SHADOW_MODES=off,on` 可在相同资产上比较太阳阴影每帧重画与缓存复用；`off` 仅禁用缓存。`qa/benchmark-r22.json` 保存本机 1080p 高画质对照和原始帧时间，不能外推为全场景或所有设备稳定帧率。当前改动未新建完成标签或正式发布包。
 
 | 目录 | 内容 |
 | --- | --- |
@@ -102,4 +104,4 @@ npx playwright install ffmpeg
 
 云账户、跨设备自动同步、多人和其他时代瓷种尚未实现。当前以桌面 Chrome 和键鼠为主；窄屏可查看菜单与引路，没有宣称完整触屏操作。
 
-功能与视觉分别验收。旧版完整流程和性能见 [旧版验证记录](docs/VERIFICATION.md)，本轮见 [沉浸修订](docs/IMMERSION-REVISION.md)。画面仍需项目所有者确认后才能作为已批准写实基准。更多工艺依据、资产许可见 [考证说明](docs/HISTORY.md)、[资产清单](docs/ASSETS.md) 与 [免费 Fab 署名](licenses/FAB-ASSETS.md)。
+功能与视觉分别验收。旧版完整流程和性能见 [旧版验证记录](docs/VERIFICATION.md)，操作修订见 [沉浸修订](docs/IMMERSION-REVISION.md)，当前资产、画面和性能见 [写实修订记录](docs/PHOTOGRAPHIC-REVISION.md)。林地、匣钵与釉缸的近景细节等尚未达到项目写实目标。更多工艺依据、资产许可见 [考证说明](docs/HISTORY.md)、[资产清单](docs/ASSETS.md) 与 [免费 Fab 署名](licenses/FAB-ASSETS.md)。

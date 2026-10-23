@@ -1,0 +1,1059 @@
+{
+  "date": "2026-10-23T19:29:39.544Z",
+  "base": "http://127.0.0.1:5173/",
+  "browser": "156.0.8078.48",
+  "revision": "ac755d18debd80930a317866f3f5d1ab3fda654b",
+  "workingTree": "M README.md\n M art/workshop-components.blend\n M art/workshop.blend\n M docs/ASSETS.md\n M public/assets/craft-surface-provenance.json\n M public/assets/lighting/courtyard_stone_ao.png\n M public/assets/lighting/courtyard_stone_indirect.hdr\n M public/assets/lighting/courtyard_stone_sky.png\n M public/assets/lighting/grey_fired_roof_tiles_ao.png\n M public/assets/lighting/grey_fired_roof_tiles_indirect.hdr\n M public/assets/lighting/grey_fired_roof_tiles_sky.png\n M public/assets/lighting/ivory_porcelain_ao.png\n M public/assets/lighting/ivory_porcelain_indirect.hdr\n M public/assets/lighting/ivory_porcelain_sky.png\n M public/assets/lighting/kiln_firebrick_ao.png\n M public/assets/lighting/kiln_firebrick_indirect.hdr\n M public/assets/lighting/kiln_firebrick_sky.png\n M public/assets/lighting/lime_plaster_ao.png\n M public/assets/lighting/lime_plaster_indirect.hdr\n M public/assets/lighting/lime_plaster_sky.png\n M public/assets/lighting/manifest.json\n M public/assets/lighting/probes/clay.hdr\n M public/assets/lighting/probes/display.hdr\n M public/assets/lighting/probes/drying.hdr\n M public/assets/lighting/probes/glaze.hdr\n M public/assets/lighting/probes/kiln.hdr\n M public/assets/lighting/probes/paint.hdr\n M public/assets/lighting/probes/supply.hdr\n M public/assets/lighting/probes/wheel.hdr\n M public/assets/lighting/stone_plinth_ao.png\n M public/assets/lighting/stone_plinth_indirect.hdr\n M public/assets/lighting/stone_plinth_sky.png\n M public/assets/lighting/undyed_linen_ao.png\n M public/assets/lighting/undyed_linen_indirect.hdr\n M public/assets/lighting/undyed_linen_sky.png\n M public/assets/lighting/unglazed_stoneware_ao.png\n M public/assets/lighting/unglazed_stoneware_indirect.hdr\n M public/assets/lighting/unglazed_stoneware_sky.png\n M public/assets/lighting/weathered_wood_ao.png\n M public/assets/lighting/weathered_wood_indirect.hdr\n M public/assets/lighting/weathered_wood_sky.png\n M public/assets/scan-provenance.json\n M public/assets/vegetation-alpha-provenance.json\n M public/assets/workshop.glb\n M qa/model-compression.json\n M qa/workshop-partition.json\n M scripts/bake-workshop-light.py\n M scripts/benchmark.mjs\n M scripts/build-workshop.py\n M scripts/compress-models.mjs\n M scripts/fetch-vegetation-alpha.py\n M scripts/immersion-check.mjs\n M scripts/kiln-controls-check.mjs\n M scripts/structural-meshes.py\n M scripts/walk-check.mjs\n M scripts/workshop_export.py\n M src/main.ts\n M src/render/ceramic.ts\n M src/render/craft-controls.ts\n M src/render/details.ts\n M src/render/materials.ts\n M src/render/terrain.ts\n M src/render/woodland.ts\n M src/render/workshop.ts\n?? art/potters-wheel.blend\n?? public/assets/craft-surfaces/solidwood_ao.jpg\n?? public/assets/craft-surfaces/solidwood_diff.jpg\n?? public/assets/craft-surfaces/solidwood_nor_gl.jpg\n?? public/assets/craft-surfaces/solidwood_rough.jpg\n?? public/assets/potters-wheel.glb\n?? public/assets/scans/grass_medium_01/\n?? public/assets/vegetation/grass-medium-alpha.png\n?? public/assets/wheel-provenance.json\n?? qa/landscape-r12.json\n?? qa/photographic-r13.json\n?? scripts/build-potters-wheel.py\n?? scripts/craft-chain-check.mjs\n?? scripts/fetch-workshop-timber.py\n?? src/render/ground-layout.ts\n?? src/render/potters-wheel.ts",
+  "method": "Fresh empty Chrome context; real navigation, mouse and keyboard input through both craft chains. No stage fixtures or state mutation. Read-only diagnostics locate visible surfaces and assert results. Assisted firing and accelerated waiting remain normal user settings.",
+  "passed": false,
+  "steps": [
+    {
+      "name": "bowl: take real clay billet",
+      "at": "2026-10-23T19:27:54.059Z",
+      "detail": {
+        "id": "20a5cc81-1db0-45bf-8c03-8d8eb914ed55"
+      }
+    },
+    {
+      "name": "bowl: knead to prepared",
+      "at": "2026-10-23T19:28:05.700Z",
+      "detail": {
+        "preparation": 1
+      }
+    },
+    {
+      "name": "bowl: real opening and shape",
+      "at": "2026-10-23T19:28:35.486Z",
+      "detail": {
+        "height": 0.14589545348855765,
+        "maxRadius": 0.1586402270216135,
+        "traces": 8
+      }
+    },
+    {
+      "name": "bowl: dry and trim",
+      "at": "2026-10-23T19:29:01.365Z",
+      "detail": {
+        "trimmed": 1
+      }
+    },
+    {
+      "name": "bowl: brush marks",
+      "at": "2026-10-23T19:29:19.004Z",
+      "detail": {
+        "marks": 95
+      }
+    }
+  ],
+  "completed": [],
+  "exports": [],
+  "errors": [],
+  "failedRequests": [],
+  "failure": {
+    "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      end: false,\n      ink: 0.75,\n      kind: 'brush',\n...\n    },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.029548086287590272,\n-     v: 0.48723755518228007\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.03195719755712206,\n-     v: 0.48592600288215754\n-   },\n-   {\n-     end: true,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.033148727278135615,\n-     v: 0.49171524622548646\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.023957137451146235,\n-     v: 0.37031697293997706\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.025294815606650662,\n-     v: 0.3794996051991488\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.026521714057560673,\n-     v: 0.3788177278821084\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.02769550265905408,\n-     v: 0.3853528444880955\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.030147656948283825,\n-     v: 0.3839969960346903\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.031315474681083685,\n-     v: 0.3904955216476045\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.032557312045218105,\n-     v: 0.3896208033784356\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.03497855469783499,\n-     v: 0.39504163627707484\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.03622058212872822,\n-     v: 0.3941714092607111\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.03739666573895193,\n-     v: 0.4004408098145118\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.03989441397535271,\n-     v: 0.3985737569965461\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.041084787243303215,\n-     v: 0.4046321315982832\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.04234817006583233,\n-     v: 0.40356506960027705\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.04480033660324528,\n-     v: 0.40853928074497703\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.046064956865669485,\n-     v: 0.4074758847345378\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.047258596825025055,\n-     v: 0.41343433716260936\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.049838543251634074,\n-     v: 0.4108978899016824\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.05104617228777147,\n-     v: 0.4167098151365492\n-   },\n-   {\n-     end: true,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0523368119717122,\n-     v: 0.4154476617863216\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.044356710388820234,\n-     v: 0.28978978548368806\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.04512338731413225,\n-     v: 0.2978370496151212\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.04644246159439361,\n-     v: 0.29662677668402626\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.04897782324360321,\n-     v: 0.3016774997199101\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.05032606040334661,\n-     v: 0.3002311577804707\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.05151514637177418,\n-     v: 0.30663299041872993\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0542129818506414,\n-     v: 0.3037538667445494\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.05541303439142342,\n-     v: 0.310009846310795\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.05679676141016717,\n-     v: 0.30832530399596897\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.059390309145952336,\n-     v: 0.3127942687157783\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.06077856723793948,\n-     v: 0.31111071475296637\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.06198017789215629,\n-     v: 0.3172515989320796\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.06482454472331474,\n-     v: 0.31346820742973536\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0660554999991425,\n-     v: 0.3193759762343595\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0674895852840807,\n-     v: 0.3174370323798557\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0701516169344128,\n-     v: 0.3213990441190636\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0716307697317388,\n-     v: 0.3192160795601139\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.07289505763524584,\n-     v: 0.3248673719784081\n-   },\n-   {\n-     end: true,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.07587571679367927,\n-     v: 0.3204393599333957\n-   }\n  ]\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      end: false,\n      ink: 0.75,\n      kind: 'brush',\n...\n    },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.029548086287590272,\n-     v: 0.48723755518228007\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.03195719755712206,\n-     v: 0.48592600288215754\n-   },\n-   {\n-     end: true,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.033148727278135615,\n-     v: 0.49171524622548646\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.023957137451146235,\n-     v: 0.37031697293997706\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.025294815606650662,\n-     v: 0.3794996051991488\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.026521714057560673,\n-     v: 0.3788177278821084\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.02769550265905408,\n-     v: 0.3853528444880955\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.030147656948283825,\n-     v: 0.3839969960346903\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.031315474681083685,\n-     v: 0.3904955216476045\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.032557312045218105,\n-     v: 0.3896208033784356\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.03497855469783499,\n-     v: 0.39504163627707484\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.03622058212872822,\n-     v: 0.3941714092607111\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.03739666573895193,\n-     v: 0.4004408098145118\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.03989441397535271,\n-     v: 0.3985737569965461\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.041084787243303215,\n-     v: 0.4046321315982832\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.04234817006583233,\n-     v: 0.40356506960027705\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.04480033660324528,\n-     v: 0.40853928074497703\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.046064956865669485,\n-     v: 0.4074758847345378\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.047258596825025055,\n-     v: 0.41343433716260936\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.049838543251634074,\n-     v: 0.4108978899016824\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.05104617228777147,\n-     v: 0.4167098151365492\n-   },\n-   {\n-     end: true,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0523368119717122,\n-     v: 0.4154476617863216\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.044356710388820234,\n-     v: 0.28978978548368806\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.04512338731413225,\n-     v: 0.2978370496151212\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.04644246159439361,\n-     v: 0.29662677668402626\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.04897782324360321,\n-     v: 0.3016774997199101\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.05032606040334661,\n-     v: 0.3002311577804707\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.05151514637177418,\n-     v: 0.30663299041872993\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0542129818506414,\n-     v: 0.3037538667445494\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.05541303439142342,\n-     v: 0.310009846310795\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.05679676141016717,\n-     v: 0.30832530399596897\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.059390309145952336,\n-     v: 0.3127942687157783\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.06077856723793948,\n-     v: 0.31111071475296637\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.06198017789215629,\n-     v: 0.3172515989320796\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.06482454472331474,\n-     v: 0.31346820742973536\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0660554999991425,\n-     v: 0.3193759762343595\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0674895852840807,\n-     v: 0.3174370323798557\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0701516169344128,\n-     v: 0.3213990441190636\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.0716307697317388,\n-     v: 0.3192160795601139\n-   },\n-   {\n-     end: false,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.07289505763524584,\n-     v: 0.3248673719784081\n-   },\n-   {\n-     end: true,\n-     ink: 0.75,\n-     kind: 'brush',\n-     size: 0.014,\n-     surface: 'outer',\n-     u: 0.07587571679367927,\n-     v: 0.3204393599333957\n-   }\n  ]\n\n    at file:///D:/WEB/scripts/craft-chain-check.mjs:141:14",
+    "state": {
+      "version": 1,
+      "pieces": [
+        {
+          "id": "20a5cc81-1db0-45bf-8c03-8d8eb914ed55",
+          "name": "青花碗 · 01",
+          "form": "bowl",
+          "stage": "painted",
+          "location": "paint",
+          "position": [
+            5.4,
+            0.96,
+            -5.6
+          ],
+          "radius": [
+            0.095,
+            0.09600188950617683,
+            0.09699930433060669,
+            0.09798778977655755,
+            0.09896293102806929,
+            0.09992037286759353,
+            0.10085583912745243,
+            0.10176515178824153,
+            0.10264424963887876,
+            0.10348920641495893,
+            0.10429624833440368,
+            0.10506177095208835,
+            0.10578235525816894,
+            0.10645478294821,
+            0.107076050796914,
+            0.10764338407125658,
+            0.10815424892313764,
+            0.10860636370628884,
+            0.10899770916746894,
+            0.10932653746960971,
+            0.10959138002288303,
+            0.10979105416468089,
+            0.10992466898226995,
+            0.10999163150757497,
+            0.10999165768295181,
+            0.10992480219374368,
+            0.10979154785019506,
+            0.10959305994682396,
+            0.10933184923232149,
+            0.10901333985137542,
+            0.10864921619642876,
+            0.10826382577756095,
+            0.10790502955081997,
+            0.10766013401314864,
+            0.10767520514132746,
+            0.10817180041603955,
+            0.10944972385412911,
+            0.11186035171104791,
+            0.11573657886109898,
+            0.12127668740934362,
+            0.12840140616209997,
+            0.13663028801064975,
+            0.14504156663646542,
+            0.15237182524122786,
+            0.15726858890614895,
+            0.1586402270216135,
+            0.15598534759111884,
+            0.14956799226156745
+          ],
+          "height": 0.14589545348855765,
+          "thickness": [
+            0.015877217968717515,
+            0.01587721785613574,
+            0.01587721751452591,
+            0.015877216519763468,
+            0.01587721373981902,
+            0.015877206284219212,
+            0.01587718709487415,
+            0.015877139695866304,
+            0.015877027336659032,
+            0.01587677172861651,
+            0.01587621369682587,
+            0.015875044605651135,
+            0.015872694316585636,
+            0.01586816069671638,
+            0.01585977049382883,
+            0.015844875646473043,
+            0.01581951606663892,
+            0.01577811978044809,
+            0.015713358099744168,
+            0.01561631297425573,
+            0.015477123847286067,
+            0.015286237664240525,
+            0.015036271250316811,
+            0.014724313598308019,
+            0.014354280658552678,
+            0.01393875176183155,
+            0.013499645929333028,
+            0.013067206776208571,
+            0.012677078486603773,
+            0.012365722507099166,
+            0.012164922916959692,
+            0.012096495251622623,
+            0.012168403398605837,
+            0.012373235359780549,
+            0.012689440911542399,
+            0.013085051210668518,
+            0.01352299563386376,
+            0.013966792681275366,
+            0.01438541126577147,
+            0.014756440922297076,
+            0.01506723462983915,
+            0.015314213768866903,
+            0.015500897818424673,
+            0.01563536650231829,
+            0.015727792603869754,
+            0.015788476382599025,
+            0.015826565075612368,
+            0.01584943322055598
+          ],
+          "moisture": 0.3,
+          "purity": 0.9549854769815266,
+          "air": 0.10337206138260327,
+          "preparation": 1,
+          "opened": true,
+          "trimmed": 1,
+          "marks": [
+            {
+              "u": 0.9687259394522739,
+              "v": 0.5433854316508211,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9696976964683166,
+              "v": 0.549891331880439,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9708252659133935,
+              "v": 0.5569075673855796,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9731585792413836,
+              "v": 0.5581809309155841,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9743080324422624,
+              "v": 0.5650645711359291,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9754880792293098,
+              "v": 0.5656511637985303,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9778186183473441,
+              "v": 0.572862249686622,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9789836915056189,
+              "v": 0.5732964843832468,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.980137827425592,
+              "v": 0.5798887234453902,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9824921365101276,
+              "v": 0.5806745653133588,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9836491423909328,
+              "v": 0.5872116605461163,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9848230566958982,
+              "v": 0.5875445911116727,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.987152289555743,
+              "v": 0.5941054019422027,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9883233503983522,
+              "v": 0.5943385153364478,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9894858103624093,
+              "v": 0.600628569027111,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9918298153432251,
+              "v": 0.6010846182636799,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9929928382989491,
+              "v": 0.6072317129938174,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9941614473766633,
+              "v": 0.6073084145408097,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9964968057083252,
+              "v": 0.6134530204148659,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": true
+            },
+            {
+              "u": 0.9870557607577597,
+              "v": 0.4945875246022234,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.988278321256603,
+              "v": 0.500418835703402,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9894600355866261,
+              "v": 0.5071650406156725,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9906334385116872,
+              "v": 0.507419442648851,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9929830835735765,
+              "v": 0.5142613236427147,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9941526976908633,
+              "v": 0.5143447814797985,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9953243916854166,
+              "v": 0.5208341727375249,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9976628115196257,
+              "v": 0.5209986633437221,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.9988319941206045,
+              "v": 0.5274511330500985,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 7.458368202957019e-7,
+              "v": 0.5275325813340186,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.0023370960107106323,
+              "v": 0.533709607597461,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.0035053740496163725,
+              "v": 0.5336292712075397,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.004672442219277915,
+              "v": 0.5398582157586311,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.0070093515226342,
+              "v": 0.5396981226119533,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.008177212518576006,
+              "v": 0.5458491301126084,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.009348529344012306,
+              "v": 0.5456098523255345,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.01169040836505456,
+              "v": 0.5513872921983206,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.012862431821356206,
+              "v": 0.551149262893171,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.014033564197841887,
+              "v": 0.5571416240674305,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": true
+            },
+            {
+              "u": 0.005213987957501873,
+              "v": 0.4374223610491705,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.0059039368099910675,
+              "v": 0.441579397540785,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.008257430918167307,
+              "v": 0.44813653938619474,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.00944094776141819,
+              "v": 0.4478700132570794,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.010612759534218454,
+              "v": 0.4543731784159774,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.012978460177848589,
+              "v": 0.4538433958838759,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.014145985939186971,
+              "v": 0.4603159718504385,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.01532798542331902,
+              "v": 0.4600527080135778,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.01768763843984529,
+              "v": 0.4659257137034232,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.018876790805014965,
+              "v": 0.46548761854419185,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.020046788806344324,
+              "v": 0.47172832748764815,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.022424540606784376,
+              "v": 0.4708572380743832,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.02359408290101244,
+              "v": 0.47704962417463836,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.024793620532365064,
+              "v": 0.47643948933812,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.027171087620158442,
+              "v": 0.48184892478131014,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            },
+            {
+              "u": 0.02837114996142882,
+              "v": 0.4812419766928516,
+              "size": 0.014,
+              "ink": 0.75,
+              "kind": "brush",
+              "surface": "outer",
+              "end": false
+            }
+          ],
+          "glaze": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "footClean": false,
+          "dryTime": 0,
+          "heat": 0,
+          "peak": 0,
+          "stress": 0,
+          "shrink": 1,
+          "kilnPosition": "middle",
+          "defects": [],
+          "score": 0,
+          "history": [
+            "领取瓷石与高岭土配成的原泥；来源工序在原料房札记中说明。",
+            "淘洗练泥：纯度 95%，含水 65%。",
+            "竹杖起轮，定中心后开孔。",
+            "置架阴干，达到利坯的半干状态。",
+            "半干利坯，旋削圈足。"
+          ],
+          "created": 1792783673380,
+          "wheelTraces": [
+            {
+              "v": 0.897472134108318,
+              "width": 0.009600000000000001,
+              "depth": 0.000051007866170224664
+            },
+            {
+              "v": 0.8810645500995715,
+              "width": 0.009600000000000001,
+              "depth": 0.000060457194040593076
+            },
+            {
+              "v": 0.8677553173171929,
+              "width": 0.009600000000000001,
+              "depth": 0.000014930624449000295
+            },
+            {
+              "v": 0.9356721467834778,
+              "width": 0.009600000000000001,
+              "depth": 0.00033026925163038103
+            },
+            {
+              "v": 0.9186428984646687,
+              "width": 0.009600000000000001,
+              "depth": 0.00007372633244211354
+            },
+            {
+              "v": 0.9685657327091552,
+              "width": 0.009600000000000001,
+              "depth": 0.00034997560277869077
+            },
+            {
+              "v": 0.9532471296241921,
+              "width": 0.009600000000000001,
+              "depth": 0.00006474195686757616
+            },
+            {
+              "v": 0.9870916565465451,
+              "width": 0.009600000000000001,
+              "depth": 0.0003499946623874626
+            }
+          ]
+        }
+      ],
+      "activeId": "20a5cc81-1db0-45bf-8c03-8d8eb914ed55",
+      "held": null,
+      "player": [
+        5.361635208129883,
+        1.6349834680557251,
+        -3.7233691215515137
+      ],
+      "yaw": 12.12338116013691,
+      "day": 2,
+      "props": {
+        "brush": [
+          5.849999904632568,
+          1.0109679698944092,
+          -5.300000190734863
+        ],
+        "knife": [
+          0.6609978675842285,
+          0.010928952135145664,
+          -5.449999809265137
+        ],
+        "sagger": [
+          4.868973255157471,
+          0.29894667863845825,
+          5.699999809265137
+        ],
+        "bamboo": [
+          -0.8500000238418579,
+          0.010929707437753677,
+          -5.5
+        ]
+      },
+      "kiln": {
+        "phase": "idle",
+        "temperature": 24,
+        "fuel": 0,
+        "draft": 0.5,
+        "elapsed": 0,
+        "curve": [],
+        "assisted": true
+      },
+      "settings": {
+        "sound": true,
+        "volume": 0.4,
+        "quality": "high",
+        "sensitivity": 1,
+        "bob": true,
+        "assist": true,
+        "subtitles": true,
+        "bindings": {
+          "forward": "KeyW",
+          "back": "KeyS",
+          "left": "KeyA",
+          "right": "KeyD",
+          "interact": "KeyE",
+          "drop": "KeyQ",
+          "journal": "KeyJ",
+          "map": "KeyM"
+        }
+      }
+    },
+    "view": {
+      "focus": null,
+      "modal": "",
+      "nav": 0,
+      "camera": [
+        -1.9985416270678364,
+        1.85,
+        3.15
+      ],
+      "cameraQuaternion": [
+        -0.04262157410008574,
+        -0.1628425629963443,
+        -0.007041254763197911,
+        0.985705900271157
+      ],
+      "cameraFov": 62,
+      "look": {
+        "yaw": 12.12338116013691,
+        "pitch": 0
+      },
+      "pieceBounds": {
+        "x": 996.6974398312891,
+        "y": 435.1133659284006,
+        "w": 33.94558371133667,
+        "h": 13.70752200847528
+      },
+      "hands": [
+        {
+          "name": "player_left_hand",
+          "visible": false,
+          "mirror": 1,
+          "wrist": [
+            -2.033379630263691,
+            1.4871722217198609,
+            2.6307290525731064
+          ],
+          "thumb": [
+            -2.0490381422192874,
+            1.5669768434032396,
+            2.6095087469313416
+          ],
+          "index": [
+            -2.054149747803228,
+            1.541199606752399,
+            2.561075521558371
+          ],
+          "palm": [
+            0.007760067114698607,
+            0.971159638848329,
+            -0.2383038758190026
+          ]
+        },
+        {
+          "name": "player_right_hand",
+          "visible": false,
+          "mirror": -1,
+          "wrist": [
+            -1.654633453937178,
+            1.4871722217198609,
+            2.7593810401910432
+          ],
+          "thumb": [
+            -1.6292896811368924,
+            1.5669768434032396,
+            2.752088335038566
+          ],
+          "index": [
+            -1.595735885984456,
+            1.541199606752399,
+            2.716788920559809
+          ],
+          "palm": [
+            0.13899169498007946,
+            0.971159638848329,
+            -0.19372729440775194
+          ]
+        }
+      ]
+    }
+  }
+}
