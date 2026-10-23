@@ -5,7 +5,7 @@ import urllib.request, hashlib, json
 ROOT = Path(__file__).resolve().parents[1]
 out = ROOT / 'public/assets/textures'
 out.mkdir(parents=True, exist_ok=True)
-assets = {'wood':'wood_table_001','wall':'plastered_wall_02','ground':'cobblestone_floor_05','brick':'red_brick_03'}
+assets = {'wood':'wood_table_001','agedwood':'weathered_brown_planks','wall':'plastered_wall_02','ground':'cobblestone_floor_05','brick':'red_brick_03'}
 def fetch(item):
     key, asset, channel = item
     filename = f'{asset}_{channel}_1k.jpg'
@@ -22,4 +22,4 @@ with ThreadPoolExecutor(max_workers=5) as ex:
     records=list(ex.map(fetch,[(k,a,c) for k,a in assets.items() for c in ['diff','rough','nor_gl']]))
 records=[r for r in records if r]
 (ROOT/'public/assets/provenance.json').write_text(json.dumps(records,indent=2),encoding='utf-8')
-print(f'Downloaded {len(records)}/12 maps',flush=True)
+print(f'Downloaded {len(records)}/{len(assets)*3} maps',flush=True)

@@ -5,3 +5,10 @@ test-results/
 *.blend1
 *.log
 .DS_Store
+qa/video/
+qa/failure.*
+release/
+qa/*.png
+qa/baseline-v01/
+qa/*failure*
+__pycache__/

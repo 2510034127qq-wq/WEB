@@ -21,6 +21,27 @@
     "sha256": "9bf7ddf5721e225c20290f1772ae37f9bdfd49658f6d458259eb794e2149d3cf"
   },
   {
+    "file": "public/assets/textures/agedwood_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/weathered_brown_planks/weathered_brown_planks_diff_1k.jpg",
+    "asset": "https://polyhaven.com/a/weathered_brown_planks",
+    "license": "CC0-1.0",
+    "sha256": "94833feda44e025a9139f7b5723ea84e4f0258d3b54939a79e1013c133085e29"
+  },
+  {
+    "file": "public/assets/textures/agedwood_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/weathered_brown_planks/weathered_brown_planks_rough_1k.jpg",
+    "asset": "https://polyhaven.com/a/weathered_brown_planks",
+    "license": "CC0-1.0",
+    "sha256": "b80c45969d8299ca5f21de969f0269138a5e3e78e51fc911af809683d99c5bc9"
+  },
+  {
+    "file": "public/assets/textures/agedwood_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/weathered_brown_planks/weathered_brown_planks_nor_gl_1k.jpg",
+    "asset": "https://polyhaven.com/a/weathered_brown_planks",
+    "license": "CC0-1.0",
+    "sha256": "8d38f02f121c0e58eaedc19cd668faea21381ae3ff4d5332cd90de75e6683393"
+  },
+  {
     "file": "public/assets/textures/wall_diff.jpg",
     "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/plastered_wall_02/plastered_wall_02_diff_1k.jpg",
     "asset": "https://polyhaven.com/a/plastered_wall_02",

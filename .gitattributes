@@ -7,3 +7,7 @@
 *.blend binary
 *.jpg binary
 *.png binary
+*.mjs text eol=lf
+*.json text eol=lf
+*.cmd text eol=crlf
+*.webm binary

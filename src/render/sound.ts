@@ -1,6 +1,77 @@
 export class Sound {
-  context?:AudioContext;master?:GainNode;fire?:GainNode;enabled=true;volume=0.35;
-  start(){if(this.context){void this.context.resume();return;}this.context=new AudioContext();this.master=this.context.createGain();this.master.gain.value=this.volume;this.master.connect(this.context.destination);const b=this.context.createBuffer(1,this.context.sampleRate*3,this.context.sampleRate);const data=b.getChannelData(0);let last=0;for(let i=0;i<data.length;i++){last=(last+(Math.random()*2-1)*0.02)/1.02;data[i]=last*2.5;}const n=this.context.createBufferSource();n.buffer=b;n.loop=true;const filter=this.context.createBiquadFilter();filter.type='lowpass';filter.frequency.value=650;this.fire=this.context.createGain();this.fire.gain.value=0.015;n.connect(filter).connect(this.fire).connect(this.master);n.start();}
-  update(fire:number,volume:number,enabled:boolean){this.enabled=enabled;this.volume=volume;if(this.master)this.master.gain.setTargetAtTime(enabled?volume:0,this.context!.currentTime,0.1);if(this.fire)this.fire.gain.setTargetAtTime(0.015+fire*0.22,this.context!.currentTime,0.15);}
-  tap(kind:'step'|'clay'|'wood'|'brush'='wood'){if(!this.context||!this.enabled)return;const c=this.context,o=c.createOscillator(),g=c.createGain();o.type=kind==='clay'?'sine':'triangle';o.frequency.setValueAtTime(kind==='step'?85:kind==='clay'?110:kind==='brush'?1100:240,c.currentTime);o.frequency.exponentialRampToValueAtTime(40,c.currentTime+0.1);g.gain.setValueAtTime(kind==='brush'?0.02:0.10,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.13);o.connect(g).connect(this.master!);o.start();o.stop(c.currentTime+0.15);}
+  context?: AudioContext;
+  master?: GainNode;
+  fire?: GainNode;
+  enabled = true;
+  volume = 0.35;
+  start() {
+    if (this.context) {
+      void this.context.resume();
+      return;
+    }
+    this.context = new AudioContext();
+    this.master = this.context.createGain();
+    this.master.gain.value = this.volume;
+    this.master.connect(this.context.destination);
+    const b = this.context.createBuffer(
+      1,
+      this.context.sampleRate * 3,
+      this.context.sampleRate,
+    );
+    const data = b.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < data.length; i++) {
+      last = (last + (Math.random() * 2 - 1) * 0.02) / 1.02;
+      data[i] = last * 2.5;
+    }
+    const n = this.context.createBufferSource();
+    n.buffer = b;
+    n.loop = true;
+    const filter = this.context.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 650;
+    this.fire = this.context.createGain();
+    this.fire.gain.value = 0.015;
+    n.connect(filter).connect(this.fire).connect(this.master);
+    n.start();
+  }
+  update(fire: number, volume: number, enabled: boolean) {
+    this.enabled = enabled;
+    this.volume = volume;
+    if (this.master)
+      this.master.gain.setTargetAtTime(
+        enabled ? volume : 0,
+        this.context!.currentTime,
+        0.1,
+      );
+    if (this.fire)
+      this.fire.gain.setTargetAtTime(
+        0.015 + fire * 0.22,
+        this.context!.currentTime,
+        0.15,
+      );
+  }
+  tap(kind: "step" | "clay" | "wood" | "brush" = "wood") {
+    if (!this.context || !this.enabled) return;
+    const c = this.context,
+      o = c.createOscillator(),
+      g = c.createGain();
+    o.type = kind === "clay" ? "sine" : "triangle";
+    o.frequency.setValueAtTime(
+      kind === "step"
+        ? 85
+        : kind === "clay"
+          ? 110
+          : kind === "brush"
+            ? 1100
+            : 240,
+      c.currentTime,
+    );
+    o.frequency.exponentialRampToValueAtTime(40, c.currentTime + 0.1);
+    g.gain.setValueAtTime(kind === "brush" ? 0.02 : 0.1, c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.13);
+    o.connect(g).connect(this.master!);
+    o.start();
+    o.stop(c.currentTime + 0.15);
+  }
 }

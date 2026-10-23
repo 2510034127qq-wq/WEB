@@ -23,7 +23,7 @@ def mat(name,color,rough=0.8,texture=None):
                     normal=n.new('ShaderNodeNormalMap');normal.inputs['Strength'].default_value=0.55;m.node_tree.links.new(t.outputs['Color'],normal.inputs['Color']);m.node_tree.links.new(normal.outputs[0],p.inputs[inputname])
                 else:m.node_tree.links.new(t.outputs['Color'],p.inputs[inputname])
     return m
-wood=mat('weathered_wood',(0.25,0.16,0.09),texture='wood')
+wood=mat('weathered_wood',(0.25,0.16,0.09),texture='agedwood')
 wall=mat('lime_plaster',(0.73,0.71,0.62),texture='wall')
 ground=mat('courtyard_stone',(0.38,0.38,0.34),texture='ground')
 brick=mat('kiln_firebrick',(0.4,0.22,0.12),texture='brick')
@@ -93,7 +93,7 @@ def roof_shed(cx,cz,w,d,h):
                 base=len(verts)
                 for k in range(5):
                     for t in range(2):
-                        xx=x+k*0.06;zz=z+side*t*0.32;yy=y-t*0.32*0.86/(d/2+0.34)+math.sin(k/4*math.pi)*0.035
+                        xx=x+k*0.06;zz=z+side*t*0.32;yy=y-t*0.32*0.86/(d/2+0.34)*0.78+math.sin(k/4*math.pi)*0.035
                         verts.append(xyz((xx,yy,zz)))
                 for k in range(4):faces.append((base+k*2,base+k*2+1,base+k*2+3,base+k*2+2))
         mesh=bpy.data.meshes.new('roof_tiles');mesh.from_pydata(verts,[],faces);o=bpy.data.objects.new('overlapping_roof_tiles',mesh);bpy.context.collection.objects.link(o);finish(o,'overlapping_roof_tiles',roof)
@@ -132,7 +132,9 @@ for y in [0.42,0.98,1.54,2.08]:
             for x in [-7.72,-7.15]:vessel('drying_bowl',(x,y+0.025,z),[(0,0),(0.05,0),(0.05,0.015),(0.12,0.1),(0.12,0.11),(0.111,0.105),(0.04,0.025),(0,0.025)],porcelain)
 # Water jars, wash trough, glaze jar; these have real interior walls.
 for x,z in [(-6.9,-5.5),(-4.1,-6),(7.4,1.0),(-5.7,6.4)]:
-    vessel('water_jar',(x,0.02,z),[(0,0),(0.25,0),(0.31,0.05),(0.44,0.42),(0.37,0.73),(0.34,0.78),(0.31,0.78),(0.33,0.71),(0.40,0.42),(0.27,0.08),(0,0.08)],clay)
+    outer=[(0.285+0.135*math.sin(t/32*math.pi*.94),0.04+t/32*.70) for t in range(33)]
+    inner=[(r-0.025,y) for r,y in reversed(outer)]
+    vessel('water_jar',(x,0.02,z),[(0,0),(0.25,0)]+outer+[(0.325,.77),(.300,.77)]+inner+[(0,.07)],clay)
     cyl('water_surface',(x,0.65,z),0.346,0.006,water,verts=64)
 for x in [-5.95,-5.18]:vessel('wash_basin',(x,0.97,-5.6),[(0,0),(0.18,0),(0.23,0.12),(0.23,0.14),(0.215,0.14),(0.17,0.02),(0,0.02)],clay)
 for i in range(9):box('clay_brick',(-6.8+(i%3)*0.37,1.0+(i//3)*0.13,5.15),(0.31,0.12,0.26),linen)
@@ -175,7 +177,7 @@ for i in range(13):
                 verts=[xyz((tip[0],tip[1],tip[2])),xyz((tip[0]+side*0.16,tip[1]+0.04,tip[2]+0.04+k*0.06)),xyz((tip[0]+side*0.32,tip[1]-0.12,tip[2]+0.1+k*0.06))]
                 me=bpy.data.meshes.new('leaf');me.from_pydata(verts,[],[(0,1,2),(2,1,0)]);ob=bpy.data.objects.new('leaf',me);bpy.context.collection.objects.link(ob);finish(ob,'leaf',leaf)
 for i in range(20):
-    x=random.uniform(-1.2,1.2);z=6.2+random.uniform(-0.2,0.2);beam('packaging_straw',(x,1.0,z),(x+0.14,1.03,z+0.5),0.006,linen)
+    x=-.95+random.uniform(-.12,.12);z=5.8+random.uniform(-.04,.04);beam('packaging_straw',(x,.976,z),(x+.08,.981,z+.36),0.002,linen)
 
 # Join by material for a low draw-call, editable asset; apply modifiers first.
 for material in list(bpy.data.materials):
@@ -188,6 +190,8 @@ for material in list(bpy.data.materials):
             try:bpy.ops.object.modifier_apply(modifier=mod.name)
             except:pass
     bpy.context.view_layer.objects.active=objects[0];bpy.ops.object.join();bpy.context.object.name='workshop_'+material.name
+for image in bpy.data.images:
+    if image.source=='FILE': image.filepath='//../public/assets/textures/'+Path(image.filepath).name
 bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'art/workshop.blend'))
 # PBR maps are external, shared runtime assets. Avoid repacking them into a second
 # copy in GLB; Blender source retains the complete connected material graphs.
