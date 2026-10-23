@@ -1,0 +1,86 @@
+[
+  {
+    "file": "public/assets/textures/wood_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_table_001/wood_table_001_diff_1k.jpg",
+    "asset": "https://polyhaven.com/a/wood_table_001",
+    "license": "CC0-1.0",
+    "sha256": "460dd08d240f4a1f02982415048c3c5c200f385db212da18dc7e2df68bf4d0be"
+  },
+  {
+    "file": "public/assets/textures/wood_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_table_001/wood_table_001_rough_1k.jpg",
+    "asset": "https://polyhaven.com/a/wood_table_001",
+    "license": "CC0-1.0",
+    "sha256": "a2ca9ae89dfe7b8e2e5e92f0aa43467845417de8a50205b5852ef0d57c7624f9"
+  },
+  {
+    "file": "public/assets/textures/wood_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_table_001/wood_table_001_nor_gl_1k.jpg",
+    "asset": "https://polyhaven.com/a/wood_table_001",
+    "license": "CC0-1.0",
+    "sha256": "9bf7ddf5721e225c20290f1772ae37f9bdfd49658f6d458259eb794e2149d3cf"
+  },
+  {
+    "file": "public/assets/textures/wall_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/plastered_wall_02/plastered_wall_02_diff_1k.jpg",
+    "asset": "https://polyhaven.com/a/plastered_wall_02",
+    "license": "CC0-1.0",
+    "sha256": "0a316ffd3f953a902325c06afb5a5863bbf71d13a353f9d85378562adca79603"
+  },
+  {
+    "file": "public/assets/textures/wall_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/plastered_wall_02/plastered_wall_02_rough_1k.jpg",
+    "asset": "https://polyhaven.com/a/plastered_wall_02",
+    "license": "CC0-1.0",
+    "sha256": "6c317c0e647b02259601690bd33501bbc825858c6d1715cd0f8f46a5b51f6db4"
+  },
+  {
+    "file": "public/assets/textures/wall_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/plastered_wall_02/plastered_wall_02_nor_gl_1k.jpg",
+    "asset": "https://polyhaven.com/a/plastered_wall_02",
+    "license": "CC0-1.0",
+    "sha256": "0f1b4ea0c4707ea133f133c020923bddd8610a43a153281dad15d49f39ad9624"
+  },
+  {
+    "file": "public/assets/textures/ground_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_05/cobblestone_floor_05_diff_1k.jpg",
+    "asset": "https://polyhaven.com/a/cobblestone_floor_05",
+    "license": "CC0-1.0",
+    "sha256": "641f75f0809557c8fdf8b3490e4b93634b0c2694320f38ad65834fead8d5f938"
+  },
+  {
+    "file": "public/assets/textures/ground_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_05/cobblestone_floor_05_rough_1k.jpg",
+    "asset": "https://polyhaven.com/a/cobblestone_floor_05",
+    "license": "CC0-1.0",
+    "sha256": "b6b7a2e7685ffd72a76a583130da8c196211ed7aa44330195878526706f63405"
+  },
+  {
+    "file": "public/assets/textures/ground_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_05/cobblestone_floor_05_nor_gl_1k.jpg",
+    "asset": "https://polyhaven.com/a/cobblestone_floor_05",
+    "license": "CC0-1.0",
+    "sha256": "9787946d15f479388e56576b9b598c357c3894e75f73771d976a3e9d6697ffdb"
+  },
+  {
+    "file": "public/assets/textures/brick_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/red_brick_03/red_brick_03_diff_1k.jpg",
+    "asset": "https://polyhaven.com/a/red_brick_03",
+    "license": "CC0-1.0",
+    "sha256": "9c58254c099b2d211478f50a427fcdde622af24249ff2e94da41fb836f8c857f"
+  },
+  {
+    "file": "public/assets/textures/brick_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/red_brick_03/red_brick_03_rough_1k.jpg",
+    "asset": "https://polyhaven.com/a/red_brick_03",
+    "license": "CC0-1.0",
+    "sha256": "cd865623c1422926848024e877103e9dfe857b2ca8221fce49264b74c9ff48b1"
+  },
+  {
+    "file": "public/assets/textures/brick_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/red_brick_03/red_brick_03_nor_gl_1k.jpg",
+    "asset": "https://polyhaven.com/a/red_brick_03",
+    "license": "CC0-1.0",
+    "sha256": "9bfd45e24720d851017c1e1678b70219c72239b2ac6b25e11d57d458bdab8503"
+  }
+]

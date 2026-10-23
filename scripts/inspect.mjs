@@ -1,0 +1,13 @@
+import {chromium} from '@playwright/test';
+import fs from 'node:fs/promises';
+await fs.mkdir('qa',{recursive:true});
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+await page.goto('http://127.0.0.1:5173/');
+await page.waitForFunction(()=>window.__YAOHUO__,{timeout:60000});
+await page.screenshot({path:'qa/01-intro-v01.png'});
+await page.locator('#start').click();await page.waitForTimeout(1700);
+await page.screenshot({path:'qa/02-courtyard-v01.png'});
+console.log(JSON.stringify({errors,stats:await page.evaluate(()=>window.__YAOHUO__.stats()),state:await page.evaluate(()=>window.__YAOHUO__.view())},null,2));
+await browser.close();
