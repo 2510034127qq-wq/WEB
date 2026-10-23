@@ -1,0 +1,1760 @@
+{
+  "passed": true,
+  "beforeCommit": "28aba15da0d51e34b6d4ad78b9397e80fd2e0dcd",
+  "reason": "Existing binary blobs predated the current Git LFS attributes. Forward normalization only; no history rewrite.",
+  "method": "SHA-256 every tracked binary before and after git add --renormalize; read each index blob and verify LFS pointer oid and byte count against the actual workspace file.",
+  "verifiedFiles": 335,
+  "verifiedBytes": 2237274517,
+  "normalizedFiles": [
+    "public/assets/environment/courtyard-sky-2k.hdr",
+    "public/assets/fab/firewood-pile.glb",
+    "public/assets/fab/hanging-pottery.glb",
+    "public/assets/outskirts/ground_diff.jpg",
+    "public/assets/outskirts/ground_nor_gl.jpg",
+    "public/assets/outskirts/ground_rough.jpg",
+    "public/assets/textures/agedwood_diff.jpg",
+    "public/assets/textures/agedwood_nor_gl.jpg",
+    "public/assets/textures/agedwood_rough.jpg",
+    "public/assets/textures/brick_diff.jpg",
+    "public/assets/textures/brick_nor_gl.jpg",
+    "public/assets/textures/brick_rough.jpg",
+    "public/assets/textures/ground_diff.jpg",
+    "public/assets/textures/ground_nor_gl.jpg",
+    "public/assets/textures/ground_rough.jpg",
+    "public/assets/textures/realism/agedwood_ao.jpg",
+    "public/assets/textures/realism/agedwood_diff.jpg",
+    "public/assets/textures/realism/agedwood_disp.jpg",
+    "public/assets/textures/realism/agedwood_nor_gl.jpg",
+    "public/assets/textures/realism/agedwood_rough.jpg",
+    "public/assets/textures/realism/brick_ao.jpg",
+    "public/assets/textures/realism/brick_diff.jpg",
+    "public/assets/textures/realism/brick_disp.jpg",
+    "public/assets/textures/realism/brick_nor_gl.jpg",
+    "public/assets/textures/realism/brick_rough.jpg",
+    "public/assets/textures/realism/ground_ao.jpg",
+    "public/assets/textures/realism/ground_diff.jpg",
+    "public/assets/textures/realism/ground_disp.jpg",
+    "public/assets/textures/realism/ground_nor_gl.jpg",
+    "public/assets/textures/realism/ground_rough.jpg",
+    "public/assets/textures/realism/wall_ao.jpg",
+    "public/assets/textures/realism/wall_diff.jpg",
+    "public/assets/textures/realism/wall_disp.jpg",
+    "public/assets/textures/realism/wall_nor_gl.jpg",
+    "public/assets/textures/realism/wall_rough.jpg",
+    "public/assets/textures/wall_diff.jpg",
+    "public/assets/textures/wall_nor_gl.jpg",
+    "public/assets/textures/wall_rough.jpg",
+    "public/assets/textures/wood_diff.jpg",
+    "public/assets/textures/wood_nor_gl.jpg",
+    "public/assets/textures/wood_rough.jpg",
+    "public/assets/vegetation/leaf_alpha.png",
+    "public/assets/vegetation/leaf_diff.jpg",
+    "public/assets/vegetation/leaf_nor_gl.jpg",
+    "qa/exports/bowl.glb",
+    "qa/exports/bowl.png",
+    "qa/exports/vase.glb",
+    "qa/exports/vase.png",
+    "qa/review/01-intro-v04.png",
+    "qa/review/02-courtyard-v04.png",
+    "qa/review/03-wet-clay-replay-v04.png",
+    "qa/review/04-paint-replay-v04.png",
+    "qa/review/05-dip-lift-replay-v04.png",
+    "qa/review/06-dip-submerged-replay-v04.png",
+    "qa/review/07-kiln-replay-v04.png",
+    "qa/review/08-porcelain-replay-v04.png",
+    "qa/review/09-wrap-replay-v04.png",
+    "qa/review/10-collection-v04.png",
+    "qa/review/before-glaze-v02.png",
+    "qa/review/before-kiln-v02.png",
+    "qa/review/before-wheel-v01.png",
+    "qa/review/full-loop-wheel-v03.png",
+    "qa/review/full-playthrough-frame-v03.png",
+    "qa/review/immersion/immersion-05-submerged.png",
+    "qa/review/immersion/kiln-controls-firing.png",
+    "qa/review/immersion/realism-courtyard.png",
+    "qa/review/immersion/realism-display.png",
+    "qa/review/immersion/realism-kiln.png",
+    "qa/review/immersion/realism-supply.png",
+    "qa/review/immersion/realism-wheel.png",
+    "qa/review/settings-narrow-v03.png",
+    "qa/review/visual-replay-v04.webm",
+    "qa/walk-review.webm"
+  ],
+  "files": [
+    {
+      "path": "art/craft-tools.blend",
+      "bytes": 3014656,
+      "sha256": "c76f81efa98793568a96e31b55f1990c992816d5f768226a3bf01fbb2c45d5ee"
+    },
+    {
+      "path": "art/hands.blend",
+      "bytes": 954142,
+      "sha256": "aba819e4ee9e13998cc8237be9fec15aef490afdd01477eb6d1e2a450d9164b0"
+    },
+    {
+      "path": "art/potters-wheel.blend",
+      "bytes": 534495,
+      "sha256": "fc230e899b18845c51db1690f9c2d086bc0fc444ab41be0b6fdf96b24a797477"
+    },
+    {
+      "path": "art/sources/fab-hands/Textures/arm_base_2048_AmbientOcclusion.png",
+      "bytes": 967710,
+      "sha256": "ca590f85d8b410681f032651cbb7419036d839ac89164929faa2c445b3d624cf"
+    },
+    {
+      "path": "art/sources/fab-hands/Textures/arm_base_2048_BaseColor.png",
+      "bytes": 13836173,
+      "sha256": "bd3d43a49c010e1ad04a800fd7f38170d3f23a9fd14d8b48af74d62a403eb860"
+    },
+    {
+      "path": "art/sources/fab-hands/Textures/arm_base_2048_Metallic.png",
+      "bytes": 4166,
+      "sha256": "41a8c2d58782abca9d4b79dc2b4d59fa460a731b081212ba4723c7b64017b780"
+    },
+    {
+      "path": "art/sources/fab-hands/Textures/arm_base_2048_Metallic_Roughness_AO.png",
+      "bytes": 1298216,
+      "sha256": "b116dd793a04bd889f72aad4cd504775504eb5a57d2dadc45b07a46966db71fa"
+    },
+    {
+      "path": "art/sources/fab-hands/Textures/arm_base_2048_Normal.png",
+      "bytes": 16800916,
+      "sha256": "e5293c3e538c2dc65b4c12a47bcaf5af6bdeda4633ce23424434d8331851c171"
+    },
+    {
+      "path": "art/sources/fab-hands/Textures/arm_base_2048_Normal_GL.png",
+      "bytes": 16801146,
+      "sha256": "d023bba3ed42454f2ef4f38ca4435dd384a4cc399932d9decc6ed92e49558eeb"
+    },
+    {
+      "path": "art/sources/fab-hands/Textures/arm_base_2048_Roughness.png",
+      "bytes": 115918,
+      "sha256": "153972c531ecc110afff0a1e0cc715bba6e9838843b1940f9d178e1745aab2cc"
+    },
+    {
+      "path": "art/sources/fab-hands/Textures/arm_base_2048_Scattering.png",
+      "bytes": 1216235,
+      "sha256": "8ad98ca4360e228f3102d0d17c6cc0b00adf87ad5eecf8569564fe849fe021df"
+    },
+    {
+      "path": "art/sources/fab-hands/hands.fbx",
+      "bytes": 592140,
+      "sha256": "1e4cf1c1d680fe3d3ee66ee6bf564c6d014607b79af2300dbf8a77e98ffc4300"
+    },
+    {
+      "path": "art/woodland-pine.blend",
+      "bytes": 156724402,
+      "sha256": "e65be0da4247cdaec127a1f4c57e5dc35a4e229add7b38a9b6311628e2fb29e2"
+    },
+    {
+      "path": "art/workshop-components.blend",
+      "bytes": 16915314,
+      "sha256": "a89cec525c8a6ab8e27a22156ba345a09786d03aea9c4a056c69cad1c02b03b7"
+    },
+    {
+      "path": "art/workshop.blend",
+      "bytes": 52660989,
+      "sha256": "ad7e844c802b10430928b19ab3813780ee51c8e9fcb6c56b50647d0340dca4fe"
+    },
+    {
+      "path": "public/assets/clay-surfaces/Clay005_4K-JPG_Color.jpg",
+      "bytes": 13428436,
+      "sha256": "ad6daed8dc2baf40cfb393764b78b395ee757053871c8d7b03da532a4767b068"
+    },
+    {
+      "path": "public/assets/clay-surfaces/Clay005_4K-JPG_Displacement.jpg",
+      "bytes": 10920131,
+      "sha256": "5542154e8ab5bb34ee530d77a14fb03b35b4105b12b82044abb5e8b79e51c043"
+    },
+    {
+      "path": "public/assets/clay-surfaces/Clay005_4K-JPG_NormalGL.jpg",
+      "bytes": 37643178,
+      "sha256": "20080a0c49850f0c995eefe546ee1d463de1c9e5bd57fe91d22cf6c4a9474b66"
+    },
+    {
+      "path": "public/assets/clay-surfaces/Clay005_4K-JPG_Roughness.jpg",
+      "bytes": 10389047,
+      "sha256": "b7d8fb52cf3ee6aca3975911a11847d6a37b8b32fdb8b4101ed1f281567ab819"
+    },
+    {
+      "path": "public/assets/clay-surfaces/Clay006_4K-JPG_Color.jpg",
+      "bytes": 12194267,
+      "sha256": "61a8543df58091e652457fa6fb45ebcb8174c4a3f0ab6e5ff7bbd12007e5b512"
+    },
+    {
+      "path": "public/assets/clay-surfaces/Clay006_4K-JPG_Displacement.jpg",
+      "bytes": 5993786,
+      "sha256": "69764716e21ddb868c6c8efb5292c12097963438d757bdbdc0f318a4e0fb273c"
+    },
+    {
+      "path": "public/assets/clay-surfaces/Clay006_4K-JPG_NormalGL.jpg",
+      "bytes": 32223999,
+      "sha256": "aa60644380083e05a46a2f828606367ed115f4929c729629b43ed31e4630561a"
+    },
+    {
+      "path": "public/assets/clay-surfaces/Clay006_4K-JPG_Roughness.jpg",
+      "bytes": 8110048,
+      "sha256": "9d7cc9c718006e79c64946f00b6e0eff33350da33a73209595ba0f28ecb04d21"
+    },
+    {
+      "path": "public/assets/craft-surfaces/bamboo_ao.jpg",
+      "bytes": 5807076,
+      "sha256": "e0513c94058d0fde28b9399f0c2b2eb500ed6e740dbc5dcd23e86597ac41cc8d"
+    },
+    {
+      "path": "public/assets/craft-surfaces/bamboo_diff.jpg",
+      "bytes": 8447966,
+      "sha256": "2d7892f3ff7456b39355159f659dc28a503466ba463239ec37fda888b2d8de54"
+    },
+    {
+      "path": "public/assets/craft-surfaces/bamboo_disp.jpg",
+      "bytes": 899318,
+      "sha256": "096a8ea77a26dc9f83e5e51e78fcc385eb813573ac9cac8bb10fdd3837128de3"
+    },
+    {
+      "path": "public/assets/craft-surfaces/bamboo_nor_gl.jpg",
+      "bytes": 5565054,
+      "sha256": "5a2a229c092095c6e656f87db1ef07d2e08dc445a8c2cb1efff378015c9da96a"
+    },
+    {
+      "path": "public/assets/craft-surfaces/bamboo_rough.jpg",
+      "bytes": 9939482,
+      "sha256": "de7986e4e57e6cc9aca83242ca62ce484a259067adf969c73d263ab6d2404927"
+    },
+    {
+      "path": "public/assets/craft-surfaces/earthenware_ao.jpg",
+      "bytes": 5656383,
+      "sha256": "f4ad100071add2830d6e781dd92c84ab921c8068a51ad486f96dc50afb7b513f"
+    },
+    {
+      "path": "public/assets/craft-surfaces/earthenware_diff.jpg",
+      "bytes": 7127502,
+      "sha256": "6e24d01ae7135cb43ae5c0621d9c0f724f757c71272b926eb80f853fc98eca47"
+    },
+    {
+      "path": "public/assets/craft-surfaces/earthenware_disp.jpg",
+      "bytes": 3611674,
+      "sha256": "a4821405939414c940ba1da0d2df6e6a51d94333d2e3a84be94b7482c59fdb6e"
+    },
+    {
+      "path": "public/assets/craft-surfaces/earthenware_nor_gl.jpg",
+      "bytes": 12662888,
+      "sha256": "f29e185b9c7548b8604c0c21f2beea83ea685ffcae9d1d6a5a1448c66c2c7d5a"
+    },
+    {
+      "path": "public/assets/craft-surfaces/earthenware_rough.jpg",
+      "bytes": 4590333,
+      "sha256": "5da40d49d65719f7072b63ce04fa8f365a6e5ab48e06a57c73b48ea32a8761ff"
+    },
+    {
+      "path": "public/assets/craft-surfaces/iron_ao.jpg",
+      "bytes": 11195389,
+      "sha256": "20433c66a363fc888705103d91d8fda4483d405d1835802765d9f57922c9af07"
+    },
+    {
+      "path": "public/assets/craft-surfaces/iron_diff.jpg",
+      "bytes": 9734135,
+      "sha256": "400ca39b8a01084ad23b2a0754e7efe84cad24bf415f25f318f450298e54bd4b"
+    },
+    {
+      "path": "public/assets/craft-surfaces/iron_disp.jpg",
+      "bytes": 3292732,
+      "sha256": "90b05730a0c50d1d008b4480706483cdddddbf629ae4d2e6c74b853ff7f71a5b"
+    },
+    {
+      "path": "public/assets/craft-surfaces/iron_metal.jpg",
+      "bytes": 12424702,
+      "sha256": "7ccd60080e0cf6983824bc4c2205209c2cbd3a84958527770e8a76014b458646"
+    },
+    {
+      "path": "public/assets/craft-surfaces/iron_nor_gl.jpg",
+      "bytes": 7515712,
+      "sha256": "d36d2ec0f3b1980286758adea50ca7205f712209bbb1baa8c25bada35398b502"
+    },
+    {
+      "path": "public/assets/craft-surfaces/iron_rough.jpg",
+      "bytes": 11570576,
+      "sha256": "20a839c3f98e0ef8181a5914d99db689c13a7744f5f9cb615eaa873ac41a382c"
+    },
+    {
+      "path": "public/assets/craft-surfaces/linen_ao.jpg",
+      "bytes": 12325760,
+      "sha256": "4254ccb4c4e97b990a4ba3555c1c1ed4dd9432f347ed93a74da030c48d9799bd"
+    },
+    {
+      "path": "public/assets/craft-surfaces/linen_diff.jpg",
+      "bytes": 13064750,
+      "sha256": "dca61aacd6cf3194681070cede3c16a3b61a32cb3eef5bf4c52db698b2286d3d"
+    },
+    {
+      "path": "public/assets/craft-surfaces/linen_disp.jpg",
+      "bytes": 7822500,
+      "sha256": "a935957eb1524b83af006acdc863bacd6f76487df14251467134bdce0c7051f7"
+    },
+    {
+      "path": "public/assets/craft-surfaces/linen_metal.jpg",
+      "bytes": 6735869,
+      "sha256": "9e73ab5bc042979830dd1534aee72c84beb96b658146ca17829394bc7f79aa07"
+    },
+    {
+      "path": "public/assets/craft-surfaces/linen_nor_gl.jpg",
+      "bytes": 13435511,
+      "sha256": "1a591b2acd7e61f3511e483a731c5f18847cce36ec501d669b853b30c203d422"
+    },
+    {
+      "path": "public/assets/craft-surfaces/linen_rough.jpg",
+      "bytes": 18101601,
+      "sha256": "f94c35b6ddf1560783d3cd450810ebe4452a49028d562ce140b3e253b2bbf0b3"
+    },
+    {
+      "path": "public/assets/craft-surfaces/oldplaster_ao.jpg",
+      "bytes": 6265724,
+      "sha256": "ae36e335936ce18589b3496078a27c82784ee4b473b2a7eca73f2e59ee431588"
+    },
+    {
+      "path": "public/assets/craft-surfaces/oldplaster_diff.jpg",
+      "bytes": 12414438,
+      "sha256": "1ee65291339b65a0f36cd4526fb1ed25b3b589f12273d9714a54cb26fa4251d6"
+    },
+    {
+      "path": "public/assets/craft-surfaces/oldplaster_disp.jpg",
+      "bytes": 1084010,
+      "sha256": "26bc31fe9f8c57743fa14a39666b40c6a5f4b89263cf4caa079aeeeb906f1228"
+    },
+    {
+      "path": "public/assets/craft-surfaces/oldplaster_nor_gl.jpg",
+      "bytes": 12125518,
+      "sha256": "4f5cc8b48907d03d30d8e38dc0ed90baf463c56cfdae3803869d02ac833fdd8e"
+    },
+    {
+      "path": "public/assets/craft-surfaces/oldplaster_rough.jpg",
+      "bytes": 4115330,
+      "sha256": "d8e61f2f11798321cc288a5cde03bc7d353c67c0ca61fcaf35667797b5f6b93a"
+    },
+    {
+      "path": "public/assets/craft-surfaces/rooftile_ao.jpg",
+      "bytes": 5301896,
+      "sha256": "14df69c081ac64c777fbd2fd925ab10e24614ebbc96fe8a1916ed316d7ac2a29"
+    },
+    {
+      "path": "public/assets/craft-surfaces/rooftile_diff.jpg",
+      "bytes": 6511882,
+      "sha256": "28b0a8716d492b6d121e62d12f0c23b061a6b41c1f441e7c9e79cc76db161e3f"
+    },
+    {
+      "path": "public/assets/craft-surfaces/rooftile_disp.jpg",
+      "bytes": 1330205,
+      "sha256": "aa7cca403f321c5d2f5773f6fb4d46724065c65702b3cb087f99d90024a00fc4"
+    },
+    {
+      "path": "public/assets/craft-surfaces/rooftile_nor_gl.jpg",
+      "bytes": 4287368,
+      "sha256": "273145a3f65f556310ab993b01812cf46c1502c50ec5ecbf4e35a3887ea447a1"
+    },
+    {
+      "path": "public/assets/craft-surfaces/rooftile_rough.jpg",
+      "bytes": 3718512,
+      "sha256": "0c353bd476d3592a7d3d4dc481dd16238076e03f93634384c2311835d435d1ba"
+    },
+    {
+      "path": "public/assets/craft-surfaces/solidwood_ao.jpg",
+      "bytes": 7297393,
+      "sha256": "94528d388632e0231dedae10b821ea910243b0dd44fb7f9248c7a1fb34ead9fb"
+    },
+    {
+      "path": "public/assets/craft-surfaces/solidwood_diff.jpg",
+      "bytes": 4744081,
+      "sha256": "0c71b4505412216bbe7b2dc2b2bcfe414dfd319d13e48992cdaeb2961f44146f"
+    },
+    {
+      "path": "public/assets/craft-surfaces/solidwood_nor_gl.jpg",
+      "bytes": 3075600,
+      "sha256": "72e01bb23fd35909c98cfcd08361424b429f6bfb576dd4a97b9e69183859aead"
+    },
+    {
+      "path": "public/assets/craft-surfaces/solidwood_rough.jpg",
+      "bytes": 3094322,
+      "sha256": "abd1d509d037c404168fbb23f6cf8ac9bf61bf7dd14b4e4e91a6a022f6d14f37"
+    },
+    {
+      "path": "public/assets/craft-surfaces/timber_ao.jpg",
+      "bytes": 9342904,
+      "sha256": "cca9764875d1e0caa515cae26bd69711bb3e181b6a3308420127246096ecb59d"
+    },
+    {
+      "path": "public/assets/craft-surfaces/timber_diff.jpg",
+      "bytes": 7323613,
+      "sha256": "69be5f261f437ada40375d4f0d7e4e236163124b26bf9cbfd91285573f07fa65"
+    },
+    {
+      "path": "public/assets/craft-surfaces/timber_disp.jpg",
+      "bytes": 1899906,
+      "sha256": "c0f157d15a0f1278c83d0ae08c3915e969f356dff5f22c471bdf4fe1167b5b33"
+    },
+    {
+      "path": "public/assets/craft-surfaces/timber_nor_gl.jpg",
+      "bytes": 13531359,
+      "sha256": "09e29c435cca5a133e97bfcab468fd34e499dbe7e9bc59932172ce449627c33c"
+    },
+    {
+      "path": "public/assets/craft-surfaces/timber_rough.jpg",
+      "bytes": 3952445,
+      "sha256": "fb8a47aec98679f384505e90df4c1ab929561c0e9e7c2616840b3d967b27cf0f"
+    },
+    {
+      "path": "public/assets/craft-tools.glb",
+      "bytes": 2268100,
+      "sha256": "7e3e93cdac0ee5a1e6d76505f963d9832aa1a2da22bc59d4c05d2ce23886d92f"
+    },
+    {
+      "path": "public/assets/environment/courtyard-sky-2k.hdr",
+      "bytes": 5451493,
+      "sha256": "5244534e9cf5b606f2ff513aa00ddb161b0a4826ffd88a0d3bd03ac29247d198"
+    },
+    {
+      "path": "public/assets/fab/firewood-pile.glb",
+      "bytes": 29741732,
+      "sha256": "16aac02cea2b9b325d795fb5820ebe724dcd87cf458d47b81c1d75f3accee417"
+    },
+    {
+      "path": "public/assets/fab/hanging-pottery.glb",
+      "bytes": 12686172,
+      "sha256": "f08fa57836e04b4f78716da358ae087770c0a20ac6abb41376a90678c24d817b"
+    },
+    {
+      "path": "public/assets/hands.glb",
+      "bytes": 31508740,
+      "sha256": "1aa64c52228ea9a727e3a613cb5b9960cb5a07ad37fed70c888bf9f9e316c9a4"
+    },
+    {
+      "path": "public/assets/lighting/courtyard_stone_ao.png",
+      "bytes": 7328245,
+      "sha256": "284b710b86a7bf6e8b6e8c9e4c5ff041933cd0d559eebf30b3c2f3bd816aed53"
+    },
+    {
+      "path": "public/assets/lighting/courtyard_stone_indirect.hdr",
+      "bytes": 24611011,
+      "sha256": "763ea302c1db28790a963905ce2776ad90e8f67bc3a670cb35254ba55a6aef1d"
+    },
+    {
+      "path": "public/assets/lighting/courtyard_stone_indirect.png",
+      "bytes": 14402607,
+      "sha256": "eaf2a8ab438913db824686490ea407e23a9cf6f510944cc790c38726b07eebda"
+    },
+    {
+      "path": "public/assets/lighting/courtyard_stone_sky.png",
+      "bytes": 42449840,
+      "sha256": "ec2e2686a9a7c032047699b0c019206d49614c17c6073a6b7c60b83d0119dd3e"
+    },
+    {
+      "path": "public/assets/lighting/grey_fired_roof_tiles_ao.png",
+      "bytes": 635148,
+      "sha256": "4de0e9132728a56f7ada8e384484cd52ad8b5fef00031fa832824bab8d824d53"
+    },
+    {
+      "path": "public/assets/lighting/grey_fired_roof_tiles_indirect.hdr",
+      "bytes": 4769258,
+      "sha256": "2826e018cafba901d60362f08a99e5d81d67408eb8dab16f61a928ff7b80c495"
+    },
+    {
+      "path": "public/assets/lighting/grey_fired_roof_tiles_sky.png",
+      "bytes": 1319739,
+      "sha256": "d9ac76137fbc4c655a4815aec5850ab18bd8b6d78fe0baceed887e0c142a91c4"
+    },
+    {
+      "path": "public/assets/lighting/ivory_porcelain_ao.png",
+      "bytes": 5555414,
+      "sha256": "d9d11ffa05866fcebd75e5e48ec8413f34649e10b55d190347b92bd8db523131"
+    },
+    {
+      "path": "public/assets/lighting/ivory_porcelain_indirect.hdr",
+      "bytes": 12844313,
+      "sha256": "946e74016ca2cccd8cdff3f52340159f6029fd25dd66012d27e54d6d2316c782"
+    },
+    {
+      "path": "public/assets/lighting/ivory_porcelain_sky.png",
+      "bytes": 13534366,
+      "sha256": "d068b7753a1dc9060a338f01bd1942389af3b8648f41fbcfcb8ddc9ca32184cf"
+    },
+    {
+      "path": "public/assets/lighting/kiln_firebrick_ao.png",
+      "bytes": 3975613,
+      "sha256": "7502e766a9d222831b9c3226e57db24e2e391aa80f27a3185205de52ade18693"
+    },
+    {
+      "path": "public/assets/lighting/kiln_firebrick_indirect.hdr",
+      "bytes": 10843986,
+      "sha256": "df0c1cf13a67937d4416a4282ee94087dd7947ad050cddba3f5c013bbb6e5ee0"
+    },
+    {
+      "path": "public/assets/lighting/kiln_firebrick_indirect.png",
+      "bytes": 2200962,
+      "sha256": "96c84b7932f6e602ad6da66a3a4cdd2d1fb8c681e22696e70d11a0c11d0bbdae"
+    },
+    {
+      "path": "public/assets/lighting/kiln_firebrick_sky.png",
+      "bytes": 8850073,
+      "sha256": "4a9420d065829db034a0525078e9e7d4cb5f80b24fdf96506e5208afd5650c07"
+    },
+    {
+      "path": "public/assets/lighting/lime_plaster_ao.png",
+      "bytes": 2677251,
+      "sha256": "70dee7575021595515ebcb8b0b93dfd2da5c92fe577e44cfc26fd5d0d5811bd6"
+    },
+    {
+      "path": "public/assets/lighting/lime_plaster_indirect.hdr",
+      "bytes": 5164228,
+      "sha256": "9c7e956902eb1cfd331859858779a320871a47feab6b3292aa11b27183382ef6"
+    },
+    {
+      "path": "public/assets/lighting/lime_plaster_indirect.png",
+      "bytes": 3579267,
+      "sha256": "1de0694d69cb5a62b0bd7b8735ba3807680b8ee7309f3c148a585de9c852d194"
+    },
+    {
+      "path": "public/assets/lighting/lime_plaster_sky.png",
+      "bytes": 8911150,
+      "sha256": "71e95b4f40020e34b0e9fb26c1037a52092116a25370ec9afcc0e384d0050f5e"
+    },
+    {
+      "path": "public/assets/lighting/probes/clay.hdr",
+      "bytes": 1696426,
+      "sha256": "d25363a3fe920e398e50936ff988eecaff0771ce3db096952303e2492a5539c6"
+    },
+    {
+      "path": "public/assets/lighting/probes/display.hdr",
+      "bytes": 1666249,
+      "sha256": "43f0bfd7e3feac6f82be804cd455f534ffbcff9572f051ceaaf209ee5fde3cc4"
+    },
+    {
+      "path": "public/assets/lighting/probes/drying.hdr",
+      "bytes": 1674087,
+      "sha256": "46dcdbb9e30751e261b560e3da71ddea1f1f085aeb99732d4aa5079d114ccd68"
+    },
+    {
+      "path": "public/assets/lighting/probes/glaze.hdr",
+      "bytes": 1709175,
+      "sha256": "99c66c70c5057717d8a9ab2b4d7e2e9996813597ee53944a99cd6625934ed2b1"
+    },
+    {
+      "path": "public/assets/lighting/probes/kiln.hdr",
+      "bytes": 1719828,
+      "sha256": "16a7cdf10a5d4234c864ade16a768a7d1f01d4c6e0aa917252f3027b970270b9"
+    },
+    {
+      "path": "public/assets/lighting/probes/paint.hdr",
+      "bytes": 1693200,
+      "sha256": "f24b95faa0a08a3da70aea13846b3cf7b9fd114837e1e78d350e09bac5ad394b"
+    },
+    {
+      "path": "public/assets/lighting/probes/supply.hdr",
+      "bytes": 1685419,
+      "sha256": "4883bcf1092a20a0f55cd3a03d1fd031a1be4b38ba92e8665d0a6136025f5504"
+    },
+    {
+      "path": "public/assets/lighting/probes/wheel.hdr",
+      "bytes": 1700109,
+      "sha256": "4dd51421c6155062159ba24ef8d66e4de183f0122ed1bfdeef25c6984d60c9ef"
+    },
+    {
+      "path": "public/assets/lighting/stone_plinth_ao.png",
+      "bytes": 4213845,
+      "sha256": "a6f7a54087b6aec121841b2464f5bbf3af5b87e0feedc94d6845b34d04b3f1b6"
+    },
+    {
+      "path": "public/assets/lighting/stone_plinth_indirect.hdr",
+      "bytes": 9250274,
+      "sha256": "da4d13ff54d8bcaa117ba0adfdb6cfa942f940d21e02079b4f57a7c867abfb03"
+    },
+    {
+      "path": "public/assets/lighting/stone_plinth_indirect.png",
+      "bytes": 4888424,
+      "sha256": "b2b41137887266975ba888b66e73eee370cdc3b21de28abc8aff37f18475e8e8"
+    },
+    {
+      "path": "public/assets/lighting/stone_plinth_sky.png",
+      "bytes": 13531727,
+      "sha256": "af44cf5a845726e9d1fe48192225f42304abe317b8ead93f118c37d37a5248ad"
+    },
+    {
+      "path": "public/assets/lighting/undyed_linen_ao.png",
+      "bytes": 4098882,
+      "sha256": "dfec470d05333bfd1c601e435b8e9a8b3456537f61a4a25d34ec9cebf1bd935d"
+    },
+    {
+      "path": "public/assets/lighting/undyed_linen_indirect.hdr",
+      "bytes": 7708537,
+      "sha256": "4c430cd3ccb57359fe686aa85924cf09c54233749b6d35936e48ebb4b558b5d2"
+    },
+    {
+      "path": "public/assets/lighting/undyed_linen_sky.png",
+      "bytes": 15052624,
+      "sha256": "138baa9d7117d8156bca5f2c16fa2a7aa2da26668b6e0688211c741c4d2cb72a"
+    },
+    {
+      "path": "public/assets/lighting/unglazed_stoneware_ao.png",
+      "bytes": 2245702,
+      "sha256": "d559ddf5541d5eead345b43d6eb848430b3f66b6401ed242a822637ee937b0e4"
+    },
+    {
+      "path": "public/assets/lighting/unglazed_stoneware_indirect.hdr",
+      "bytes": 8009378,
+      "sha256": "cc53e147e1e6a5d59cad882f813f3ebfc683ac0e9f75f81ca663048a0f4387f3"
+    },
+    {
+      "path": "public/assets/lighting/unglazed_stoneware_sky.png",
+      "bytes": 7522408,
+      "sha256": "9545f62587c293cdb90eebba2c4467f5597f57f64d693bd0d6c358ed3111d1fd"
+    },
+    {
+      "path": "public/assets/lighting/weathered_wood_ao.png",
+      "bytes": 19682964,
+      "sha256": "8b56bb8dda2cc3ad0f6890731eaeb4a63efd8f5048a46578fa68f8c4f7d60e0e"
+    },
+    {
+      "path": "public/assets/lighting/weathered_wood_indirect.hdr",
+      "bytes": 44979356,
+      "sha256": "7a7bc96ec97ef991273fb8fccc9967ef2a973308f42c98752275e21e66b55aaf"
+    },
+    {
+      "path": "public/assets/lighting/weathered_wood_indirect.png",
+      "bytes": 11884614,
+      "sha256": "2ddbd1af7c763b93101be85d2bcf1986d0e78a92676a144748df3ad265d27898"
+    },
+    {
+      "path": "public/assets/lighting/weathered_wood_sky.png",
+      "bytes": 38056942,
+      "sha256": "8c8707b5e74e1e8969c917080f0acc34725245389a779e6ab1d1a4366b8001b6"
+    },
+    {
+      "path": "public/assets/outskirts/ground_diff.jpg",
+      "bytes": 1113899,
+      "sha256": "50a4dda30875020c64385261aa7e00e2155b592302fa6794165f58fae73cbd2c"
+    },
+    {
+      "path": "public/assets/outskirts/ground_nor_gl.jpg",
+      "bytes": 1326812,
+      "sha256": "9c3a0200e02ce40edffbbf9f5f623ef08ea9b1b7812b556182ec978f88887151"
+    },
+    {
+      "path": "public/assets/outskirts/ground_rough.jpg",
+      "bytes": 627507,
+      "sha256": "89d4d50395eb92824a64132c4bc8a5a09009071e0b325ab66dc3104c7a3090ed"
+    },
+    {
+      "path": "public/assets/potters-wheel.glb",
+      "bytes": 785352,
+      "sha256": "89ae077cc65e1c0c1ea5c22660b98b0892079bedfe66c45950e646ac27570027"
+    },
+    {
+      "path": "public/assets/scans/ceramic_pot/ceramic_pot.bin",
+      "bytes": 87952,
+      "sha256": "f47636aa57f9a258c0ae6874763b9fe5dc87943ea932367e9d5526cdf914ff04"
+    },
+    {
+      "path": "public/assets/scans/ceramic_pot/textures/ceramic_pot_arm_4k.jpg",
+      "bytes": 7990270,
+      "sha256": "33de670343de2a4e59484a317175a591fe3999d8feda0a0c21f895ddd25dc6c9"
+    },
+    {
+      "path": "public/assets/scans/ceramic_pot/textures/ceramic_pot_diff_4k.jpg",
+      "bytes": 8953348,
+      "sha256": "36d162502b7493972c7ba15c6eefda3a0f7e6eadc8e0e66cb68e783633f92135"
+    },
+    {
+      "path": "public/assets/scans/ceramic_pot/textures/ceramic_pot_nor_gl_4k.jpg",
+      "bytes": 2979051,
+      "sha256": "2e61ba2a93cc5b67ac49046bd8cf686d2ee97ed37f43e7d1bd8de4145c0dc4c5"
+    },
+    {
+      "path": "public/assets/scans/chinese_console_table/chinese_console_table.bin",
+      "bytes": 505184,
+      "sha256": "70be61585b2b44f8496116cb3665a0f2d121dd2dddac6778aec1c01d2ca9d338"
+    },
+    {
+      "path": "public/assets/scans/chinese_console_table/textures/chinese_console_table_arm_4k.jpg",
+      "bytes": 10794783,
+      "sha256": "00fe3adf1b269bda6554b22ba5d863545dd9fcb886659f1a382710c40ca50525"
+    },
+    {
+      "path": "public/assets/scans/chinese_console_table/textures/chinese_console_table_diff_4k.jpg",
+      "bytes": 9198258,
+      "sha256": "a6a4c2ecbd84d5a16a31ce6441da252f4061be529b3838079384cf491d48fadc"
+    },
+    {
+      "path": "public/assets/scans/chinese_console_table/textures/chinese_console_table_nor_gl_4k.jpg",
+      "bytes": 8736390,
+      "sha256": "b379e4c87947eadb1a242f665a0efe57b7901aa58e3061f8e719e66e3780ab0d"
+    },
+    {
+      "path": "public/assets/scans/chinese_stool/chinese_stool.bin",
+      "bytes": 40172,
+      "sha256": "e35c9440fc0751aa9346e6edbfe0bf948f0f7dd1b40be2ef57d0b6debec5b8af"
+    },
+    {
+      "path": "public/assets/scans/chinese_stool/textures/chinese_stool_arm_4k.jpg",
+      "bytes": 8730439,
+      "sha256": "efd93814696432e2a78ee4eb379794bd6aec9fecda8a987b078f1ebe57f632e0"
+    },
+    {
+      "path": "public/assets/scans/chinese_stool/textures/chinese_stool_diff_4k.jpg",
+      "bytes": 8375881,
+      "sha256": "7b7f8abb9ad5a7964b4ba229d15705ead8eb4990e00fcda14869e3449d44cc38"
+    },
+    {
+      "path": "public/assets/scans/chinese_stool/textures/chinese_stool_nor_gl_4k.jpg",
+      "bytes": 10374911,
+      "sha256": "ad0c2c6cc50bdd5dd088d3c4968bee16544c419e007cb76b0ca37d183314a305"
+    },
+    {
+      "path": "public/assets/scans/fern_02/fern_02.bin",
+      "bytes": 176176,
+      "sha256": "fe1abb762bcbbc7ad9e86925c8080437a62add257d9280e9142fdc85c226e64c"
+    },
+    {
+      "path": "public/assets/scans/fern_02/textures/fern_02_arm_4k.jpg",
+      "bytes": 2569142,
+      "sha256": "0ccfb4d98966c0e69769e9ddd5be872e34bb1d2f8aece3aff6d42fd3e61f8f1c"
+    },
+    {
+      "path": "public/assets/scans/fern_02/textures/fern_02_diff_4k.jpg",
+      "bytes": 3025392,
+      "sha256": "f924354b032fcde77830b0c33c4dff80b4b143f793e70126894788f199b61960"
+    },
+    {
+      "path": "public/assets/scans/fern_02/textures/fern_02_nor_gl_4k.jpg",
+      "bytes": 5058951,
+      "sha256": "14125a030e3fab96f52343215a65167ea46bcabae4bdef3444ba8ae22cb05e41"
+    },
+    {
+      "path": "public/assets/scans/grass_bermuda_01/grass_bermuda_01.bin",
+      "bytes": 32260,
+      "sha256": "b98be48b43afb9d57f6c722d918a49996635064b829b16dc14ef4a48c0f04dae"
+    },
+    {
+      "path": "public/assets/scans/grass_bermuda_01/textures/grass_bermuda_01_arm_4k.jpg",
+      "bytes": 5237653,
+      "sha256": "f424b3c34e6aec76d4354ed6eb2580618f236ecb4a27304cabfb750d9cc73b78"
+    },
+    {
+      "path": "public/assets/scans/grass_bermuda_01/textures/grass_bermuda_01_diff_4k.jpg",
+      "bytes": 1430657,
+      "sha256": "be27e3ea1960e0d281a2837b708794bfa50eed8e816c9d634c158976e13229fa"
+    },
+    {
+      "path": "public/assets/scans/grass_bermuda_01/textures/grass_bermuda_01_nor_gl_4k.jpg",
+      "bytes": 9201751,
+      "sha256": "56d447add0ab649bea01dc7f4a4c65c45dc7693877507f0bd4355366044faa50"
+    },
+    {
+      "path": "public/assets/scans/grass_medium_01/grass_medium_01.bin",
+      "bytes": 1006632,
+      "sha256": "f4587cabdb96a2e96d8be644923dc954a248edfaaa717a0ff224cacb898bee1f"
+    },
+    {
+      "path": "public/assets/scans/grass_medium_01/textures/grass_medium_01_arm_4k.jpg",
+      "bytes": 7482258,
+      "sha256": "dbd3159795534ad228a85850951ae5ca45dc70f29c4b47244e2c18d9dfe81ad0"
+    },
+    {
+      "path": "public/assets/scans/grass_medium_01/textures/grass_medium_01_diff_4k.jpg",
+      "bytes": 3505106,
+      "sha256": "c15c8876a5e2bbee3b2af2d0ad9a0b1db1fb215870e525b56b41a2c82370ab8b"
+    },
+    {
+      "path": "public/assets/scans/grass_medium_01/textures/grass_medium_01_nor_gl_4k.jpg",
+      "bytes": 13029348,
+      "sha256": "fc89808178d9119d61916c1815caa94a7f0f7690c881be665e11282fd7c86007"
+    },
+    {
+      "path": "public/assets/scans/shrub_03/shrub_03.bin",
+      "bytes": 238684,
+      "sha256": "bf4df21e6d2a2bc5f00b4c9142f776171fe7da00cf960001825748067af542b6"
+    },
+    {
+      "path": "public/assets/scans/shrub_03/textures/shrub_03_arm_4k.jpg",
+      "bytes": 3998142,
+      "sha256": "293e21e86c1ec86f4eb548c1902440a4fb1520f001b8ea0674e4a26642120fbb"
+    },
+    {
+      "path": "public/assets/scans/shrub_03/textures/shrub_03_diff_4k.jpg",
+      "bytes": 4550806,
+      "sha256": "43af7cb9a5092e26a53c54616070684f62c48da5a3e0ba2b71b4f9bcb3534c43"
+    },
+    {
+      "path": "public/assets/scans/shrub_03/textures/shrub_03_nor_gl_4k.jpg",
+      "bytes": 4420245,
+      "sha256": "276ea199ee936ad528b977273ac11740bf70371634c5bd6fa349fec8b7438f09"
+    },
+    {
+      "path": "public/assets/scans/tree_stump_01/textures/tree_stump_01_arm_4k.jpg",
+      "bytes": 8875846,
+      "sha256": "62cc9cbff7dd588747c74b573b570a9e667e9692fef0beeab230f8d3ea146957"
+    },
+    {
+      "path": "public/assets/scans/tree_stump_01/textures/tree_stump_01_diff_4k.jpg",
+      "bytes": 9987244,
+      "sha256": "761b5c87bbfdf08afaa25aafcf3db776c57712aec64be11b0469b91b322d6e21"
+    },
+    {
+      "path": "public/assets/scans/tree_stump_01/textures/tree_stump_01_nor_gl_4k.jpg",
+      "bytes": 14989535,
+      "sha256": "52f739e50d3ee5ef63a708ee7ac11d8e4705cf9b549756748563b8681bc59847"
+    },
+    {
+      "path": "public/assets/scans/tree_stump_01/tree_stump_01.bin",
+      "bytes": 965380,
+      "sha256": "b4d9ca70b3c908c4a638fbd6a23ed96c84055bbbf14cf44b89e31ad59fa21e0a"
+    },
+    {
+      "path": "public/assets/scans/wicker_basket_01/textures/wicker_basket_01_arm_4k.jpg",
+      "bytes": 9742801,
+      "sha256": "d744b335ee19240c500a16d390e2cd69bae42f2bbf3c9edfb6c24a8b3ce14747"
+    },
+    {
+      "path": "public/assets/scans/wicker_basket_01/textures/wicker_basket_01_diff_4k.jpg",
+      "bytes": 10258445,
+      "sha256": "1cce738ab33791908c2282a5cde3d97a8f33c525fb67ccf715b547e5879600d3"
+    },
+    {
+      "path": "public/assets/scans/wicker_basket_01/textures/wicker_basket_01_nor_gl_4k.jpg",
+      "bytes": 9118184,
+      "sha256": "b8573dac4aecd51cc1da29ad525e09b674e8d5f0a480615581e2b4c6ad8c4de4"
+    },
+    {
+      "path": "public/assets/scans/wicker_basket_01/wicker_basket_01.bin",
+      "bytes": 624920,
+      "sha256": "8e96025ffcdc64a7e75d1aa980f2491b1219912a4554272cd1e192a966c399f8"
+    },
+    {
+      "path": "public/assets/scans/wooden_bucket_01/textures/wooden_bucket_01_arm_4k.jpg",
+      "bytes": 9654838,
+      "sha256": "b13281020400897ffd8f53f190c0668b361f7206d6e9639b56cb918392bcb87b"
+    },
+    {
+      "path": "public/assets/scans/wooden_bucket_01/textures/wooden_bucket_01_diff_4k.jpg",
+      "bytes": 9975619,
+      "sha256": "d935857879fb848a1507aa51dd8abf628655ccc4b1394403f85f954204cc081d"
+    },
+    {
+      "path": "public/assets/scans/wooden_bucket_01/textures/wooden_bucket_01_nor_gl_4k.jpg",
+      "bytes": 11347909,
+      "sha256": "2989f9d67265fa873ea63c57c7c7c8dbb0838a64c728cad343c1d4c7d6bc1121"
+    },
+    {
+      "path": "public/assets/scans/wooden_bucket_01/wooden_bucket_01.bin",
+      "bytes": 158408,
+      "sha256": "7dbce867270cbb1efe7b0970ebeb9b0d40dd53bcb62f57bfa541c04726ed4b7e"
+    },
+    {
+      "path": "public/assets/scans/wooden_stool_01/textures/wooden_stool_01_diff_4k.jpg",
+      "bytes": 3194681,
+      "sha256": "5efd8c07ac7072d9acc98ce230cd6a6fdc3d869c98cc91652368e58876680f7c"
+    },
+    {
+      "path": "public/assets/scans/wooden_stool_01/textures/wooden_stool_01_nor_gl_4k.jpg",
+      "bytes": 5341905,
+      "sha256": "1cb4cdabd698d4cb0662e7f76b852e0cfd38d474bb43b8ccc7bce21b5297d71a"
+    },
+    {
+      "path": "public/assets/scans/wooden_stool_01/textures/wooden_stool_01_rough_4k.jpg",
+      "bytes": 2842549,
+      "sha256": "8203f11fd61050771eda7cd0e69c57a2b1e9b8c655345b63d6b936a9f4e5cefb"
+    },
+    {
+      "path": "public/assets/scans/wooden_stool_01/wooden_stool_01.bin",
+      "bytes": 290924,
+      "sha256": "a9b21b8c75719057db549dfee5b8c1cc76edc2727367790fb9fc49963e34ae7a"
+    },
+    {
+      "path": "public/assets/terrain/litter_ao.jpg",
+      "bytes": 8437994,
+      "sha256": "d2ba3b68ff3f0d17126ae913dcfb0bbf86051d02db4615b928ec3530c81a0bd2"
+    },
+    {
+      "path": "public/assets/terrain/litter_diff.jpg",
+      "bytes": 10948936,
+      "sha256": "b98f739041c0cb464bce5707b9e5b2818e5f3e9e881e2d4100d0c84e14e98e81"
+    },
+    {
+      "path": "public/assets/terrain/litter_height.jpg",
+      "bytes": 3347235,
+      "sha256": "0dbcec9a6ae39942339946f7565e33a8ff7f6604bde57e0d8e082505a9ebe327"
+    },
+    {
+      "path": "public/assets/terrain/litter_normal.jpg",
+      "bytes": 19432532,
+      "sha256": "a30d6b1e607d4b67c388789393c300a6bd4978fe4fc66198370a4a571639d71e"
+    },
+    {
+      "path": "public/assets/terrain/litter_rough.jpg",
+      "bytes": 8837696,
+      "sha256": "79e6f485cea7e6c419be8754704a5a7e3b2ee1c7b831397f8a297edc69e32d91"
+    },
+    {
+      "path": "public/assets/terrain/path_ao.jpg",
+      "bytes": 6931519,
+      "sha256": "6875d3f9d63b36d35a7964475ed3a6a5898af54e522c0f09e5aa6ef83e2b2292"
+    },
+    {
+      "path": "public/assets/terrain/path_diff.jpg",
+      "bytes": 8266671,
+      "sha256": "9477cb889f26c131c411a771cf057319738f857c6b7288747430122779106da5"
+    },
+    {
+      "path": "public/assets/terrain/path_height.jpg",
+      "bytes": 1777513,
+      "sha256": "ce632f3e5cbe12ea84c090ded6b7cb4136a806b7bbd9ca30bd1d20c04a68fbb4"
+    },
+    {
+      "path": "public/assets/terrain/path_normal.jpg",
+      "bytes": 12041635,
+      "sha256": "c8fc0f7828489268fd588401fe370ed38e3729215ef144c8a969987946859099"
+    },
+    {
+      "path": "public/assets/terrain/path_rough.jpg",
+      "bytes": 6019577,
+      "sha256": "3a1c03fadd995a42e91bc9bbe774fe6e4453d9ca26a3046f799e4046d05be6fd"
+    },
+    {
+      "path": "public/assets/textures/agedwood_diff.jpg",
+      "bytes": 226049,
+      "sha256": "94833feda44e025a9139f7b5723ea84e4f0258d3b54939a79e1013c133085e29"
+    },
+    {
+      "path": "public/assets/textures/agedwood_nor_gl.jpg",
+      "bytes": 223250,
+      "sha256": "8d38f02f121c0e58eaedc19cd668faea21381ae3ff4d5332cd90de75e6683393"
+    },
+    {
+      "path": "public/assets/textures/agedwood_rough.jpg",
+      "bytes": 234672,
+      "sha256": "b80c45969d8299ca5f21de969f0269138a5e3e78e51fc911af809683d99c5bc9"
+    },
+    {
+      "path": "public/assets/textures/brick_diff.jpg",
+      "bytes": 694500,
+      "sha256": "9c58254c099b2d211478f50a427fcdde622af24249ff2e94da41fb836f8c857f"
+    },
+    {
+      "path": "public/assets/textures/brick_nor_gl.jpg",
+      "bytes": 955430,
+      "sha256": "9bfd45e24720d851017c1e1678b70219c72239b2ac6b25e11d57d458bdab8503"
+    },
+    {
+      "path": "public/assets/textures/brick_rough.jpg",
+      "bytes": 286623,
+      "sha256": "cd865623c1422926848024e877103e9dfe857b2ca8221fce49264b74c9ff48b1"
+    },
+    {
+      "path": "public/assets/textures/ground_diff.jpg",
+      "bytes": 482704,
+      "sha256": "641f75f0809557c8fdf8b3490e4b93634b0c2694320f38ad65834fead8d5f938"
+    },
+    {
+      "path": "public/assets/textures/ground_nor_gl.jpg",
+      "bytes": 317881,
+      "sha256": "9787946d15f479388e56576b9b598c357c3894e75f73771d976a3e9d6697ffdb"
+    },
+    {
+      "path": "public/assets/textures/ground_rough.jpg",
+      "bytes": 327784,
+      "sha256": "b6b7a2e7685ffd72a76a583130da8c196211ed7aa44330195878526706f63405"
+    },
+    {
+      "path": "public/assets/textures/realism/agedwood_ao.jpg",
+      "bytes": 600648,
+      "sha256": "69d2aa676f199365dd63253b36db7e1ac78eafbb835055528856c9c3d16d3e5f"
+    },
+    {
+      "path": "public/assets/textures/realism/agedwood_diff.jpg",
+      "bytes": 911358,
+      "sha256": "070ebc4c56a6729ca73a791f7cd3bab7670eb03bfa9ac0218864a554228bcc30"
+    },
+    {
+      "path": "public/assets/textures/realism/agedwood_disp.jpg",
+      "bytes": 374197,
+      "sha256": "4c6777538f4c84a60ad5f6ff80c32f50844d214820fffbeedf5931ba0ce739b4"
+    },
+    {
+      "path": "public/assets/textures/realism/agedwood_nor_gl.jpg",
+      "bytes": 1029733,
+      "sha256": "1c4882afd62de8da66b6e0730894e1a08db1e0cdd2370bd8bce77a6935d8812b"
+    },
+    {
+      "path": "public/assets/textures/realism/agedwood_rough.jpg",
+      "bytes": 944154,
+      "sha256": "6897855d0e2758b612fd8cf478aed01b4992d856987a8b4951e5758a48003df2"
+    },
+    {
+      "path": "public/assets/textures/realism/brick_ao.jpg",
+      "bytes": 1666638,
+      "sha256": "3891e9f879575b70fef2abc854ececd813c906f26bb6e333b9d91f3ff39615ab"
+    },
+    {
+      "path": "public/assets/textures/realism/brick_diff.jpg",
+      "bytes": 2969950,
+      "sha256": "c37ef11bb94a533d1c758c5c7d7199264e90f19b23946766c7c59aa189c11ff6"
+    },
+    {
+      "path": "public/assets/textures/realism/brick_disp.jpg",
+      "bytes": 595929,
+      "sha256": "f48b733ec52e43ef35fd9285a9fd4592356cf25ec86e29d711a0ad33ef3dfc7a"
+    },
+    {
+      "path": "public/assets/textures/realism/brick_nor_gl.jpg",
+      "bytes": 3684630,
+      "sha256": "3bcb8714c450369915a9608a9e5318433a5e5df932184519bdbfd993dec16a9f"
+    },
+    {
+      "path": "public/assets/textures/realism/brick_rough.jpg",
+      "bytes": 1329161,
+      "sha256": "54cbcc8acdbdfbc0a38407509ef72058ef5847b5713e689fa37ce9cc504c41c1"
+    },
+    {
+      "path": "public/assets/textures/realism/ground_ao.jpg",
+      "bytes": 924228,
+      "sha256": "83d60e6755e53dae21c25e09bcbde43fca483f429a38ebec772809d753d8824b"
+    },
+    {
+      "path": "public/assets/textures/realism/ground_diff.jpg",
+      "bytes": 1902487,
+      "sha256": "1cad4662445b6c3699c96c0e4e61efd1f287b441b44ca7047989ae57b281f4d1"
+    },
+    {
+      "path": "public/assets/textures/realism/ground_disp.jpg",
+      "bytes": 377568,
+      "sha256": "bd422bf7befe69659fbfa34813fff12ebaadc23cadfa7183fd90e2fe62f85745"
+    },
+    {
+      "path": "public/assets/textures/realism/ground_nor_gl.jpg",
+      "bytes": 960013,
+      "sha256": "8f427ebe3a45e54c4c5ae7d470380c26cad9a5467c09d6bbec1a657209a0289d"
+    },
+    {
+      "path": "public/assets/textures/realism/ground_rough.jpg",
+      "bytes": 1278811,
+      "sha256": "ba74fe719559b39698899bd3a5d294b460627550796fed4732d43dd6bf2c2e62"
+    },
+    {
+      "path": "public/assets/textures/realism/wall_ao.jpg",
+      "bytes": 2560322,
+      "sha256": "aa1a648a21f1a3bd62221c57ca6d660dc82df4188ea0248f23dcf57fa4a90cc0"
+    },
+    {
+      "path": "public/assets/textures/realism/wall_diff.jpg",
+      "bytes": 2434531,
+      "sha256": "c9f3235d6b28b249dd3c7e6346483f1f6ae11e62b4a81d0397936ff756dfcb1f"
+    },
+    {
+      "path": "public/assets/textures/realism/wall_disp.jpg",
+      "bytes": 2759435,
+      "sha256": "c4b5c1bad7a0842ad56b0b65e451872429fb19502a3a8719a6955a4fe26ec765"
+    },
+    {
+      "path": "public/assets/textures/realism/wall_nor_gl.jpg",
+      "bytes": 4505457,
+      "sha256": "de20f536b1ec428c6de32267b317bbf538ecfa5c42398743f1b702a0f8434071"
+    },
+    {
+      "path": "public/assets/textures/realism/wall_rough.jpg",
+      "bytes": 1475662,
+      "sha256": "be5c23b7d473bf1dea6d3a39b3e0537d5cf9eb990b4148566d20a35dc0902e54"
+    },
+    {
+      "path": "public/assets/textures/wall_diff.jpg",
+      "bytes": 436395,
+      "sha256": "0a316ffd3f953a902325c06afb5a5863bbf71d13a353f9d85378562adca79603"
+    },
+    {
+      "path": "public/assets/textures/wall_nor_gl.jpg",
+      "bytes": 960241,
+      "sha256": "0f1b4ea0c4707ea133f133c020923bddd8610a43a153281dad15d49f39ad9624"
+    },
+    {
+      "path": "public/assets/textures/wall_rough.jpg",
+      "bytes": 173930,
+      "sha256": "6c317c0e647b02259601690bd33501bbc825858c6d1715cd0f8f46a5b51f6db4"
+    },
+    {
+      "path": "public/assets/textures/wood_diff.jpg",
+      "bytes": 215573,
+      "sha256": "460dd08d240f4a1f02982415048c3c5c200f385db212da18dc7e2df68bf4d0be"
+    },
+    {
+      "path": "public/assets/textures/wood_nor_gl.jpg",
+      "bytes": 51927,
+      "sha256": "9bf7ddf5721e225c20290f1772ae37f9bdfd49658f6d458259eb794e2149d3cf"
+    },
+    {
+      "path": "public/assets/textures/wood_rough.jpg",
+      "bytes": 237261,
+      "sha256": "a2ca9ae89dfe7b8e2e5e92f0aa43467845417de8a50205b5852ef0d57c7624f9"
+    },
+    {
+      "path": "public/assets/vegetation/grass-alpha.png",
+      "bytes": 203961,
+      "sha256": "d123f50273ca3b3a17391f962c7e4c598f0068b8268433940df9940a68781530"
+    },
+    {
+      "path": "public/assets/vegetation/grass-medium-alpha.png",
+      "bytes": 3285653,
+      "sha256": "edc5063c8431ba01d456220feedfe04527ae350e3618f69bb306cde04aea6b79"
+    },
+    {
+      "path": "public/assets/vegetation/leaf_alpha.png",
+      "bytes": 264711,
+      "sha256": "4f143e2dda8a6a572f427ac378b92255d21761e4611de0d26e21816c01aa533b"
+    },
+    {
+      "path": "public/assets/vegetation/leaf_diff.jpg",
+      "bytes": 340003,
+      "sha256": "261e7d7a5ac7d2e16ea8823ff8510be8f3f615999724232994039ad2885e5c36"
+    },
+    {
+      "path": "public/assets/vegetation/leaf_nor_gl.jpg",
+      "bytes": 681604,
+      "sha256": "8c72e04fb23e16ae1df79c01385a638473d1dd4dede3d51e83d70153c129f09b"
+    },
+    {
+      "path": "public/assets/vegetation/pine-twig-alpha.png",
+      "bytes": 1915879,
+      "sha256": "ddf47644c0ee1ac7a620e3ec3fc03b408a89045f266b9d15fb1e538a7839ddd8"
+    },
+    {
+      "path": "public/assets/woodland-pine.glb",
+      "bytes": 109947352,
+      "sha256": "90e17b3d8a5a3aaefee0b717e334b728a5f226ab5a6e11931b5f75a7ba3f656f"
+    },
+    {
+      "path": "public/assets/workshop.glb",
+      "bytes": 47455600,
+      "sha256": "de00586e9037a71d25e8130ce7e86f74d58a61be3bf29569ab32e8401bc39661"
+    },
+    {
+      "path": "qa/1080p-r21-high.png",
+      "bytes": 2627874,
+      "sha256": "ebf350f80cc5f165af4168dbedf75330dee632283a860bc45bd5e1d6d9605c50"
+    },
+    {
+      "path": "qa/1080p-r22-high-off.png",
+      "bytes": 2659050,
+      "sha256": "a11988c6e03daf8ae1320c85c96ffe6ebac03611b883bd14f38a38f92e1baad1"
+    },
+    {
+      "path": "qa/1080p-r22-high-on.png",
+      "bytes": 2657869,
+      "sha256": "16a857aae19cc17b4ff3ddf7cd201dfc2b7afb30de2575385eb6a50c02d24fa0"
+    },
+    {
+      "path": "qa/ao-off-r16-gate.png",
+      "bytes": 1766518,
+      "sha256": "e660633f9a52b5d4ba8fbdf4a99b8820467e618992e366e1b9930267754d8261"
+    },
+    {
+      "path": "qa/ao-off-r16-supply.png",
+      "bytes": 1069496,
+      "sha256": "4193ed51e53b31113ca7e64e6bbab3add9fcc26e0b9be18ee244e116442a7f92"
+    },
+    {
+      "path": "qa/ceramic-shadow-off-r14-gate.png",
+      "bytes": 1732902,
+      "sha256": "bb309b6c57fcf5e8c5fdd789d0843c6336f31fbf655d72c656ab1153fa86e8fb"
+    },
+    {
+      "path": "qa/ceramic-shadow-off-r14-wheel.png",
+      "bytes": 1484693,
+      "sha256": "69f790a90939e4417e5e002994430b0d6e7fb1be5c798d0fbb938dc000fd00c9"
+    },
+    {
+      "path": "qa/craft-chain-r13-bowl-painted.png",
+      "bytes": 1432473,
+      "sha256": "460b0319c8f6e6326c6593db745b1a56b0b53e915c7d52505ec21c1ad4d44871"
+    },
+    {
+      "path": "qa/craft-chain-r13-bowl-prepared.png",
+      "bytes": 1404811,
+      "sha256": "d0fb51b808095e3f4da8a16eeff087ab7a0626556c30f47a6b7ec04b7a8ed9db"
+    },
+    {
+      "path": "qa/craft-chain-r13-bowl-shaped.png",
+      "bytes": 1605218,
+      "sha256": "462ea44cb0d7627424ba5c47ddc489e7af400ae995c36449a6e60232eebbd257"
+    },
+    {
+      "path": "qa/craft-chain-r13-failure.png",
+      "bytes": 1556746,
+      "sha256": "03e4f26745ed6d4d5066186c2374ba1249db51a9fd1ba8d2e6e4257f289f3245"
+    },
+    {
+      "path": "qa/craft-chain-r17-bowl-fired.png",
+      "bytes": 1502434,
+      "sha256": "7f233bae6f30015a4b0e3de2e085ae9ec91f9dcec71630cac786ecce6134eac6"
+    },
+    {
+      "path": "qa/craft-chain-r17-bowl-kiln.png",
+      "bytes": 1532663,
+      "sha256": "53bf3573424bc6eb77d6af257c615a8822cad9a03844f5e49a874d169183cb00"
+    },
+    {
+      "path": "qa/craft-chain-r17-bowl-painted.png",
+      "bytes": 1432499,
+      "sha256": "55541bc56273815d5d8d44ccf7163e139440103de6ab1d4cb311789a452f7524"
+    },
+    {
+      "path": "qa/craft-chain-r17-bowl-prepared.png",
+      "bytes": 1405922,
+      "sha256": "be1581cacf9eb0dfb3cb56a4f86a8c5dab596d70bbf080bb83eaaaf52095a701"
+    },
+    {
+      "path": "qa/craft-chain-r17-bowl-shaped.png",
+      "bytes": 1572150,
+      "sha256": "670052dd7a113e332c285cbd25f4fbe53e5495df421225492a7b1a7c240b4031"
+    },
+    {
+      "path": "qa/craft-chain-r17-bowl-submerged.png",
+      "bytes": 1054168,
+      "sha256": "8cd8cecd00912f8e298ca95b4980476ab52ac0ecb251f38225e79abb3ffa2df8"
+    },
+    {
+      "path": "qa/craft-chain-r17-failure.png",
+      "bytes": 1518389,
+      "sha256": "7207a3b7ace555057010f018e22ad1d7b2b706b1fa78a15e316aea51d63d6289"
+    },
+    {
+      "path": "qa/craft-chain-r19-bowl-fired.png",
+      "bytes": 1740775,
+      "sha256": "3d774b885ea7f2168b570ebe539d1950c480690f755056b933fafdd2a2b40517"
+    },
+    {
+      "path": "qa/craft-chain-r19-bowl-kiln.png",
+      "bytes": 1770130,
+      "sha256": "7515b8f5b8c4715a243fab1080c5b36b66fc37d6478131bec00beaae10ad1ef1"
+    },
+    {
+      "path": "qa/craft-chain-r19-bowl-packed.png",
+      "bytes": 1741792,
+      "sha256": "17692c6d3a306d2b79720602bcc37bee84b1d0e3628117d48bc6e2d3369d966a"
+    },
+    {
+      "path": "qa/craft-chain-r19-bowl-painted.png",
+      "bytes": 1564231,
+      "sha256": "86c7f05dbe108ab34e7734951973c4d321353013055acafb73b5db645008b223"
+    },
+    {
+      "path": "qa/craft-chain-r19-bowl-prepared.png",
+      "bytes": 1553277,
+      "sha256": "2e9b70986a3eeaf3a31ac10567e1f3060166ac7bd8ac78c9e3849f1dca82fcdf"
+    },
+    {
+      "path": "qa/craft-chain-r19-bowl-shaped.png",
+      "bytes": 1667463,
+      "sha256": "541e7695e1a86020ea58b163f6909fc7cc6209a3f2c2428d8dc4d6c943cac567"
+    },
+    {
+      "path": "qa/craft-chain-r19-bowl-submerged.png",
+      "bytes": 1597024,
+      "sha256": "273afd3f2b2205c8ddc1619978f08f8128fa4db821f6ff232ed933c694b4329f"
+    },
+    {
+      "path": "qa/craft-chain-r19-vase-fired.png",
+      "bytes": 1806078,
+      "sha256": "b704046243684d4d71d603c4f9ed2c8116973e32e061be51368b55dcf1a4b01e"
+    },
+    {
+      "path": "qa/craft-chain-r19-vase-kiln.png",
+      "bytes": 1768969,
+      "sha256": "77b87b21b7c9280993d7a0d2268a3493d29d7f080808d5fdb87fcff290830e24"
+    },
+    {
+      "path": "qa/craft-chain-r19-vase-packed.png",
+      "bytes": 1767637,
+      "sha256": "c936df69f82a421a6aa33ec207dca1973aafe4e378b8a896c5c833ae488079bf"
+    },
+    {
+      "path": "qa/craft-chain-r19-vase-painted.png",
+      "bytes": 1568657,
+      "sha256": "09f25272ca014c645bf5bec6c8d61609207d7ec339e3db3d4fc036b98dbc0576"
+    },
+    {
+      "path": "qa/craft-chain-r19-vase-prepared.png",
+      "bytes": 1559545,
+      "sha256": "b82331a93b17c4afe5ccd9a090c720f5a840431e6d0b1f7b4782223d325da4df"
+    },
+    {
+      "path": "qa/craft-chain-r19-vase-shaped.png",
+      "bytes": 1628370,
+      "sha256": "35999952052e6df13fce609c2211040fae163b37d00f4586f8928460ca9d53d7"
+    },
+    {
+      "path": "qa/craft-chain-r19-vase-submerged.png",
+      "bytes": 1595955,
+      "sha256": "e07ba6510533544149c1706202dbc60012cb08c2ac964246930858e883936f27"
+    },
+    {
+      "path": "qa/export-r18-display.png",
+      "bytes": 1754937,
+      "sha256": "eff7ff578c33dd552e344540b48b56e247069e0ac7c1534d2041e3a325f29a82"
+    },
+    {
+      "path": "qa/exports/bowl.glb",
+      "bytes": 688140,
+      "sha256": "167b83ba96562a379505931ac7836610fc5518821de6cf998132253642bee2de"
+    },
+    {
+      "path": "qa/exports/bowl.png",
+      "bytes": 2037615,
+      "sha256": "d8c3ea216b9e388dd5630d102f3b1f96ef54421c08c199050ba362af1a098ed5"
+    },
+    {
+      "path": "qa/exports/craft-chain-r19/bowl.glb",
+      "bytes": 90974868,
+      "sha256": "e078388de1e638743c7fa19a356d0cf61a8bf28f4ed91789143cdf182ae029ba"
+    },
+    {
+      "path": "qa/exports/craft-chain-r19/bowl.png",
+      "bytes": 2569453,
+      "sha256": "fce992b00d15ccd7c1b670aa8162f6be4a31ac6f6abc65920bb512a6a0662fa7"
+    },
+    {
+      "path": "qa/exports/craft-chain-r19/vase.glb",
+      "bytes": 90972464,
+      "sha256": "80659abd4abcf99ee6b72e0b9335992d3c017b0aff4889ba968bd124f8b4b5b2"
+    },
+    {
+      "path": "qa/exports/craft-chain-r19/vase.png",
+      "bytes": 2656980,
+      "sha256": "1dfd02fb24540ccaa2ced00bdc167968d731c5ccff1ebb424b90170695577aab"
+    },
+    {
+      "path": "qa/exports/export-r18.glb",
+      "bytes": 90974712,
+      "sha256": "afe054efc04d4dc7be32cf6ba47c1d6b48ed2e3300a0674f865e04a87e0562cc"
+    },
+    {
+      "path": "qa/exports/export-r18.png",
+      "bytes": 2579411,
+      "sha256": "5209033e958f04649db9b20355157ffb4e843ce52ff22c0c687ab2a01758e170"
+    },
+    {
+      "path": "qa/exports/vase.glb",
+      "bytes": 686040,
+      "sha256": "4dfc33e5df8e8eb6099ab202d4b61684f17c5a8a038d5991c66cb8f6465986df"
+    },
+    {
+      "path": "qa/exports/vase.png",
+      "bytes": 1645835,
+      "sha256": "564d37bb9857d92b4319d41a707af6477bcbaa06d1c2159ddc0244e5530542ae"
+    },
+    {
+      "path": "qa/kiln-r21-cooling.png",
+      "bytes": 1773008,
+      "sha256": "9dcb9972e8ad6685447cee5e8b25dec668b1ed5536d2db78b49aabafd33f8d41"
+    },
+    {
+      "path": "qa/kiln-r21-firing.png",
+      "bytes": 1766996,
+      "sha256": "939a84cba95c92cc93303f7120d675fab08eae0323a1148d21e819df4e50def7"
+    },
+    {
+      "path": "qa/kiln-r21-loaded.png",
+      "bytes": 1805185,
+      "sha256": "65a77bed94966481f40a5fa0d3d0a8d1f629320314af816ce16aba3e68dc4787"
+    },
+    {
+      "path": "qa/kiln-r22-cooling.png",
+      "bytes": 1772944,
+      "sha256": "0b35c8b11de4d624dd5651f94aa239848921a9e9e2447899079c0603045ec319"
+    },
+    {
+      "path": "qa/kiln-r22-firing.png",
+      "bytes": 1766630,
+      "sha256": "4c854e073cf03523c338a0e0adcbd4a05fe15b539330a396f62a05b38b2fd298"
+    },
+    {
+      "path": "qa/kiln-r22-loaded.png",
+      "bytes": 1802942,
+      "sha256": "79a54940db55475392357e93a25f8b9d3b837b8fc63e303ac9d3f2586507d651"
+    },
+    {
+      "path": "qa/landscape-r12-display.png",
+      "bytes": 1751572,
+      "sha256": "ec859ee3dcc8f732eccab30eae79492b5a7fc3ff015692794e80aaedd0526d3b"
+    },
+    {
+      "path": "qa/landscape-r12-gate.png",
+      "bytes": 1779307,
+      "sha256": "c616a9737335a83f899cd2837b52138e3b2c4934dd8de9af5159efe754dac149"
+    },
+    {
+      "path": "qa/photographic-r13-courtyard.png",
+      "bytes": 1617610,
+      "sha256": "7e8fcb1dabf0141ae172e985cdbd6aa311d54751422228d73cd6e1259b457844"
+    },
+    {
+      "path": "qa/photographic-r13-display.png",
+      "bytes": 1646278,
+      "sha256": "61d60e511293d1de33decaef77a278b3f4c4bf886e4776360e91585a51ce851e"
+    },
+    {
+      "path": "qa/photographic-r13-gate.png",
+      "bytes": 1721834,
+      "sha256": "3998a34d7350b450f6f5b0d9f44bc6a9d91e024ee4e4414d627be3eb3920455c"
+    },
+    {
+      "path": "qa/photographic-r13-glaze.png",
+      "bytes": 1120723,
+      "sha256": "4a707aac8ba1e818ed06a7d8901ad7987b44d3a3ea3accf6bd8a6dafa36b356e"
+    },
+    {
+      "path": "qa/photographic-r13-kiln.png",
+      "bytes": 920287,
+      "sha256": "860431886125dc9f85da4380babcc13a9de0ec33d74a35d73a7d45c70190dd08"
+    },
+    {
+      "path": "qa/photographic-r13-paint.png",
+      "bytes": 1435061,
+      "sha256": "e7b297848cab0f7e871c5942ca6fed92693ef04e5eac0fbdb21c77912a7453b4"
+    },
+    {
+      "path": "qa/photographic-r13-supply.png",
+      "bytes": 1089263,
+      "sha256": "36abb26e7610266e941bc3f2314eb3eacddc05b82092e4d779959be61398697d"
+    },
+    {
+      "path": "qa/photographic-r13-wheel.png",
+      "bytes": 1482173,
+      "sha256": "3a4493b24d87dc300109ac712bcb9910d41de5261b85145d17725e07b793abcc"
+    },
+    {
+      "path": "qa/photographic-r14-display.png",
+      "bytes": 1647204,
+      "sha256": "b77f4e4270ea6d957cd57ab20a052f178e1d38a4a0018c09d15a2657157a00c9"
+    },
+    {
+      "path": "qa/photographic-r14-gate.png",
+      "bytes": 1734760,
+      "sha256": "c58a2b5c35be0204d89e80eef996dad5933433eec2f41b7f3ca755062f547dec"
+    },
+    {
+      "path": "qa/photographic-r14-supply.png",
+      "bytes": 1056920,
+      "sha256": "9358d618b448320707e8e38df7a5348327cd2e091b0b3d7236a1809b226cd251"
+    },
+    {
+      "path": "qa/photographic-r14-wheel.png",
+      "bytes": 1509379,
+      "sha256": "8bb643ecacf83e057455ad19dbdc03e1914f96c6af4b88cb3dc4463ba84021d5"
+    },
+    {
+      "path": "qa/photographic-r18-courtyard.png",
+      "bytes": 1657054,
+      "sha256": "781a4ce6655a07cf425af1124d935b1c7fb50d4375db28c3cff56bc64ac690be"
+    },
+    {
+      "path": "qa/photographic-r18-display.png",
+      "bytes": 1887998,
+      "sha256": "d0b5590058d056c6d350ed22dee6300a2f2e96a3df60321bea5eefda2690fbb7"
+    },
+    {
+      "path": "qa/photographic-r18-gate.png",
+      "bytes": 1932866,
+      "sha256": "2b2112af8d76799a159d3487d28ce237c2bad82abc5e364b3f8155cd2353a35a"
+    },
+    {
+      "path": "qa/photographic-r18-glaze.png",
+      "bytes": 1723487,
+      "sha256": "eef94c06a7238cb78f3eff393bf183781ec20c34ed006dad6e16f81fddde992b"
+    },
+    {
+      "path": "qa/photographic-r18-kiln.png",
+      "bytes": 1836084,
+      "sha256": "27282fbe2a49be53553338c38fffae9ce452573269d0e8efe87a538034227da3"
+    },
+    {
+      "path": "qa/photographic-r18-paint.png",
+      "bytes": 1572514,
+      "sha256": "202879755550bdc48602673dcf0162ad2bfb131a3390e3a5aaa9fc9a4cf2dcb2"
+    },
+    {
+      "path": "qa/photographic-r18-supply.png",
+      "bytes": 1633365,
+      "sha256": "c6d4d085ff3c16224fa227eb5bdadbd077f7e0e1d91fb32fb2532b806cb42972"
+    },
+    {
+      "path": "qa/photographic-r18-wheel.png",
+      "bytes": 1572275,
+      "sha256": "4cb08ec38379d6502da8958dc76cea726f708e7b9efe7c4930eff10a26c6cb87"
+    },
+    {
+      "path": "qa/photographic-r20-courtyard.png",
+      "bytes": 1650760,
+      "sha256": "57d5f7ce4dd70f8bc0c777940d0cdff76802205c9cd3a8ea6bce193d9e4f3e82"
+    },
+    {
+      "path": "qa/photographic-r20-display.png",
+      "bytes": 1890977,
+      "sha256": "e6a17bfa5d887f14638749b55d879a8a30f0ec6896d39f2750a0a09457217f05"
+    },
+    {
+      "path": "qa/photographic-r20-gate.png",
+      "bytes": 1931298,
+      "sha256": "86621742ce1950c0e3814943b3417ad2f78479b7070a56796998f55b503370b9"
+    },
+    {
+      "path": "qa/photographic-r20-glaze.png",
+      "bytes": 1722197,
+      "sha256": "6835aa976e69e28c1bbf9460084f22029698cbd0a25589896abaec6f30a10964"
+    },
+    {
+      "path": "qa/photographic-r20-kiln.png",
+      "bytes": 1839219,
+      "sha256": "c2ca3aec8ed89282cada93f348cd6774743ed279096130ff779ced91d554d9ff"
+    },
+    {
+      "path": "qa/photographic-r20-paint.png",
+      "bytes": 1582982,
+      "sha256": "965809df7470c464856a6408f2de090fb960f5c60837a56a1493160e63625404"
+    },
+    {
+      "path": "qa/photographic-r20-supply.png",
+      "bytes": 1649657,
+      "sha256": "204e5d666bfd383fc9f77c46ee104a4344348cd4f27e57962aecc9d492a75e16"
+    },
+    {
+      "path": "qa/photographic-r20-wheel.png",
+      "bytes": 1588041,
+      "sha256": "115578004334d94ce7e71ab53c739941acf48fa5845dfc1ab761f961d7e8eff5"
+    },
+    {
+      "path": "qa/photographic-r21-gate.png",
+      "bytes": 1937038,
+      "sha256": "98f46a7922d3b125597fc12e0db8dce35a69d6b7dd1f3aea38ea86d5834fc11a"
+    },
+    {
+      "path": "qa/photographic-r21-supply.png",
+      "bytes": 1647647,
+      "sha256": "0b97120f4dbae2818ec3fbc9043f9d56b15781f8b2ceefaee9d165852b570f1f"
+    },
+    {
+      "path": "qa/review/01-intro-v04.png",
+      "bytes": 1503728,
+      "sha256": "89ed9335f10c7b28b0d35c452dad7dae35fc22f2fce338e94fa7c7c64279c070"
+    },
+    {
+      "path": "qa/review/02-courtyard-v04.png",
+      "bytes": 1518695,
+      "sha256": "be3ad68576120c6d1ea5f5289805eff156f716e0006a9b811e4ab820d991ef9e"
+    },
+    {
+      "path": "qa/review/03-wet-clay-replay-v04.png",
+      "bytes": 1316318,
+      "sha256": "6cfc9d1863273c68504ce5471a98333fc03632fbbb07f92efe753efb2fa65761"
+    },
+    {
+      "path": "qa/review/04-paint-replay-v04.png",
+      "bytes": 1229683,
+      "sha256": "6094d6697a9067502577a5c1724cf5c77ca00257c2e9ce6d22afd1a2f344b49c"
+    },
+    {
+      "path": "qa/review/05-dip-lift-replay-v04.png",
+      "bytes": 1285310,
+      "sha256": "cd93aae46c2954cb495ade38b0aa415aa68215eea8db4e5fa349aed3831ff313"
+    },
+    {
+      "path": "qa/review/06-dip-submerged-replay-v04.png",
+      "bytes": 1360680,
+      "sha256": "88b3f9fde7615be6a7bfc2668876cf6e2166864c5d0cb22c8d31623fb62d5f1a"
+    },
+    {
+      "path": "qa/review/07-kiln-replay-v04.png",
+      "bytes": 1438098,
+      "sha256": "23f6f2f05a0c7f9273e1e6a9ae38a74f49b59343fbe54440535df3fa7992135d"
+    },
+    {
+      "path": "qa/review/08-porcelain-replay-v04.png",
+      "bytes": 971154,
+      "sha256": "58719bc61858e1ee05351957ba6b8eecf747da3cbcfa417fd29435133b5024c4"
+    },
+    {
+      "path": "qa/review/09-wrap-replay-v04.png",
+      "bytes": 760846,
+      "sha256": "6b5e59c645167a4e1f9da10d32003c487b436cdb3913d0c4d8b2d31e7c4eb07c"
+    },
+    {
+      "path": "qa/review/10-collection-v04.png",
+      "bytes": 192932,
+      "sha256": "c414464f6bf9c69fd71ae1a8bf5c345c7fea7c8420499520fe2827badb1c7c8c"
+    },
+    {
+      "path": "qa/review/before-glaze-v02.png",
+      "bytes": 1443792,
+      "sha256": "add607ce693e8aef333583387cbaa44d4e221daf1573343a85a1be3192be70b6"
+    },
+    {
+      "path": "qa/review/before-kiln-v02.png",
+      "bytes": 467938,
+      "sha256": "e1c630dad8eed7e8780a46bbffaed0b31e303e0b98a11d8093925c7ed32d8011"
+    },
+    {
+      "path": "qa/review/before-wheel-v01.png",
+      "bytes": 823612,
+      "sha256": "28d014af0be275a2bb5d89f7cb7b144206eff9bb42b5c1d11a5ee342dc5680d3"
+    },
+    {
+      "path": "qa/review/full-loop-wheel-v03.png",
+      "bytes": 1270050,
+      "sha256": "501e8bf1ef35ed3d63f9f7f556983ee09965901473f044b5f6a3ac9b5334beb6"
+    },
+    {
+      "path": "qa/review/full-playthrough-frame-v03.png",
+      "bytes": 1351888,
+      "sha256": "f09e3fe4fbabfede8d00334542d573adca7f38cd6fe527298a749ac43b3c4f8a"
+    },
+    {
+      "path": "qa/review/immersion/immersion-05-submerged.png",
+      "bytes": 1939614,
+      "sha256": "8a562d2ab0593463ee72af3e1a860a0faac26fb77baa1c7cf297ed9b96114302"
+    },
+    {
+      "path": "qa/review/immersion/kiln-controls-firing.png",
+      "bytes": 1477211,
+      "sha256": "2a62f3fd349f5b9207780737d5e3ac5c97c459eaf12ac78f736f933db267ec85"
+    },
+    {
+      "path": "qa/review/immersion/realism-courtyard.png",
+      "bytes": 1742472,
+      "sha256": "7ff36d3f03883b04a2bfffe229dfc31cf5e5aae6d9eb4edeef0db151f7b2d172"
+    },
+    {
+      "path": "qa/review/immersion/realism-display.png",
+      "bytes": 1745063,
+      "sha256": "f7505258bcd3f204929de58165c045439593d1e2ccbda0afe9e112d805140557"
+    },
+    {
+      "path": "qa/review/immersion/realism-kiln.png",
+      "bytes": 2254207,
+      "sha256": "f8f3b942ae6c4a27cb7744cb0926db2a5bd68e4f45a8090703f085d056e150cc"
+    },
+    {
+      "path": "qa/review/immersion/realism-supply.png",
+      "bytes": 1824226,
+      "sha256": "b19f5b8f7fc3262dc4775cf94402d742b7b9759ad1db06db66dedc16bd685782"
+    },
+    {
+      "path": "qa/review/immersion/realism-wheel.png",
+      "bytes": 1789242,
+      "sha256": "c0cb72c3023709011c6b8a5c7ff9b32801ad2eda8b6ba834a824d4b9278f9263"
+    },
+    {
+      "path": "qa/review/settings-narrow-v03.png",
+      "bytes": 40438,
+      "sha256": "f2c211d1a5f294c141bfdb539223c37241136202b37185a5a31b989fbe30f969"
+    },
+    {
+      "path": "qa/review/visual-replay-v04.webm",
+      "bytes": 11718632,
+      "sha256": "b2cf2e7d6755c7855e484e11a90feb07e597526e25e7c796c354487de394983d"
+    },
+    {
+      "path": "qa/shadow-cache-r22-contact.png",
+      "bytes": 3121802,
+      "sha256": "0b1e38e563ee237979bd92b06d2fdee406f48ba1b993e39f58b173a4c1ea70dd"
+    },
+    {
+      "path": "qa/shadow-cache-r22-off-courtyard.png",
+      "bytes": 1698285,
+      "sha256": "59337752f268e6e5b8085799c167917c339d911f52555ddb35a417355c2093e3"
+    },
+    {
+      "path": "qa/shadow-cache-r22-off-gate.png",
+      "bytes": 1935108,
+      "sha256": "3940390c488fa56fb7932848fe962b2fb0e9127736882241af4b24f432133bf9"
+    },
+    {
+      "path": "qa/shadow-cache-r22-off-kiln.png",
+      "bytes": 1465374,
+      "sha256": "cd91b4db914ff723628fc4831c805c8b3ee0771533047ed145143ba62da3a5a8"
+    },
+    {
+      "path": "qa/shadow-cache-r22-off-wheel.png",
+      "bytes": 1617431,
+      "sha256": "36dc72f0f1f9f11b8e6c3176afa6f8d9dc94a2a53ece64d49fd982d054520124"
+    },
+    {
+      "path": "qa/shadow-cache-r22-on-courtyard.png",
+      "bytes": 1695336,
+      "sha256": "96ef122da2528978848cd52010cdde4d7045a6b48a733c54e809f7781eda7eac"
+    },
+    {
+      "path": "qa/shadow-cache-r22-on-gate.png",
+      "bytes": 1931871,
+      "sha256": "b5303d0db6be0b20c495562ccee90dcae80c3432ed1a3b2023c630e112f6e023"
+    },
+    {
+      "path": "qa/shadow-cache-r22-on-kiln.png",
+      "bytes": 1464448,
+      "sha256": "3998bec5563e117bcbdaf355fbdfe47f48fdbe78ac6af3eccd48111f114482f9"
+    },
+    {
+      "path": "qa/shadow-cache-r22-on-wheel.png",
+      "bytes": 1614038,
+      "sha256": "0a3c7d0929d8ddd7f961afee0ea6874b887d77224a9b8c90361c971071ac1d15"
+    },
+    {
+      "path": "qa/shadow-shell-r15-gate.png",
+      "bytes": 1746967,
+      "sha256": "a8fab13e2c3a599cdb48e3800d2db581c18e6fff7a60085d56100c3ca80e9744"
+    },
+    {
+      "path": "qa/shadow-shell-r15-wheel.png",
+      "bytes": 1486294,
+      "sha256": "86cb136a00b5b7f82e2c081b7c90e26cac0c1fa0b04af6c64dec7977e8a3d401"
+    },
+    {
+      "path": "qa/surface-light-r16-gate.png",
+      "bytes": 1746298,
+      "sha256": "21f8f80b155d547d6fc1f9dd3372a2f9328333300bfd1f78e294a46371217efe"
+    },
+    {
+      "path": "qa/surface-light-r16-supply.png",
+      "bytes": 1064131,
+      "sha256": "4ff3030d28c1ebf068c9f54c160f8b964563dd9918484664c0bc282e9943e138"
+    },
+    {
+      "path": "qa/walk-r21-contact.png",
+      "bytes": 2991492,
+      "sha256": "73679c06c3126fabf7df1950ab5673a7c619b36f46672186b0e58b3c4b32e88e"
+    },
+    {
+      "path": "qa/walk-r21-crouched.png",
+      "bytes": 1662497,
+      "sha256": "3a7a20e75f14656ff1d24b0b445dad92e71348742eb39b5643ebf3850febd3ce"
+    },
+    {
+      "path": "qa/walk-r21-daylight.png",
+      "bytes": 1637218,
+      "sha256": "742ec0ceeff79bf2278e4e8f4ae42c6a6e066edccfafbb0e9bd82dc57dab2e7a"
+    },
+    {
+      "path": "qa/walk-r21-review.webm",
+      "bytes": 33053190,
+      "sha256": "db248a17c8f89f3b1691d73721ee7a82ef72515a11972cb68dbc42da53325d66"
+    },
+    {
+      "path": "qa/walk-r21-sheltered.png",
+      "bytes": 1652711,
+      "sha256": "dae9a37fd2f63b7791745d6e8e4be9f9b8b056998fac5cb587b7b6fb525a405e"
+    },
+    {
+      "path": "qa/walk-r21-standing.png",
+      "bytes": 1660121,
+      "sha256": "7cf91dd56637f223beca2f1b62e9ed6ae6ab3a83faa9357f707f64f4d50fc227"
+    },
+    {
+      "path": "qa/walk-review.webm",
+      "bytes": 8762698,
+      "sha256": "751be41d60b899710e8cd270e57771045ff6eeaaf07db43fa4ebd1d121204f21"
+    }
+  ]
+}
