@@ -17,6 +17,7 @@ const read = () =>
   page.evaluate(() => ({
     state: window.__YAOHUO__.snapshot(),
     view: window.__YAOHUO__.view(),
+    stats: window.__YAOHUO__.stats(),
   }));
 const wait = (ms) => page.waitForTimeout(ms);
 const assert = (condition, name, evidence) => {
@@ -178,6 +179,11 @@ try {
       Math.abs(manual.state.kiln.draft - beforeDraft.state.kiln.draft) > 0.15,
     "damper drag changes draft and disengages assistance",
     { before: beforeDraft.state.kiln, after: manual.state.kiln },
+  );
+  assert(
+    manual.stats.shadowUpdates > beforeDraft.stats.shadowUpdates,
+    "moving the damper refreshes the solar shadow map",
+    { before: beforeDraft.stats, after: manual.stats },
   );
   await wait(350);
   const persistedDraft = await read();

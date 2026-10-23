@@ -14,6 +14,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { WorkshopAO } from "./workshop-ao";
 import { ExposureMeter } from "./exposure";
+import { SunShadowCache } from "./sun-shadow-cache";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { clone } from "three/addons/utils/SkeletonUtils.js";
@@ -44,6 +45,8 @@ export class Workshop {
   composer: EffectComposer;
   ao: WorkshopAO;
   exposure: ExposureMeter;
+  private shadowCache = new SunShadowCache();
+  private reuseShadows = new URLSearchParams(location.search).get('shadow-cache') !== 'off';
   board: THREE.Mesh;
   contact: THREE.Vector3 | null = null;
   contactNormal = new THREE.Vector3(0, 0, 1);
@@ -1121,6 +1124,7 @@ export class Workshop {
         this.camera.projectionMatrixInverse,
       );
     }
+    this.shadowCache.update(this.scene, this.sun, this.camera, this.reuseShadows);
     this.composer.render();
   }
   hitWheel(x: number, y: number) {
@@ -1190,6 +1194,9 @@ export class Workshop {
       height: this.renderer.domElement.height,
       exposure:this.renderer.toneMappingExposure,
       meteredLuminance:this.exposure.meteredLuminance,
+      shadowUpdates:this.shadowCache.updates,
+      shadowReused:this.shadowCache.reused,
+      shadowCasters:this.shadowCache.casterCount,
     };
   }
   activeBounds() {

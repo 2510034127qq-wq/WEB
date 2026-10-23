@@ -13,4 +13,4 @@
 *.mjs text eol=lf
 *.json text eol=lf
 *.cmd text eol=crlf
-*.webm binary
+*.webm filter=lfs diff=lfs merge=lfs -text
