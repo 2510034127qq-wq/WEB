@@ -1,0 +1,1111 @@
+{
+  "passed": true,
+  "timestamp": "2026-10-24T14:02:22.734Z",
+  "method": "Dry-piece fixture imported via public settings/import UI. After import all operations are real mouse drags or keyboard events; __YAOHUO__ used only for read-only state and camera projection.",
+  "limitation": "Does not test the preceding craft stages or complete high-temperature firing/cooling. No audio claim.",
+  "checks": [
+    {
+      "name": "cold kiln does not render point-light shadows",
+      "passed": true,
+      "evidence": {
+        "fps": 7.139882191943836,
+        "drawCalls": 1027,
+        "triangles": 23022818,
+        "geometries": 211,
+        "textures": 151,
+        "width": 1440,
+        "height": 900,
+        "exposure": 4.641493118083494,
+        "meteredLuminance": 0.0017834640559424135,
+        "shadowUpdates": 11,
+        "shadowReused": 32,
+        "shadowCasters": 1049,
+        "fireShadowUpdates": 0,
+        "fireShadowReused": 0
+      }
+    },
+    {
+      "name": "public import supplies dry un-loaded piece",
+      "passed": true,
+      "evidence": "dry"
+    },
+    {
+      "name": "brick upper surface is visibly reachable",
+      "passed": true,
+      "evidence": {
+        "x": 102.05635921615746,
+        "y": 599.811583988993
+      }
+    },
+    {
+      "name": "clicking brick alone does not load",
+      "passed": true,
+      "evidence": "dry"
+    },
+    {
+      "name": "seal brick to kiln mouth source is on screen",
+      "passed": true,
+      "evidence": {
+        "x": 104.3250317155167,
+        "y": 597.4806512343717
+      }
+    },
+    {
+      "name": "seal brick to kiln mouth is not intercepted by UI",
+      "passed": true,
+      "evidence": {
+        "tag": "CANVAS",
+        "id": "",
+        "className": ""
+      }
+    },
+    {
+      "name": "holding brick before travel does not load",
+      "passed": true,
+      "evidence": "dry"
+    },
+    {
+      "name": "brick release at mouth loads the same piece",
+      "passed": true,
+      "evidence": "loaded"
+    },
+    {
+      "name": "tinder to fire mouth source is on screen",
+      "passed": true,
+      "evidence": {
+        "x": 1119.398594190332,
+        "y": 577.9123301775293
+      }
+    },
+    {
+      "name": "tinder to fire mouth is not intercepted by UI",
+      "passed": true,
+      "evidence": {
+        "tag": "CANVAS",
+        "id": "",
+        "className": ""
+      }
+    },
+    {
+      "name": "actual tinder drag ignites kiln",
+      "passed": true,
+      "evidence": {
+        "phase": "firing",
+        "temperature": 24.457717812721466,
+        "fuel": 0.6496994,
+        "draft": 0.64,
+        "elapsed": 0.016700000000000728,
+        "curve": [
+          [
+            0.02,
+            24.5
+          ]
+        ],
+        "assisted": true
+      }
+    },
+    {
+      "name": "move physical damper source is on screen",
+      "passed": true,
+      "evidence": {
+        "x": 210.82953024225407,
+        "y": 487.69257733463604
+      }
+    },
+    {
+      "name": "move physical damper is not intercepted by UI",
+      "passed": true,
+      "evidence": {
+        "tag": "CANVAS",
+        "id": "",
+        "className": ""
+      }
+    },
+    {
+      "name": "damper drag changes draft and disengages assistance",
+      "passed": true,
+      "evidence": {
+        "before": {
+          "phase": "firing",
+          "temperature": 25.826460142541116,
+          "fuel": 0.6491,
+          "draft": 0.64,
+          "elapsed": 0.06670000000000073,
+          "curve": [
+            [
+              0.02,
+              24.5
+            ]
+          ],
+          "assisted": true
+        },
+        "after": {
+          "phase": "firing",
+          "temperature": 42.98888182008477,
+          "fuel": 0.6361760000000003,
+          "draft": 0.29610979018144634,
+          "elapsed": 0.868099999999998,
+          "curve": [
+            [
+              0.02,
+              24.5
+            ]
+          ],
+          "assisted": false
+        }
+      }
+    },
+    {
+      "name": "moving the damper refreshes the solar shadow map",
+      "passed": true,
+      "evidence": {
+        "before": {
+          "fps": 13.038340871124149,
+          "drawCalls": 1307,
+          "triangles": 32921326,
+          "geometries": 222,
+          "textures": 155,
+          "width": 1440,
+          "height": 900,
+          "exposure": 13.617410996148005,
+          "meteredLuminance": 0.0021782488938942328,
+          "shadowUpdates": 73,
+          "shadowReused": 62,
+          "shadowCasters": 1049,
+          "fireShadowUpdates": 2,
+          "fireShadowReused": 0
+        },
+        "after": {
+          "fps": 15.396390302944008,
+          "drawCalls": 901,
+          "triangles": 18585462,
+          "geometries": 222,
+          "textures": 155,
+          "width": 1440,
+          "height": 900,
+          "exposure": 14.31374569195276,
+          "meteredLuminance": 0.005492042999140677,
+          "shadowUpdates": 103,
+          "shadowReused": 77,
+          "shadowCasters": 1049,
+          "fireShadowUpdates": 32,
+          "fireShadowReused": 15
+        }
+      }
+    },
+    {
+      "name": "manual draft survives subsequent simulation frames",
+      "passed": true,
+      "evidence": 0.29610979018144634
+    },
+    {
+      "name": "damper movement refreshes fire shadow projections",
+      "passed": true,
+      "evidence": {
+        "before": {
+          "fps": 13.038340871124149,
+          "drawCalls": 1307,
+          "triangles": 32921326,
+          "geometries": 222,
+          "textures": 155,
+          "width": 1440,
+          "height": 900,
+          "exposure": 13.617410996148005,
+          "meteredLuminance": 0.0021782488938942328,
+          "shadowUpdates": 73,
+          "shadowReused": 62,
+          "shadowCasters": 1049,
+          "fireShadowUpdates": 2,
+          "fireShadowReused": 0
+        },
+        "after": {
+          "fps": 15.396390302944008,
+          "drawCalls": 901,
+          "triangles": 18585462,
+          "geometries": 222,
+          "textures": 155,
+          "width": 1440,
+          "height": 900,
+          "exposure": 14.31374569195276,
+          "meteredLuminance": 0.005492042999140677,
+          "shadowUpdates": 103,
+          "shadowReused": 77,
+          "shadowCasters": 1049,
+          "fireShadowUpdates": 32,
+          "fireShadowReused": 15
+        }
+      }
+    },
+    {
+      "name": "firewood into mouth source is on screen",
+      "passed": true,
+      "evidence": {
+        "x": 1291.1438331298832,
+        "y": 667.5024468300094
+      }
+    },
+    {
+      "name": "firewood into mouth is not intercepted by UI",
+      "passed": true,
+      "evidence": {
+        "tag": "CANVAS",
+        "id": "",
+        "className": ""
+      }
+    },
+    {
+      "name": "wood release adds fuel while time continues",
+      "passed": true,
+      "evidence": {
+        "before": 0.6295646000000003,
+        "after": 0.9184460000000003
+      }
+    },
+    {
+      "name": "R advances actual kiln heat and elapsed time",
+      "passed": true,
+      "evidence": {
+        "before": {
+          "phase": "firing",
+          "temperature": 65.87579997521499,
+          "fuel": 0.9115304,
+          "draft": 0.29610979018144634,
+          "elapsed": 2.237300000000002,
+          "curve": [
+            [
+              0.02,
+              24.5
+            ],
+            [
+              1.04,
+              45.3
+            ],
+            [
+              2.05,
+              61.7
+            ]
+          ],
+          "assisted": false
+        },
+        "after": {
+          "phase": "firing",
+          "temperature": 358.38466410814294,
+          "fuel": 0.5938700000000008,
+          "draft": 0.29610979018144634,
+          "elapsed": 19.885099999999987,
+          "curve": [
+            [
+              0.02,
+              24.5
+            ],
+            [
+              1.04,
+              45.3
+            ],
+            [
+              2.05,
+              61.7
+            ],
+            [
+              3.06,
+              84
+            ],
+            [
+              4.12,
+              107.1
+            ],
+            [
+              5.19,
+              129.3
+            ],
+            [
+              6.26,
+              150.8
+            ],
+            [
+              7.33,
+              171.5
+            ],
+            [
+              8.4,
+              191.4
+            ],
+            [
+              9.47,
+              210.6
+            ],
+            [
+              10.54,
+              229
+            ],
+            [
+              11.6,
+              246.7
+            ],
+            [
+              12.67,
+              263.6
+            ],
+            [
+              13.74,
+              279.7
+            ],
+            [
+              14.81,
+              295.2
+            ],
+            [
+              15.88,
+              309.8
+            ],
+            [
+              16.95,
+              323.8
+            ],
+            [
+              18.02,
+              337
+            ],
+            [
+              19.08,
+              349.5
+            ]
+          ],
+          "assisted": false
+        }
+      }
+    },
+    {
+      "name": "C stops firing and enters natural cooling",
+      "passed": true,
+      "evidence": {
+        "phase": "cooling",
+        "temperature": 356.2967517609865,
+        "fuel": 0.5938700000000008,
+        "draft": 0.29610979018144634,
+        "elapsed": 19.968499999999988,
+        "curve": [
+          [
+            0.02,
+            24.5
+          ],
+          [
+            1.04,
+            45.3
+          ],
+          [
+            2.05,
+            61.7
+          ],
+          [
+            3.06,
+            84
+          ],
+          [
+            4.12,
+            107.1
+          ],
+          [
+            5.19,
+            129.3
+          ],
+          [
+            6.26,
+            150.8
+          ],
+          [
+            7.33,
+            171.5
+          ],
+          [
+            8.4,
+            191.4
+          ],
+          [
+            9.47,
+            210.6
+          ],
+          [
+            10.54,
+            229
+          ],
+          [
+            11.6,
+            246.7
+          ],
+          [
+            12.67,
+            263.6
+          ],
+          [
+            13.74,
+            279.7
+          ],
+          [
+            14.81,
+            295.2
+          ],
+          [
+            15.88,
+            309.8
+          ],
+          [
+            16.95,
+            323.8
+          ],
+          [
+            18.02,
+            337
+          ],
+          [
+            19.08,
+            349.5
+          ]
+        ],
+        "assisted": false
+      }
+    },
+    {
+      "name": "low-temperature cooling no longer emits flame lighting or renders fire shadows",
+      "passed": true,
+      "evidence": {
+        "before": {
+          "fps": 27.4409248941243,
+          "drawCalls": 881,
+          "triangles": 18580342,
+          "geometries": 222,
+          "textures": 155,
+          "width": 1440,
+          "height": 900,
+          "exposure": 14.991108984761304,
+          "meteredLuminance": 0.004417182612410544,
+          "shadowUpdates": 134,
+          "shadowReused": 300,
+          "shadowCasters": 1049,
+          "fireShadowUpdates": 63,
+          "fireShadowReused": 199
+        },
+        "after": {
+          "fps": 28.156090325743342,
+          "drawCalls": 881,
+          "triangles": 18580342,
+          "geometries": 222,
+          "textures": 155,
+          "width": 1440,
+          "height": 900,
+          "exposure": 15.341602206952695,
+          "meteredLuminance": 0.004417182612410544,
+          "shadowUpdates": 134,
+          "shadowReused": 321,
+          "shadowCasters": 1049,
+          "fireShadowUpdates": 63,
+          "fireShadowReused": 199
+        },
+        "temperature": 333.3910995924591
+      }
+    },
+    {
+      "name": "no uncaught runtime errors",
+      "passed": true,
+      "evidence": []
+    }
+  ],
+  "observations": [
+    {
+      "action": "seal brick to kiln mouth",
+      "from": {
+        "x": 104.3250317155167,
+        "y": 597.4806512343717
+      },
+      "to": {
+        "x": 698.7991244651706,
+        "y": 306.23856389156424
+      },
+      "sourceWorld": [
+        6.95,
+        0.69,
+        3.5
+      ],
+      "targetWorld": [
+        6,
+        1.05,
+        3.8
+      ],
+      "inputTarget": {
+        "tag": "CANVAS",
+        "id": "",
+        "className": ""
+      }
+    },
+    {
+      "action": "tinder to fire mouth",
+      "from": {
+        "x": 1119.398594190332,
+        "y": 577.9123301775293
+      },
+      "to": {
+        "x": 719.8583877513813,
+        "y": 518.0045737604605
+      },
+      "sourceWorld": [
+        5.18,
+        0.442,
+        3.74
+      ],
+      "targetWorld": [
+        6,
+        0.55,
+        3.8
+      ],
+      "inputTarget": {
+        "tag": "CANVAS",
+        "id": "",
+        "className": ""
+      }
+    },
+    {
+      "action": "move physical damper",
+      "from": {
+        "x": 210.82953024225407,
+        "y": 487.69257733463604
+      },
+      "to": {
+        "x": 275.82917285043857,
+        "y": 487.69257733465383
+      },
+      "sourceWorld": [
+        6.94,
+        0.69,
+        3.72
+      ],
+      "targetWorld": [
+        6.82,
+        0.69,
+        3.72
+      ],
+      "inputTarget": {
+        "tag": "CANVAS",
+        "id": "",
+        "className": ""
+      }
+    },
+    {
+      "action": "firewood into mouth",
+      "from": {
+        "x": 1291.1438331298832,
+        "y": 667.5024468300094
+      },
+      "to": {
+        "x": 719.9999746291932,
+        "y": 534.5416124344445
+      },
+      "sourceWorld": [
+        5.06,
+        0.54,
+        3.43
+      ],
+      "targetWorld": [
+        6,
+        0.55,
+        3.8
+      ],
+      "inputTarget": {
+        "tag": "CANVAS",
+        "id": "",
+        "className": ""
+      }
+    }
+  ],
+  "final": {
+    "version": 1,
+    "pieces": [
+      {
+        "id": "3f2dddac-b616-489a-9fcf-2695d69dddec",
+        "name": "青花碗 · 01",
+        "form": "bowl",
+        "stage": "loaded",
+        "location": "kiln",
+        "position": [
+          5.9,
+          0.45,
+          4.65
+        ],
+        "radius": [
+          0.095,
+          0.09600188950617683,
+          0.09699930433060669,
+          0.09798778977655755,
+          0.09896293102806929,
+          0.09992037286759353,
+          0.10085583912745243,
+          0.10176515178824153,
+          0.10264424963887876,
+          0.10348920641495893,
+          0.10429624833440368,
+          0.10506177095208835,
+          0.10578235525816894,
+          0.10645478294820998,
+          0.10707605079691344,
+          0.10764338407125196,
+          0.10815424892310008,
+          0.10860636370601512,
+          0.10899770916562404,
+          0.10932653745810368,
+          0.10959137995647555,
+          0.10979105380985044,
+          0.10992466722632756,
+          0.10999162345595381,
+          0.10999162345595381,
+          0.10992466722632756,
+          0.10979105380985044,
+          0.10959137995647555,
+          0.10932653745810368,
+          0.10899770916562404,
+          0.10860636370601512,
+          0.10815424892310008,
+          0.10764338407125196,
+          0.10707605079691344,
+          0.10645478294820998,
+          0.10578235525816894,
+          0.10506177095208835,
+          0.10429624833440368,
+          0.10348920641495893,
+          0.10264424963887876,
+          0.10176515178824153,
+          0.10085583912745243,
+          0.09992037286759355,
+          0.0989629310280693,
+          0.09798778977655755,
+          0.09699930433060669,
+          0.09600188950617683,
+          0.095
+        ],
+        "height": 0.16,
+        "thickness": [
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016
+        ],
+        "moisture": 0.02,
+        "purity": 0.97,
+        "air": 0.04,
+        "preparation": 1,
+        "opened": true,
+        "trimmed": 1,
+        "marks": [],
+        "glaze": [
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68,
+          0.68
+        ],
+        "footClean": true,
+        "dryTime": 0,
+        "heat": 0,
+        "peak": 358.38466410814294,
+        "stress": 0,
+        "shrink": 1,
+        "kilnPosition": "middle",
+        "defects": [],
+        "score": 0,
+        "history": [
+          "领取瓷石与高岭土配成的原泥；来源工序在原料房札记中说明。",
+          "QA documented fixture: dry glazed piece at the kiln; subsequent controls use actual pointer and keyboard events.",
+          "装入匣钵，选中窑位。"
+        ],
+        "created": 1792850526942
+      }
+    ],
+    "activeId": "3f2dddac-b616-489a-9fcf-2695d69dddec",
+    "held": null,
+    "player": [
+      6.000000953674316,
+      1.6350794911384583,
+      2.749983787536621
+    ],
+    "yaw": 3.141592653589793,
+    "day": 1,
+    "props": {
+      "brush": [
+        5.849999904632568,
+        1.0045645236968994,
+        -5.300000190734863
+      ],
+      "knife": [
+        0.6499999761581421,
+        0.8300975561141968,
+        -5.449999809265137
+      ],
+      "sagger": [
+        4.832277297973633,
+        0.2999797463417053,
+        5.699999809265137
+      ],
+      "bamboo": [
+        -0.8500000238418579,
+        0.7300975918769836,
+        -5.5
+      ]
+    },
+    "kiln": {
+      "phase": "cooling",
+      "temperature": 356.2967517609865,
+      "fuel": 0.5938700000000008,
+      "draft": 0.29610979018144634,
+      "elapsed": 19.968499999999988,
+      "curve": [
+        [
+          0.02,
+          24.5
+        ],
+        [
+          1.04,
+          45.3
+        ],
+        [
+          2.05,
+          61.7
+        ],
+        [
+          3.06,
+          84
+        ],
+        [
+          4.12,
+          107.1
+        ],
+        [
+          5.19,
+          129.3
+        ],
+        [
+          6.26,
+          150.8
+        ],
+        [
+          7.33,
+          171.5
+        ],
+        [
+          8.4,
+          191.4
+        ],
+        [
+          9.47,
+          210.6
+        ],
+        [
+          10.54,
+          229
+        ],
+        [
+          11.6,
+          246.7
+        ],
+        [
+          12.67,
+          263.6
+        ],
+        [
+          13.74,
+          279.7
+        ],
+        [
+          14.81,
+          295.2
+        ],
+        [
+          15.88,
+          309.8
+        ],
+        [
+          16.95,
+          323.8
+        ],
+        [
+          18.02,
+          337
+        ],
+        [
+          19.08,
+          349.5
+        ]
+      ],
+      "assisted": false
+    },
+    "settings": {
+      "sound": true,
+      "volume": 0.4,
+      "quality": "high",
+      "sensitivity": 1,
+      "bob": true,
+      "assist": true,
+      "subtitles": true,
+      "bindings": {
+        "forward": "KeyW",
+        "back": "KeyS",
+        "left": "KeyA",
+        "right": "KeyD",
+        "interact": "KeyE",
+        "drop": "KeyQ",
+        "journal": "KeyJ",
+        "map": "KeyM"
+      }
+    }
+  },
+  "stats": {
+    "fps": 26.137062488301826,
+    "drawCalls": 881,
+    "triangles": 18580342,
+    "geometries": 222,
+    "textures": 155,
+    "width": 1440,
+    "height": 900,
+    "exposure": 14.360036246492161,
+    "meteredLuminance": 0.005596285993191397,
+    "shadowUpdates": 134,
+    "shadowReused": 264,
+    "shadowCasters": 1049,
+    "fireShadowUpdates": 63,
+    "fireShadowReused": 199
+  },
+  "bundles": [
+    "http://127.0.0.1:5173/assets/index-wO9qQFTA.js",
+    "http://127.0.0.1:5173/assets/three-BV073Qur.js",
+    "http://127.0.0.1:5173/assets/physics-CKC5f6tm.js"
+  ],
+  "errors": []
+}

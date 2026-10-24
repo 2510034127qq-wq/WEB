@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-24T13:45:06.152Z",
+  "url": "http://127.0.0.1:5173/?exposure=4&fire-audit=no-normal",
+  "bundles": [
+    "http://127.0.0.1:5173/assets/index-6S91W8Dz.js",
+    "http://127.0.0.1:5173/assets/three-BV073Qur.js",
+    "http://127.0.0.1:5173/assets/physics-CKC5f6tm.js"
+  ],
+  "method": "Public JSON import fixtures; real E/Escape input; read-only diagnostics. Images require visual review.",
+  "errors": [],
+  "views": [
+    {
+      "name": "hotkiln",
+      "image": "qa/fire-r25-no-normal-hotkiln.png",
+      "view": {
+        "focus": "kiln",
+        "modal": "",
+        "nav": 0,
+        "camera": [
+          5.9596801547290275,
+          1.5546990239106786,
+          2.6079189955714566
+        ],
+        "cameraQuaternion": [
+          0,
+          0.951079901602017,
+          0.29709498983664157,
+          0.08474424926012922
+        ],
+        "cameraFov": 61.030131022202895,
+        "look": {
+          "yaw": 0,
+          "pitch": 0
+        },
+        "pieceBounds": {
+          "x": 526.6224014244807,
+          "y": 258.53589934352095,
+          "w": 91.61689483178748,
+          "h": 130.79605266555086
+        },
+        "glazeContact": null,
+        "hands": [
+          {
+            "name": "player_left_hand",
+            "visible": false,
+            "mirror": 1,
+            "wrist": [
+              6.0907103351218455,
+              0.9929057690983887,
+              2.8719633681182666
+            ],
+            "thumb": [
+              6.106674406031452,
+              1.053772968687881,
+              2.92768230981987
+            ],
+            "index": [
+              6.120440178750784,
+              1.008588754429147,
+              2.956059449286149
+            ],
+            "palm": [
+              -0.004533386068461557,
+              0.7283906786270792,
+              0.6851470409335046
+            ]
+          },
+          {
+            "name": "player_right_hand",
+            "visible": false,
+            "mirror": -1,
+            "wrist": [
+              5.6964556053479765,
+              1.0130474425965101,
+              2.8074845263201382
+            ],
+            "thumb": [
+              5.669738467292438,
+              1.0760951384757338,
+              2.856223120767075
+            ],
+            "index": [
+              5.643255603664411,
+              1.032967145311717,
+              2.8780177508564333
+            ],
+            "palm": [
+              -0.14113856709937803,
+              0.7353695599103923,
+              0.6628057899825034
+            ]
+          }
+        ]
+      },
+      "stats": {
+        "fps": 1.5778988961282305,
+        "drawCalls": 991,
+        "triangles": 19815014,
+        "geometries": 226,
+        "textures": 169,
+        "width": 1440,
+        "height": 900,
+        "exposure": 4,
+        "meteredLuminance": 0,
+        "shadowUpdates": 11,
+        "shadowReused": 21,
+        "shadowCasters": 1050,
+        "fireShadowUpdates": 3,
+        "fireShadowReused": 15
+      }
+    }
+  ]
+}

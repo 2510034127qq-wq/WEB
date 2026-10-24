@@ -49,3 +49,9 @@ ambientCG [CC0](https://docs.ambientcg.com/license/)：Clay005 和 Clay006 的 4
 实木柱、架板与陶车使用 Poly Haven [Fine Grained Wood](https://polyhaven.com/a/fine_grained_wood) 的原始 4K Albedo、Roughness、NormalGL、AO。采用 API 中 600mm 的尺寸字段；旧元数据另列 30×30cm，两者冲突已写入来源清单，不将当前尺寸称为独立测量结果。端面仍需专门的端纹材质。林地增加 [Grass Medium 01](https://polyhaven.com/a/grass_medium_01) 的原始 LOD0 网格、4K 材质与官方透明度贴图。
 
 `art/potters-wheel.blend` / `public/assets/potters-wheel.glb`：项目原创分件模型，结构参考吴军明等《明代景德镇制瓷陶车研究》，《故宫博物院院刊》2023 年第 5 期，[图 14–16，32–33 页](https://www.dpm.org.cn/Uploads/File/2023/05/19/u6466da5a467d9.pdf)。包括单木盘、固定立柱、陶质承重/径向轴承、四腿笼架和缠绳；直径 1.1m，游戏中抬高的工作位置属于解释性复原。文献图片仅供观察结构，未作为贴图或随游戏分发。
+
+2026-10-24：Red Brick 03 升级为官方原始 4K Diffuse / NormalGL / Rough / AO / Displacement。作者 Rob Tuytel，CC0，官方尺寸 1m。`scripts/fetch-kiln-brick.py` 以 API MD5 验证下载，SHA-256 和具体 URL 写入 `realism-provenance.json`。它仍是砖墙样本，不能据此把现有封窑砖模型称为实物扫描模型。
+
+釉缸在 `art/craft-tools.blend` 中保留可编辑实体，接耳布尔连接、卷口、底厚和 20cm UV 已重做；不是购买或扫描所得的成品器物。表面使用现有 [ambientCG Clay005](https://ambientcg.com/a/Clay005) 的 4K PBR 通道，并添加按液位和流淌路径设计的使用遮罩。2026-10-24 的官方 API 同时返回 `creationMethod=PBRProcedural` 与 `creationMethodName=Height field photogrammetry`，来源方法字段不一致，因此不将其称为独立核实的纯扫描材料；20×20cm 与下载文件来源已核对。粗陶连通岛在运行时修正物理尺度 UV，不改位置、法线与烘焙 LightUV。
+
+本轮也检索了 Fab 的免费 Terracotta pot /1、Poly Haven Planter Pot Clay 与地方匣钵工艺资料。园艺盆的苔痕、器形不适合直接冒充历史釉缸，未宣称已采用这些候选模型。检索、已有 Fab 资产、摄影测量资产、纹理库和 Blender 工作分别记录，不能用一项代替其他项。
