@@ -14,7 +14,10 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { WorkshopAO } from "./workshop-ao";
 import { ExposureMeter } from "./exposure";
-import { SunShadowCache } from "./sun-shadow-cache";
+import { FixedShadowCache } from "./fixed-shadow-cache";
+import { GLAZE_VAT, glazeContact } from "../simulation/glaze-contact";
+import { bindSlurryReflection } from "./slurry-reflection";
+import {firedClayMaterial,metricVesselUV} from './fired-clay';
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { clone } from "three/addons/utils/SkeletonUtils.js";
@@ -45,7 +48,8 @@ export class Workshop {
   composer: EffectComposer;
   ao: WorkshopAO;
   exposure: ExposureMeter;
-  private shadowCache = new SunShadowCache();
+  private shadowCache = new FixedShadowCache();
+  private fireShadowCache = new FixedShadowCache();
   private reuseShadows = new URLSearchParams(location.search).get('shadow-cache') !== 'off';
   board: THREE.Mesh;
   contact: THREE.Vector3 | null = null;
@@ -59,6 +63,7 @@ export class Workshop {
   private strawTies: THREE.Mesh[] = [];
   private kilnSeal = new THREE.Group();
   private brushPose = new THREE.Object3D();
+  private glazeBrush = new THREE.Group();
   private wheelHead = new THREE.Group();
   private slurry?:THREE.Mesh<THREE.BufferGeometry,THREE.MeshPhysicalMaterial>;
   private lastDip=0;
@@ -127,7 +132,17 @@ export class Workshop {
     this.sun.shadow.bias = -0.00008;
     this.sun.target.position.set(0, 0, -2);
     this.scene.add(this.sun, this.sun.target);
-    this.fire.position.set(6, 1, 4);
+    // Inside the fuel bed, safely behind the 150mm seal masonry. A light in a
+    // mortar joint is not a fire source and near-plane clipping leaks through it.
+    this.fire.position.set(6, .74, 4.38);
+    this.fire.castShadow = new URLSearchParams(location.search).get('fire-audit')!=='no-shadow';
+    this.fire.visible = false;
+    this.fire.shadow.autoUpdate = false;
+    this.fire.shadow.mapSize.set(1024, 1024);
+    this.fire.shadow.camera.near = 0.06;
+    this.fire.shadow.camera.far = 8;
+    this.fire.shadow.normalBias = 0.003;
+    this.fire.shadow.bias = -0.00005;
     this.scene.add(this.fire);
     this.composer = new EffectComposer(this.renderer);
     this.composer.renderTarget1.samples = 4;
@@ -167,6 +182,7 @@ export class Workshop {
       loadCourtyardSky(this.scene, this.renderer),
     ]);
     this.surfaces = surfaces;
+    const firedClay=await firedClayMaterial();
     this.sun.position
       .fromArray(this.scene.userData.sunDirection)
       .multiplyScalar(24)
@@ -187,6 +203,13 @@ export class Workshop {
       const key = map[old.name];
       if (key) {
         o.material = gltfMaterial(surfaces[key]);
+        if(key==='earthenware'){
+          o.material=firedClay;
+          metricVesselUV(o);
+          const audit=new URLSearchParams(location.search).get('fire-audit');
+          if(audit==='no-normal')(o.material as THREE.MeshStandardMaterial).normalMap=null;
+          if(audit==='double-side')(o.material as THREE.MeshStandardMaterial).shadowSide=THREE.DoubleSide;
+        }
         if (old.name === "courtyard_stone") replaceCourtyardGround(o, surfaces.ground);
         if (key === "wall") {
           // Source UV units are 1.4m. A 2.2m plaster sample retains visible trowel detail.
@@ -461,22 +484,45 @@ export class Workshop {
     this.wheelHead.position.set(0, 0.78, -5.6);
     this.scene.add(this.wheelHead);
     const tub = this.craftAssets.get("glaze_vat")!;
-    tub.position.set(7.2, 0.99, 0.48);
+    tub.position.set(7.2, GLAZE_VAT.base, 0.48);
     this.scene.add(tub);
     const slurry = new THREE.Mesh(
-      new THREE.RingGeometry(0,0.275,128,40),
+      new THREE.RingGeometry(0,0.263,128,40),
       new THREE.MeshPhysicalMaterial({
         color: "#b9bdac",
         roughness: 0.35,
         clearcoat: 0.25,
       }),
     );
+    // Match the drying oval of the authored inner wall at local height .320m.
+    // A circular disc previously pierced the rim and looked like a metal lid.
+    const slurryPosition=slurry.geometry.attributes.position;
+    for(let i=0;i<slurryPosition.count;i++){
+      const x=slurryPosition.getX(i),y=slurryPosition.getY(i);
+      const a=Math.atan2(-y,x),radius=.26343+.0022*(.320/.362)**2*Math.cos(2*a+.4);
+      slurryPosition.setXY(i,x*radius/.263,y*radius/.263);
+    }
     slurry.rotation.x = -Math.PI / 2;
-    slurry.position.set(7.2, 1.34, 0.48);
+    slurry.position.set(7.2, GLAZE_VAT.liquid, 0.48);
     slurry.name='glaze_slurry_surface';
     slurry.receiveShadow=true;slurry.castShadow=false;
+    bindSlurryReflection(slurry);
     this.slurry=slurry;
     this.scene.add(slurry);
+    const glazeBrush=this.craftAssets.get('brush')!.clone(true);
+    glazeBrush.traverse(o=>{
+      if(!(o instanceof THREE.Mesh))return;
+      const source=Array.isArray(o.material)?o.material:[o.material];
+      const materials=source.map(m=>{
+        const material=m.clone() as THREE.MeshStandardMaterial;
+        if(/hair|wet_point/.test(m.name)){material.color.set('#bbc0ad');material.roughness=.38;}
+        return material;
+      });
+      o.material=Array.isArray(o.material)?materials:materials[0];
+    });
+    this.glazeBrush.add(glazeBrush);this.glazeBrush.name='glaze_touchup_brush';
+    this.glazeBrush.position.set(6.9,1.013,-.02);
+    this.scene.add(this.glazeBrush);
     for (const name of ["brush", "knife", "sagger", "bamboo"]) {
       const group = new THREE.Group();
       if (name === "brush" || name === "knife") {
@@ -626,7 +672,7 @@ export class Workshop {
       m.position.set(
         5.68 + (i % 3) * 0.24,
         0.7,
-        3.82 + Math.floor(i / 3) * 0.11,
+        4.18 + Math.floor(i / 3) * 0.11,
       );
       m.rotation.y = ((i % 3) - 1) * 0.5;
       this.scene.add(m);
@@ -765,7 +811,7 @@ export class Workshop {
       if (s.id === "glaze") {
         goal.set(5.95, 1.92, 0.38);
         this.target.position.copy(goal);
-        this.target.lookAt(new THREE.Vector3(7.2, 1.2, 0.38));
+        this.target.lookAt(new THREE.Vector3(7.2, 1.2+Math.max(0,(p?.height||.2)-.26)*.65, 0.38));
         fov = 52;
       }
       if (s.id === "kiln") {
@@ -804,18 +850,20 @@ export class Workshop {
     this.renderer.info.reset();
     const p = this.state.pieces.find((p) => p.id === this.state.activeId);
     if(this.slurry){
-      const delta=this.dipDepth-this.lastDip;
-      const touching=p?.location==='glaze'&&this.focus==='glaze'&&this.dipDepth>.18;
+      const bottom=p?glazeContact(p,this.dipDepth).bottom:GLAZE_VAT.rest;
+      const delta=bottom-this.lastDip;
+      const touching=p?.location==='glaze'&&this.focus==='glaze'&&glazeContact(p,this.dipDepth).immersed>0;
       if(touching&&Math.abs(delta)>.001){
-        this.slurryWave.at=time;this.slurryWave.amplitude=Math.min(.0012,Math.abs(delta)*.05);
+        this.slurryWave.at=time;this.slurryWave.amplitude=Math.min(.0012,Math.abs(delta)*1.2);
         this.slurryWave.settled=false;
       }
-      this.lastDip=this.dipDepth;
+      this.lastDip=bottom;
       const age=time-this.slurryWave.at;
       if(!this.slurryWave.settled){
         const position=this.slurry.geometry.attributes.position;
         for(let i=0;i<position.count;i++){
-          const radius=Math.hypot(position.getX(i),position.getY(i)),edge=radius/.275;
+          const x=position.getX(i),y=position.getY(i),radius=Math.hypot(x,y);
+          const a=Math.atan2(-y,x),edge=radius/(.26343+.0022*(.320/.362)**2*Math.cos(2*a+.4));
           const meniscus=.0018*edge**24;
           const ripple=age<3?this.slurryWave.amplitude*Math.sin(radius*105-age*8)*Math.exp(-age*2.3)*(1-edge**6):0;
           position.setZ(i,meniscus+ripple);
@@ -869,8 +917,7 @@ export class Workshop {
       if (item.location === "glaze" && this.focus === "glaze") {
         // The player's dragged depth is the pose; releasing does not trigger an automatic dip.
         o.position.z += 0.68;
-        o.position.y =
-          1.40 - (item.height * item.shrink + .078) * THREE.MathUtils.clamp(this.dipDepth, 0, 1);
+        o.position.y = glazeContact(item,this.dipDepth).bottom;
       }
     }
     const carried = this.state.pieces.find((q) => q.id === this.state.held);
@@ -918,8 +965,10 @@ export class Workshop {
         o.quaternion.copy(this.camera.quaternion);
       }
     }
-    if (p?.location === "paint" && this.focus === "paint") {
-      const brush = this.props.get("brush")!;
+    const brushingGlaze=this.focus==='glaze'&&p?.location==='glaze'&&this.action==='glaze-brush';
+    this.glazeBrush.position.set(6.9,1.013,-.02);this.glazeBrush.rotation.set(0,.35,0);
+    if ((p?.location === "paint" && this.focus === "paint") || brushingGlaze) {
+      const brush = brushingGlaze?this.glazeBrush:this.props.get("brush")!;
       const target =
         this.contact ||
         new THREE.Vector3(...p.position).add(
@@ -954,6 +1003,7 @@ export class Workshop {
         knife.position.copy(this.contact).add(new THREE.Vector3(0.1, 0.015, 0));
       }
     }
+    const brushWork=this.focus==='paint'||brushingGlaze;
     this.hands.forEach((h, i) => {
       const side = i === 0 ? -1 : 1;
       const work =
@@ -1026,7 +1076,7 @@ export class Workshop {
         h.rotateY(-side * 0.45);
         h.rotateX(-0.16);
       }
-      if (work && this.focus === "paint" && i === 1) {
+      if (work && brushWork && i === 1) {
         h.position
           .copy(this.brushPose.position)
           .add(new THREE.Vector3(0.055, 0.055, 0.07));
@@ -1042,7 +1092,7 @@ export class Workshop {
           const j = Number(b.name.slice(-1));
           b.quaternion.copy(b.userData.restQuaternion);
           const finger = Number(b.name[6]);
-          const grip = this.focus === "paint" ? [0.62,1.06,.75] : this.focus === "glaze" ? [.35,.72,.48] : work ? [.10,.24,.16] : [.45,.72,.45];
+          const grip = brushWork ? [0.62,1.06,.75] : this.focus === "glaze" ? [.35,.72,.48] : work ? [.10,.24,.16] : [.45,.72,.45];
           b.userData.flex=grip[j]+finger*.035;
           b.rotateX(b.userData.flex);
         }
@@ -1051,10 +1101,10 @@ export class Workshop {
           b.quaternion.copy(b.userData.restQuaternion);
           b.userData.flex=j===0?.35:.22;
           b.rotateX(b.userData.flex);
-          if (j === 0) b.rotateZ(this.focus === "paint" ? -.40 : -.18);
+          if (j === 0) b.rotateZ(brushWork ? -.40 : -.18);
         }
       });
-      if(work && this.focus==='paint' && i===1) {
+      if(work && brushWork && i===1) {
         h.updateMatrixWorld(true);
         const pinch=fingerTip(h,'finger0_2').add(fingerTip(h,'thumb_2')).multiplyScalar(.5);
         const grip=new THREE.Vector3(0,0,.012).applyQuaternion(this.brushPose.quaternion).add(this.brushPose.position);
@@ -1104,10 +1154,14 @@ export class Workshop {
       this.state.kiln.phase === "firing"
         ? Math.max(0.2, this.state.kiln.temperature / 1300)
         : this.state.kiln.phase === "cooling"
-          ? this.state.kiln.temperature / 1600
+          // Relative red-band thermal radiance (650nm, normalized at 1200C).
+          // Warm masonry at 360C must not illuminate the courtyard like flames.
+          ? Math.exp(22135*(1/1473.15-1/(this.state.kiln.temperature+273.15)))
           : 0;
     this.kilnSeal.visible = this.state.kiln.phase !== "idle";
-    this.fire.intensity = heat * (25 + Math.sin(time * 13) * 2);
+    this.fire.intensity = heat * (25 + (this.state.kiln.phase==='firing'?Math.sin(time * 13) * 2:0));
+    this.fire.visible = this.fire.intensity > .001;
+    this.fire.color.set(this.state.kiln.phase==='cooling'?'#ff310a':'#ff6b1b');
     for (let i = 0; i < this.flames.length; i++) {
       const m = this.flames[i];
       m.visible = this.state.kiln.phase === "firing";
@@ -1125,6 +1179,10 @@ export class Workshop {
       );
     }
     this.shadowCache.update(this.scene, this.sun, this.camera, this.reuseShadows);
+    // Flame brightness changes do not change the six depth projections. Moving
+    // the damper, seal or ware does; the cache observes those actual casters.
+    if (this.fire.visible)
+      this.fireShadowCache.update(this.scene, this.fire, this.camera, this.reuseShadows);
     this.composer.render();
   }
   hitWheel(x: number, y: number) {
@@ -1197,6 +1255,8 @@ export class Workshop {
       shadowUpdates:this.shadowCache.updates,
       shadowReused:this.shadowCache.reused,
       shadowCasters:this.shadowCache.casterCount,
+      fireShadowUpdates:this.fireShadowCache.updates,
+      fireShadowReused:this.fireShadowCache.reused,
     };
   }
   activeBounds() {

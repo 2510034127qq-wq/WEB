@@ -119,6 +119,7 @@ try {
   await page.waitForFunction(() => window.__YAOHUO__.view().focus === "kiln");
   await wait(1200);
   const initial = await read();
+  assert(initial.stats.fireShadowUpdates===0,'cold kiln does not render point-light shadows',initial.stats);
   assert(
     initial.state.pieces[0].stage === "dry",
     "public import supplies dry un-loaded piece",
@@ -193,6 +194,7 @@ try {
     persistedDraft.state.kiln.draft,
   );
   const beforeFuel = await read();
+  assert(manual.stats.fireShadowUpdates>beforeDraft.stats.fireShadowUpdates,'damper movement refreshes fire shadow projections',{before:beforeDraft.stats,after:manual.stats});
   const fuelled = await drag(
     "firewood into mouth",
     [5.06, 0.54, 3.43],
@@ -224,6 +226,10 @@ try {
     cooling.state.kiln,
   );
   await page.screenshot({ path: `qa/${prefix}-cooling.png` });
+  await wait(250);
+  const coldShadowStart=await read();await wait(350);const coldShadowEnd=await read();
+  assert(coldShadowEnd.state.kiln.temperature<480 && coldShadowStart.stats.fireShadowUpdates===coldShadowEnd.stats.fireShadowUpdates,
+    'low-temperature cooling no longer emits flame lighting or renders fire shadows',{before:coldShadowStart.stats,after:coldShadowEnd.stats,temperature:coldShadowEnd.state.kiln.temperature});
   assert(!errors.length, "no uncaught runtime errors", errors);
   report = {
     passed: true,
@@ -235,6 +241,8 @@ try {
     checks,
     observations,
     final: cooling.state,
+    stats:cooling.stats,
+    bundles:await page.evaluate(()=>performance.getEntriesByType('resource').map(r=>r.name).filter(n=>/\/assets\/.*\.js$/.test(n))),
     errors,
   };
 } catch (error) {

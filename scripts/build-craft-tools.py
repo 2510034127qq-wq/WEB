@@ -66,17 +66,19 @@ def lathe(name, profile, material, parent, n=128, axis='y', offset=(0,0,0), coil
             a=j*(n+1)+i; faces.append((a,a+1,a+n+2,a+n+1))
     return mesh(name,verts,faces,material,parent,uv)
 
-def tube(name, points, radius, material, parent, sides=8, taper=False):
+def tube(name, points, radius, material, parent, sides=8, taper=False, metric_uv=False):
     verts=[]; uv=[]; faces=[]
+    arc=0
     for j,p in enumerate(points):
+        if j:arc+=(Vector(p)-Vector(points[j-1])).length
         tangent=Vector(points[min(len(points)-1,j+1)])-Vector(points[max(0,j-1)])
-        tangent.normalize(); normal=tangent.cross(Vector((0,1,0)))
+        tangent.normalize(); normal=Vector((0,0,1)) if metric_uv else tangent.cross(Vector((0,1,0)))
         if normal.length<.01: normal=tangent.cross(Vector((1,0,0)))
         normal.normalize(); binormal=tangent.cross(normal)
         r=radius*(1-.96*j/(len(points)-1)) if taper else radius
         for i in range(sides+1):
             a=2*math.pi*i/sides; v=Vector(p)+(normal*math.cos(a)+binormal*math.sin(a))*r
-            verts.append(tuple(v)); uv.append((i/sides,j/max(1,len(points)-1)))
+            verts.append(tuple(v)); uv.append((i/sides*math.tau*radius/.2,arc/.2) if metric_uv else (i/sides,j/max(1,len(points)-1)))
     for j in range(len(points)-1):
         for i in range(sides):
             a=j*(sides+1)+i; faces.append((a,a+1,a+sides+2,a+sides+1))
@@ -119,22 +121,96 @@ for p in o.data.polygons:
     if p.index>=24: p.material_index=1
 
 vat=empty('glaze_vat')
-profile=[(0,.012),(.13,.012),(.222,.012),(.235,.018)]
-for i in range(101):
-    t=i/100; profile.append((.235+.057*math.sin(t*math.pi*.63),.025+.325*t))
-# Rolled lip seamlessly joins the outside and inner wall.
-for i in range(33):
-    a=math.pi*i/32; profile.append((.281+.012*math.cos(a),.350+.012*math.sin(a)))
-for i in range(101):
-    t=1-i/100; profile.append((.213+.056*math.sin(t*math.pi*.63),.04+.31*t))
-profile.extend([(.19,.035),(.10,.034),(0,.034)])
-lathe('hollow_glaze_vat',profile,stone,vat,192,coil=True)
+profile=[(0,.008),(.13,.008),(.217,.008)]
+# Rounded bearing foot, wall, rolled lip, inner wall and 30mm floor form one
+# continuous closed section. The old profile had steps where the lip joined.
+for i in range(17):
+    a=-math.pi/2+math.pi/2*i/16
+    profile.append((.217+.016*math.cos(a),.024+.016*math.sin(a)))
+def vat_radius(h):
+    t=(h-.024)/.326
+    return .233+.055*math.sin(t*math.pi*.5)
+for i in range(1,163):
+    h=.024+.326*i/162; profile.append((vat_radius(h),h))
+for i in range(1,49):
+    a=math.pi*i/48; profile.append((.276+.012*math.cos(a),.350+.012*math.sin(a)))
+for i in range(1,159):
+    h=.350-.304*i/158; profile.append((vat_radius(h)-.024,h))
+profile.extend([(.209,.039),(.204,.037),(.19,.038),(.10,.038),(0,.038)])
+vat_shell=lathe('hollow_glaze_vat',profile,stone,vat,256)
+# Compress the visible coil joints by paddling: broad, interrupted tool courses,
+# not identical corrugations. A two-lobed drying oval is largest at the unsupported
+# lip; the foot remains flat. Every perturbation has a construction cause.
+for v in vat_shell.data.vertices:
+    x,z,h=v.co.x,-v.co.y,v.co.z; r=math.hypot(x,z); a=math.atan2(z,x)
+    if r<.02:continue
+    course=.00022*math.sin(h/.027*math.tau+.18*math.sin(a*3))
+    course*=max(0,min(1,(h-.04)/.08))*max(0,min(1,(.35-h)/.025))
+    oval=.0022*(h/.362)**2*math.cos(2*a+.4)
+    rr=r+course+oval
+    v.co.x=rr*math.cos(a);v.co.y=-rr*math.sin(a)
+    if h>.1:v.co.z+=.0009*((h-.1)/.262)**2*math.sin(3*a+.3)
+lug_material=stone.copy();lug_material.name='vat_lug_uv_selection'
+vat_shell.data.materials.append(lug_material)
 for side in [-1,1]:
     points=[]
     for i in range(49):
         a=math.pi*i/48
-        points.append((side*(.273+.065*math.sin(a)),.265+.047*math.cos(a),0))
-    tube('coiled_lug_handle',points,.018,stone,vat,16)
+        points.append((side*(.278+.065*math.sin(a)),.265+.047*math.cos(a),0))
+    lug=tube('coiled_lug_handle',points,.018,lug_material,vat,32,metric_uv=True)
+    lug.data.materials.clear();lug.data.materials.append(stone);lug.data.materials.append(lug_material)
+    for face in lug.data.polygons:face.material_index=1
+
+# Form actual clay joins at the lug roots. Exact booleans preserve the dense shell
+# and circular handle section; only the intersection gets a small tooling fillet.
+for ob in vat.children:
+    bm=bmesh.new();bm.from_mesh(ob.data)
+    bmesh.ops.remove_doubles(bm,verts=list(bm.verts),dist=.000001)
+    bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces))
+    bm.to_mesh(ob.data);bm.free()
+for handle in [o for o in list(vat.children) if o is not vat_shell]:
+    bpy.context.view_layer.objects.active=vat_shell
+    join=vat_shell.modifiers.new('Scored slip joined lug','BOOLEAN')
+    join.operation='UNION';join.solver='EXACT';join.object=handle
+    bpy.ops.object.modifier_apply(modifier=join.name)
+    bpy.data.objects.remove(handle,do_unlink=True)
+bevel=vat_shell.modifiers.new('Compressed joining seam','BEVEL')
+bevel.width=.002;bevel.segments=3;bevel.limit_method='ANGLE';bevel.angle_limit=.6
+bpy.ops.object.modifier_apply(modifier=bevel.name)
+# An open seam can look closed but makes unions and physical wall thickness
+# unreliable. Reject it at authoring time instead of shipping disconnected shells.
+bm=bmesh.new();bm.from_mesh(vat_shell.data)
+assert not any(not e.is_manifold for e in bm.edges), 'Vat shell/lug join must be manifold'
+bm.free()
+# Metric UVs: 20cm scan. Per-face seam correction avoids a stretched stripe.
+uv=vat_shell.data.uv_layers[0]
+mask=vat_shell.data.color_attributes.new(name='GlazeResidue',type='FLOAT_COLOR',domain='CORNER')
+for face in vat_shell.data.polygons:
+    face.use_smooth=True
+    angles=[math.atan2(-vat_shell.data.vertices[vat_shell.data.loops[li].vertex_index].co.y,vat_shell.data.vertices[vat_shell.data.loops[li].vertex_index].co.x) for li in face.loop_indices]
+    seam=max(angles)-min(angles)>math.pi
+    for li,a in zip(face.loop_indices,angles):
+        v=vat_shell.data.vertices[vat_shell.data.loops[li].vertex_index].co
+        x,z,h=v.x,-v.y,v.z;r=math.hypot(x,z)
+        aa=a+math.tau if seam and a<0 else a
+        if face.material_index==0:
+            uv.data[li].uv=(aa*.276/.2,h/.2) if abs(face.normal.z)<.8 else (x/.2,z/.2)
+        inner=r<vat_radius(max(.024,min(.35,h)))-.012
+        def band(value,center,width):return math.exp(-((value-center)/width)**4)
+        # The inner tide line follows the old fill level. Four specific over-rim
+        # spills run downward; no random grunge or scratches are scattered on it.
+        residue=(.82*band(h,.327,.012)+.35*band(h,.348,.006)) if inner else 0
+        for angle,stop,width in [(-1.3,.19,.055),(-.75,.255,.085),(1.7,.23,.05),(2.5,.28,.075)]:
+            da=math.atan2(math.sin(a-angle),math.cos(a-angle))
+            fall=max(0,min(1,(h-stop)/(.354-stop)))
+            stream_width=width*(.20+.80*fall**1.8)
+            wetpath=math.exp(-(da/stream_width)**2)*max(0,min(1,(h-stop)/.012))*max(0,min(1,(.366-h)/.008))
+            if not inner:residue=max(residue,wetpath*.83)
+        damp=float(inner and h<.318)
+        handling=band(h,.27,.05)*max(0,math.cos(a*2))**16 if r>.29 else 0
+        mask.data[li].color=(min(1,residue),damp,handling,1)
+for face in vat_shell.data.polygons:face.material_index=0
+while len(vat_shell.data.materials)>1:vat_shell.data.materials.pop(index=1)
 
 clayroot=empty('supply_clay')
 for k,(cx,cz,length,width,angle) in enumerate([(-.09,.025,.27,.15,-.22),(.11,-.035,.25,.14,.36)]):
@@ -192,5 +268,5 @@ for root in [brush,knife,vat,clayroot]:
         if len(objects)>1: bpy.ops.object.join()
         objects[0].name=root.name+'_'+name
 bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'art/craft-tools.blend'))
-bpy.ops.export_scene.gltf(filepath=str(ROOT/'public/assets/craft-tools.glb'),export_format='GLB',export_yup=True,export_animations=False)
+bpy.ops.export_scene.gltf(filepath=str(ROOT/'public/assets/craft-tools.glb'),export_format='GLB',export_yup=True,export_animations=False,export_vertex_color='NAME',export_vertex_color_name='GlazeResidue',export_all_vertex_colors=False)
 print('CRAFT_TOOLS_COMPLETE')

@@ -439,14 +439,14 @@ export class CraftControls {
       "glaze",
       "釉桶 · 按住向下浸入，向上提起",
       "drag",
-      [7.2, 1.345, 0.48],
+      [7.2, 1.315, 0.48],
     );
     const material = this.material(
       new THREE.MeshBasicMaterial({ visible: false, side: THREE.DoubleSide }),
     );
     const surface = this.mesh(
       root,
-      new THREE.CircleGeometry(0.272, 48),
+      new THREE.CircleGeometry(0.263, 48),
       material,
     );
     surface.rotation.x = -Math.PI / 2;

@@ -135,51 +135,6 @@
     "resolution": "2k"
   },
   {
-    "file": "public/assets/textures/realism/brick_diff.jpg",
-    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/red_brick_03/red_brick_03_diff_2k.jpg",
-    "asset": "https://polyhaven.com/a/red_brick_03",
-    "license": "CC0-1.0",
-    "sha256": "c37ef11bb94a533d1c758c5c7d7199264e90f19b23946766c7c59aa189c11ff6",
-    "bytes": 2969950,
-    "resolution": "2k"
-  },
-  {
-    "file": "public/assets/textures/realism/brick_rough.jpg",
-    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/red_brick_03/red_brick_03_rough_2k.jpg",
-    "asset": "https://polyhaven.com/a/red_brick_03",
-    "license": "CC0-1.0",
-    "sha256": "54cbcc8acdbdfbc0a38407509ef72058ef5847b5713e689fa37ce9cc504c41c1",
-    "bytes": 1329161,
-    "resolution": "2k"
-  },
-  {
-    "file": "public/assets/textures/realism/brick_nor_gl.jpg",
-    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/red_brick_03/red_brick_03_nor_gl_2k.jpg",
-    "asset": "https://polyhaven.com/a/red_brick_03",
-    "license": "CC0-1.0",
-    "sha256": "3bcb8714c450369915a9608a9e5318433a5e5df932184519bdbfd993dec16a9f",
-    "bytes": 3684630,
-    "resolution": "2k"
-  },
-  {
-    "file": "public/assets/textures/realism/brick_disp.jpg",
-    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/red_brick_03/red_brick_03_disp_2k.jpg",
-    "asset": "https://polyhaven.com/a/red_brick_03",
-    "license": "CC0-1.0",
-    "sha256": "f48b733ec52e43ef35fd9285a9fd4592356cf25ec86e29d711a0ad33ef3dfc7a",
-    "bytes": 595929,
-    "resolution": "2k"
-  },
-  {
-    "file": "public/assets/textures/realism/brick_ao.jpg",
-    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/red_brick_03/red_brick_03_ao_2k.jpg",
-    "asset": "https://polyhaven.com/a/red_brick_03",
-    "license": "CC0-1.0",
-    "sha256": "3891e9f879575b70fef2abc854ececd813c906f26bb6e333b9d91f3ff39615ab",
-    "bytes": 1666638,
-    "resolution": "2k"
-  },
-  {
     "file": "public/assets/outskirts/ground_diff.jpg",
     "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/forest_ground_04/forest_ground_04_diff_1k.jpg",
     "asset": "https://polyhaven.com/a/forest_ground_04",
@@ -241,5 +196,55 @@
     "sha256": "5244534e9cf5b606f2ff513aa00ddb161b0a4826ffd88a0d3bd03ac29247d198",
     "bytes": 5451493,
     "resolution": "2k"
+  },
+  {
+    "file": "public/assets/textures/realism/brick_diff.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/red_brick_03/red_brick_03_diff_4k.jpg",
+    "asset": "https://polyhaven.com/a/red_brick_03",
+    "license": "CC0-1.0",
+    "sha256": "7c6b3e81a20efc8c53fe85b83aa9727d38a2b0fe29fbca4bcf100db711fe8cda",
+    "bytes": 11437615,
+    "resolution": "4k",
+    "sourceWidthMetres": 1
+  },
+  {
+    "file": "public/assets/textures/realism/brick_rough.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/red_brick_03/red_brick_03_rough_4k.jpg",
+    "asset": "https://polyhaven.com/a/red_brick_03",
+    "license": "CC0-1.0",
+    "sha256": "6f22f26a1ddd593752f524c0c189a8c0f13233e77fd52907b62c2a5bbe4bf7fd",
+    "bytes": 4908970,
+    "resolution": "4k",
+    "sourceWidthMetres": 1
+  },
+  {
+    "file": "public/assets/textures/realism/brick_nor_gl.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/red_brick_03/red_brick_03_nor_gl_4k.jpg",
+    "asset": "https://polyhaven.com/a/red_brick_03",
+    "license": "CC0-1.0",
+    "sha256": "5858d90d1b7e333890a61b51040615021660760273a0025b5348c84f436f6dd8",
+    "bytes": 11123969,
+    "resolution": "4k",
+    "sourceWidthMetres": 1
+  },
+  {
+    "file": "public/assets/textures/realism/brick_disp.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/red_brick_03/red_brick_03_disp_4k.jpg",
+    "asset": "https://polyhaven.com/a/red_brick_03",
+    "license": "CC0-1.0",
+    "sha256": "4f438ba8fc7244d36c95e06b49b5a4114d689bbcb336188ab06b4df13061969c",
+    "bytes": 1741329,
+    "resolution": "4k",
+    "sourceWidthMetres": 1
+  },
+  {
+    "file": "public/assets/textures/realism/brick_ao.jpg",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/red_brick_03/red_brick_03_ao_4k.jpg",
+    "asset": "https://polyhaven.com/a/red_brick_03",
+    "license": "CC0-1.0",
+    "sha256": "a80d575ecf4bf2c70f3c0c1d7bb6c99407250b5bc66ad7660ad89bf3ff3fb443",
+    "bytes": 8044918,
+    "resolution": "4k",
+    "sourceWidthMetres": 1
   }
 ]

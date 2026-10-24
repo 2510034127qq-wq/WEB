@@ -2,11 +2,11 @@ import * as THREE from "three";
 
 type Snapshot = { frame: number; values: number[] };
 
-/** Reuse the exact solar depth map while its casters and light are unchanged.
+/** Reuse the exact depth map while its casters and light are unchanged.
  * Camera motion does not change this fixed, world-space shadow projection.
  * Never reuse a map after moving, hiding, adding or deforming a caster.
  */
-export class SunShadowCache {
+export class FixedShadowCache {
   private snapshots = new WeakMap<THREE.Object3D, Snapshot>();
   private frame = 0;
   private previousCount = -1;
@@ -36,15 +36,16 @@ export class SunShadowCache {
 
   needsUpdate(
     scene: THREE.Scene,
-    light: THREE.DirectionalLight,
+    light: THREE.DirectionalLight | THREE.PointLight,
     camera: THREE.Camera,
   ) {
     scene.updateMatrixWorld();
-    light.target.updateWorldMatrix(true, false);
+    if (light instanceof THREE.DirectionalLight)
+      light.target.updateWorldMatrix(true, false);
     const shadow = light.shadow;
     const lightState = [
       ...light.matrixWorld.elements,
-      ...light.target.matrixWorld.elements,
+      ...(light instanceof THREE.DirectionalLight ? light.target.matrixWorld.elements : [light.distance]),
       ...shadow.camera.projectionMatrix.elements,
       shadow.mapSize.x,
       shadow.mapSize.y,
@@ -147,7 +148,7 @@ export class SunShadowCache {
       }
       // Custom depth shaders may animate without changing a geometry buffer.
       // Conservatively render those every frame instead of assuming stability.
-      if (object.customDepthMaterial) changed = true;
+      if (light instanceof THREE.PointLight ? object.customDistanceMaterial : object.customDepthMaterial) changed = true;
       const previous = this.snapshots.get(object);
       if (
         !previous ||
@@ -164,7 +165,7 @@ export class SunShadowCache {
 
   update(
     scene: THREE.Scene,
-    light: THREE.DirectionalLight,
+    light: THREE.DirectionalLight | THREE.PointLight,
     camera: THREE.Camera,
     enabled: boolean,
   ) {

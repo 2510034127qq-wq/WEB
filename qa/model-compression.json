@@ -19,11 +19,11 @@
     },
     {
       "name": "craft-tools",
-      "inputBytes": 4342180,
-      "outputBytes": 2268100,
+      "inputBytes": 8928936,
+      "outputBytes": 4124004,
       "attributesAndImagesExact": true,
       "transformMaxAbsDiff": 0,
-      "sha256": "7e3e93cdac0ee5a1e6d76505f963d9832aa1a2da22bc59d4c05d2ce23886d92f"
+      "sha256": "087a5ed67d29570fac6497d77af0b23903334cf3f1ec97bece640e1909985512"
     },
     {
       "name": "woodland-pine",

@@ -385,6 +385,7 @@ export function glazeAt(p: Piece, u: number, v: number, amount: number) {
   const col = Math.floor(clamp(u, 0, 0.999) * 16),
     row = Math.floor(clamp(v, 0, 0.999) * 12);
   p.glaze[row * 16 + col] = clamp(p.glaze[row * 16 + col] + amount, 0, 2);
+  if(v<.12 && amount>0)p.footClean=false;
   p.stage = "glazed";
 }
 export const glazeMean = (p: Piece) => p.glaze.reduce((a, b) => a + b, 0) / 192;

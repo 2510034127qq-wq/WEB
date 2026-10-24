@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { modelLoader } from './model-loader';
 import {gltfMaterial,type MaterialSet} from './materials';
+import {loadClay005Maps} from './fired-clay';
 
 /** Authored meshes remain independently inspectable in art/craft-tools.blend. */
 export async function loadCraftAssets(surfaces: MaterialSet) {
@@ -26,8 +27,27 @@ export async function loadCraftAssets(surfaces: MaterialSet) {
     `);
   };
   wet.customProgramCacheKey=()=> 'scanned-kaolin-billet-v1';
-  const fired = gltfMaterial(surfaces.earthenware).clone();
-  fired.color.set('#91836f'); fired.normalScale.set(.32,.32);
+  const [vatColor,vatNormal,vatRough] = await loadClay005Maps();
+  const fired = new THREE.MeshPhysicalMaterial({
+    map:vatColor,normalMap:vatNormal,roughnessMap:vatRough,
+    color:'#b9aaa0',roughness:.84,normalScale:new THREE.Vector2(.48,.48),
+    metalness:0,ior:1.5,vertexColors:true,
+  });
+  // Authored corner colors encode actual use: dried slurry runs / submerged
+  // interior / handled lug. They are masks, not RGB paint or arbitrary grunge.
+  fired.onBeforeCompile=shader=>{
+    shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`
+      float vatGrain=texture2D(roughnessMap,vRoughnessMapUv).g;
+      float residue=clamp(vColor.r*(.65+vatGrain*.35),0.,1.);
+      float damp=clamp(vColor.g,0.,1.);
+      diffuseColor.rgb*=mix(1.,.64,damp);
+      diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.38,.39,.32),residue*.78);
+    `).replace('#include <roughnessmap_fragment>',`
+      float grain=texture2D(roughnessMap,vRoughnessMapUv).g;
+      float roughnessFactor=clamp(.77+grain*.17-vColor.g*.40-vColor.b*.14, .3, .95);
+    `);
+  };
+  fired.customProgramCacheKey=()=> 'metric-vat-clay-and-authored-residue-v1';
   const bamboo = gltfMaterial(surfaces.bamboo).clone();
   bamboo.color.set('#c7b99a'); bamboo.roughness=.65; bamboo.normalScale.set(.12,.12);
   // Small scale ground/smithing pits. The sharpened toe keeps its own smoother material.

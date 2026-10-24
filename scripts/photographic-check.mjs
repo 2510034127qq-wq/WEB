@@ -14,8 +14,10 @@ const stations={
   wheel:{player:[0,1.65,-3.9],position:[0,.78,-5.6]},
   paint:{player:[5.4,1.65,-3.8],position:[5.4,.96,-5.6]},
   glaze:{player:[5.6,1.65,-.2],position:[7.2,.95,-.2]},
+  vat:{player:[5.6,1.65,-.2],position:[7.2,.95,-.2]},
   display:{player:[0,1.65,3.7],position:[0,.96,5.8]},
   kiln:{player:[6,1.65,2.75],position:[6,.45,4.65]},
+  hotkiln:{player:[6,1.65,2.75],position:[6,.45,4.65]},
 };
 try {
   await page.goto(base);
@@ -29,6 +31,11 @@ try {
       p.stage=name==='wheel'?'thrown':['paint','glaze'].includes(name)?'trimmed':'fired';
       if(name==='wheel'){p.marks=[];p.glaze=Array(192).fill(0);p.moisture=.7;p.shrink=1;}
     }
+    if(name==='vat'){s.pieces=[];s.activeId=null;}
+    if(name==='hotkiln'){
+      p.location='kiln';p.stage='loaded';
+      Object.assign(s.kiln,{phase:'firing',temperature:600,fuel:1,draft:.6,assisted:true});
+    }
     await page.locator('[data-act="settings"]').click();
     const backup=page.waitForEvent('download');
     await page.locator('#import').setInputFiles({name:'photo-fixture.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(s))});
@@ -36,6 +43,10 @@ try {
     await page.waitForFunction(()=>window.__YAOHUO__?.view().modal==='');
     if(stations[name]) await page.keyboard.press('KeyE');
     await page.waitForTimeout(4600);
+    if(['kiln','hotkiln','glaze','vat'].includes(name))await page.waitForFunction(name=>{
+      const v=window.__YAOHUO__.view(),goal=['kiln','hotkiln'].includes(name)?[6,1.55,2.6]:[5.95,1.92,.38];
+      return Math.hypot(...v.camera.map((x,i)=>x-goal[i]))<.0005;
+    },name,{timeout:45000});
     const image=`qa/${prefix}-${name}.png`;
     await page.screenshot({path:image});
     views.push({name,image,...await page.evaluate((name)=>({view:window.__YAOHUO__.view(),stats:window.__YAOHUO__.stats(),

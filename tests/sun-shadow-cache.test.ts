@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import * as THREE from "three";
-import { SunShadowCache } from "../src/render/sun-shadow-cache";
+import { FixedShadowCache } from "../src/render/fixed-shadow-cache";
 
 function setup() {
   const scene = new THREE.Scene(),
     light = new THREE.DirectionalLight(),
     camera = new THREE.PerspectiveCamera();
-  const cache = new SunShadowCache(),
+  const cache = new FixedShadowCache(),
     group = new THREE.Group();
   const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(),
@@ -22,6 +22,28 @@ function setup() {
 }
 
 describe("solar shadow reuse", () => {
+  it("reuses point-light depth through flicker, but refreshes for range, casters and custom distance shaders", () => {
+    const scene = new THREE.Scene(), light = new THREE.PointLight(), camera = new THREE.PerspectiveCamera();
+    const cache = new FixedShadowCache();
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial());
+    mesh.castShadow = true;
+    scene.add(light, mesh);
+    const changed = () => cache.needsUpdate(scene, light, camera);
+    expect(changed()).toBe(true);
+    expect(changed()).toBe(false);
+    light.intensity = 25;
+    light.color.set('#ff6b1b');
+    expect(changed()).toBe(false);
+    light.distance = 8;
+    expect(changed()).toBe(true);
+    expect(changed()).toBe(false);
+    mesh.rotation.y = .3;
+    expect(changed()).toBe(true);
+    expect(changed()).toBe(false);
+    mesh.customDistanceMaterial = new THREE.MeshDistanceMaterial();
+    expect(changed()).toBe(true);
+    expect(changed()).toBe(true);
+  });
   it("keeps the map through camera motion, but updates for moved, hidden, removed and replaced casters", () => {
     const { camera, mesh, group, changed } = setup();
     camera.position.set(7, 2, -4);

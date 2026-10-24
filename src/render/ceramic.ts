@@ -158,6 +158,8 @@ export class Ceramic extends THREE.Group {
   private mineralNormal: THREE.Texture;
   private mineralAlbedo: THREE.Texture;
   signature = "";
+  private shapeSignature = '';
+  private glazeField = document.createElement('canvas');
   constructor(public piece: Piece) {
     super();
     this.canvas.width = 2048;
@@ -242,17 +244,19 @@ export class Ceramic extends THREE.Group {
     ].join("|");
     if (!force && sig === this.signature) return;
     this.signature = sig;
-    this.mesh.geometry.dispose();
-    this.mesh.geometry = ceramicGeometry(p);
+    const shapeSignature=[p.opened,wet?'wet':fired?'fired':'dry',p.height,p.radius.join(','),p.thickness.join(','),p.defects.join(','),JSON.stringify(p.wheelTraces||[])].join('|');
+    if(force||shapeSignature!==this.shapeSignature){
+      this.mesh.geometry.dispose();
+      this.mesh.geometry = ceramicGeometry(p);
+      this.shapeSignature=shapeSignature;
+    }
     this.scale.setScalar(p.shrink);
     const ctx = this.canvas.getContext("2d")!;
     ctx.fillStyle = fired
       ? "#e0e5dd"
       : wet
         ? "#85867a"
-        : glazed
-          ? "#c4c6b8"
-          : "#b9b6a6";
+        : "#b9b6a6";
     ctx.fillRect(0, 0, 2048, 1024);
     mat.normalScale.setScalar(fired ? .025 : wet ? .45 : .75);
     const circumference=p.radius.reduce((a,b)=>a+b,0)/p.radius.length*Math.PI*2;
@@ -276,6 +280,18 @@ export class Ceramic extends THREE.Group {
         ctx.fillRect(offset, y + size, 1024, size * 0.16);
       } else for (const dx of [-1024, 0, 1024]) stamp(ctx, m, x + dx, y, size);
       ctx.restore();
+    }
+    if(glazed){
+      // Show actual local coverage while coating, rather than turning the whole
+      // body white on the first drop. The simulation field stays save-compatible.
+      this.glazeField.width=16;this.glazeField.height=12;
+      const field=this.glazeField.getContext('2d')!,data=field.createImageData(16,12);
+      for(let row=0;row<12;row++)for(let col=0;col<16;col++){
+        const i=((11-row)*16+col)*4;
+        data.data.set([196,198,184,Math.round(Math.min(.86,p.glaze[row*16+col]*.85)*255)],i);
+      }
+      field.putImageData(data,0,0);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+      ctx.drawImage(this.glazeField,0,0,1024,1024);
     }
     if (glazed || fired) {
       for (const panel of [0, 1])

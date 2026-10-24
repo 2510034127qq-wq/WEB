@@ -7,6 +7,7 @@ import { applyLightingAudit } from "./render/lighting-audit";
 import { Physics } from "./physics/world";
 import { Sound } from "./render/sound";
 import { Locomotion } from "./simulation/locomotion";
+import { glazeContact } from "./simulation/glaze-contact";
 import {
   active,
   advance,
@@ -14,6 +15,7 @@ import {
   clamp,
   dip,
   glazeMean,
+  glazeAt,
   lightKiln,
   loadKiln,
   newPiece,
@@ -347,7 +349,7 @@ function renderWork() {
       "点砚台蘸料 / 水碗洗笔 · 滚轮旋器 · Shift+滚轮调笔锋 · Ctrl+Z 撤回 · F 托起";
   } else if (focus === "glaze") {
     hint = "抓住器物下拉入釉，上提离釉";
-    detail = "浸入深度与停留决定釉层 · 取出后按右键在底足来回擦拭 · F 托起";
+    detail = "下拉浸釉 · 提起后 Shift 拖动釉刷补涂，滚轮转器 · 右键擦净底足 · F 托起";
   } else if (focus === "rack") {
     hint = "置于阴处，等坯体慢慢失水";
     detail = "按住 R 静候 · F 托起当前器物";
@@ -360,7 +362,7 @@ function renderWork() {
     detail =
       "拖砖至窑口安置匣钵 · 拖火折子到火口起火 · 拖木柴入炉 · 拖风闸调风 · C 止火 · R 静候";
     extras =
-      '<div class="craft-readout" id="kiln-temp"></div><div id="kiln-fuel" hidden></div><svg hidden><polyline id="curve"/></svg>';
+      '<div class="craft-readout" id="kiln-temp"></div><div id="kiln-fuel" hidden></div><svg class="hidden" aria-hidden="true"><polyline id="curve"/></svg>';
   } else if (focus === "display" && p) {
     hint = "对光验器，拢纸轻裹";
     detail = "滚轮旋看 · 将纸向器物拢合，松手停下";
@@ -1007,7 +1009,14 @@ window.addEventListener("mousemove", (e) => {
       }
     }
     if (focus === "glaze") {
-      if (rightDrag) {
+      if (e.shiftKey && !rightDrag) {
+        if(hit?.surface==='outer' && depth<.08 && distance>0){
+          // Coating follows actual brush travel on the exposed surface. A high
+          // vessel can be turned and brushed above the vat's immersion limit.
+          glazeAt(p,hit.uv.x,hit.uv.y,Math.min(.12,distance*.012));
+          hold='glaze-brush';dirty();
+        }else hold='';
+      } else if (rightDrag) {
         if (hit && hit.uv.y < 0.22 && depth < 0.08 && p.stage === "glazed") {
           cleanTravel += distance;
           if (cleanTravel > 100 && !p.footClean) {
@@ -1186,7 +1195,7 @@ function updateUI() {
         : focus === "wheel"
           ? `轮速 ${Math.round(spin * 9.55)} 转/分 · 最薄器壁 ${(Math.min(...p.thickness) * 1000).toFixed(1)} mm${!p.opened ? ` · 开孔 ${Math.round(opening * 100)}%` : ""}${["leather", "trimmed"].includes(p.stage) ? ` · 利坯 ${Math.round(p.trimmed * 100)}%` : ""}`
           : focus === "glaze"
-            ? `入釉 ${Math.round(depth * 100)}% · 釉层 ${glazeMean(p).toFixed(2)} · ${p.footClean ? "足已净" : "待擦足"}`
+            ? `入釉 ${Math.round(glazeContact(p,depth).immersed * 100)}%${glazeContact(p,depth).atFloor ? ' · 已到缸底' : ''} · 釉层 ${glazeMean(p).toFixed(2)} · ${p.footClean ? "足已净" : "待擦足"}`
             : focus === "paint"
               ? `笔锋 ${(brushSize * 1000).toFixed(0)} · 青料 ${Math.round(ink * 100)}%`
               : "",
@@ -1266,8 +1275,8 @@ function tick(ms: number) {
         trim(p, dt * Math.min(1.5, spin), ring);
         hold = "trim-contact";
       }
-      if (focus === "glaze" && depth > 0.01 && p?.location === "glaze") {
-        dip(p, dt, depth);
+      if (focus === "glaze" && p?.location === "glaze" && glazeContact(p,depth).immersed>0) {
+        dip(p, dt, glazeContact(p,depth).immersed);
         hold = "dip";
       }
       if (hold) {
@@ -1610,6 +1619,8 @@ async function boot() {
           cameraFov: game.camera.fov,
           look: { yaw, pitch },
           pieceBounds: game.activeBounds(),
+          pieceGeometry:game.ceramics.get(state.activeId||'')?.mesh.geometry.id,
+          glazeContact: focus==='glaze' && active(state) ? {travel:depth,...glazeContact(active(state)!,depth),renderedBottom:game.ceramics.get(state.activeId!)?.position.y} : null,
           hands: game.handDiagnostics(),
         }),
       },
