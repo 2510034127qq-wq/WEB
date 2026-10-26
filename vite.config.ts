@@ -17,6 +17,7 @@ export default defineConfig({
   build: {
     copyPublicDir: false,
     rollupOptions: {
+      input: { workshop: 'index.html', hands: 'hand-lab.html' },
       output: {
         manualChunks(id) {
           if (id.includes("@dimforge")) return "physics";

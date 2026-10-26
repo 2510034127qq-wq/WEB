@@ -44,7 +44,7 @@ try {
     if(stations[name]) await page.keyboard.press('KeyE');
     await page.waitForTimeout(4600);
     if(['kiln','hotkiln','glaze','vat'].includes(name))await page.waitForFunction(name=>{
-      const v=window.__YAOHUO__.view(),goal=['kiln','hotkiln'].includes(name)?[6,1.55,2.6]:[5.95,1.92,.38];
+      const v=window.__YAOHUO__.view(),goal=['kiln','hotkiln'].includes(name)?[6,1.55,2.6]:[6.62,1.92,.38];
       return Math.hypot(...v.camera.map((x,i)=>x-goal[i]))<.0005;
     },name,{timeout:45000});
     const image=`qa/${prefix}-${name}.png`;
