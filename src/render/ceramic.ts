@@ -1,3 +1,4 @@
+import {drawDecoration} from './decoration';
 import * as THREE from "three";
 import type { Piece, Mark } from "../simulation/model";
 import { glazeMean } from "../simulation/model";
@@ -13,7 +14,7 @@ function clayMap(channel: string) {
   const map=source.clone();map.wrapS=map.wrapT=THREE.RepeatWrapping;map.anisotropy=16;
   return map;
 }
-export function ceramicGeometry(p: Piece) {
+function ceramicProfile(p: Piece) {
   const points: THREE.Vector2[] = [];
   const h = p.height;
   points.push(
@@ -36,7 +37,7 @@ export function ceramicGeometry(p: Piece) {
     }
     return radius+THREE.MathUtils.clamp(relief,-.0005,.0005)*(fired?.28:1);
   };
-  const rows=Math.max(188,Math.ceil(h/.0015));
+  const rows=256;
   for (let i = 0; i <= rows; i++)
     points.push(new THREE.Vector2(profileRadius(i/rows*47), 0.012 + i/rows*h));
   let insideStart = points.length;
@@ -64,37 +65,41 @@ export function ceramicGeometry(p: Piece) {
       new THREE.Vector2(0, h + 0.028),
     );
   }
-  const g = new THREE.LatheGeometry(points, 128);
-  const pos = g.attributes.position,
-    uv = g.attributes.uv;
-  for (let i = 0; i < uv.count; i++) {
-    const inside = p.opened && i % points.length >= insideStart;
-    uv.setX(i, uv.getX(i) * 0.5 + (inside ? 0.5 : 0));
-    uv.setY(i, Math.max(0, Math.min(1, (pos.getY(i) - 0.012) / h)));
-  }
-  if (p.defects.some((d) => d.startsWith("过火"))) {
-    for (let i = 0; i < pos.count; i++) {
-      const f = pos.getY(i) / h;
-      pos.setY(
-        i,
-        pos.getY(i) +
-          Math.sin(Math.atan2(pos.getX(i), pos.getZ(i)) * 3) * 0.012 * f * f,
-      );
-    }
-  }
-  g.computeVertexNormals();
-  const normals = g.attributes.normal;
-  for (let j = 0; j < points.length; j++) {
-    const last = 128 * points.length + j,
-      n = new THREE.Vector3()
-        .fromBufferAttribute(normals, j)
-        .add(new THREE.Vector3().fromBufferAttribute(normals, last))
-        .normalize();
-    normals.setXYZ(j, n.x, n.y, n.z);
-    normals.setXYZ(last, n.x, n.y, n.z);
-  }
+  return {points,insideStart};
+}
+export function ceramicGeometry(p: Piece) {
+  const {points}=ceramicProfile(p);
+  const g=new THREE.LatheGeometry(points,128);
+  (g.attributes.position as THREE.BufferAttribute).setUsage(THREE.DynamicDrawUsage);
+  (g.attributes.normal as THREE.BufferAttribute).setUsage(THREE.DynamicDrawUsage);
+  updateCeramicGeometry(g,p);
   return g;
 }
+/** Reuse vertex/index buffers. Analytic surface-of-revolution normals avoid a
+ * full triangle adjacency pass and remain identical at the circumference seam. */
+export function updateCeramicGeometry(g: THREE.LatheGeometry,p: Piece) {
+  const {points,insideStart}=ceramicProfile(p),stride=points.length;
+  if(g.attributes.position.count!==129*stride)return false;
+  for(let i=0;i<stride;i++)g.parameters.points[i].copy(points[i]);
+  const pos=g.attributes.position,normal=g.attributes.normal,uv=g.attributes.uv;
+  const warped=p.defects.some(d=>d.startsWith('过火'));
+  for(let j=0;j<stride;j++){
+    const prev=points[Math.max(0,j-1)],next=points[Math.min(stride-1,j+1)],point=points[j];
+    const dr=next.x-prev.x,dy=next.y-prev.y,length=Math.hypot(dr,dy)||1;
+    const inside=p.opened&&j>=insideStart;
+    for(let i=0;i<=128;i++){
+      const angle=i/128*Math.PI*2,sn=Math.sin(angle),cs=Math.cos(angle),k=i*stride+j;
+      const y=point.y+(warped?Math.sin(angle*3)*.012*(point.y/p.height)**2:0);
+      pos.setXYZ(k,point.x*sn,y,point.x*cs);
+      normal.setXYZ(k,dy/length*sn,-dr/length,dy/length*cs);
+      uv.setXY(k,(.5+i/128*1023)/2048+(inside?.5:0),Math.max(0,Math.min(1,(point.y-.012)/p.height)));
+    }
+  }
+  pos.needsUpdate=true;normal.needsUpdate=true;uv.needsUpdate=true;
+  g.computeBoundingBox();g.computeBoundingSphere();
+  return true;
+}
+
 function stamp(
   ctx: CanvasRenderingContext2D,
   m: Mark,
@@ -159,6 +164,11 @@ export class Ceramic extends THREE.Group {
   private mineralAlbedo: THREE.Texture;
   signature = "";
   private shapeSignature = '';
+  private paintSignature = '';
+  geometryUpdates=0;
+  textureUpdates=0;
+  previewGlaze=false;
+  private handles:THREE.Mesh[]=[];
   private glazeField = document.createElement('canvas');
   constructor(public piece: Piece) {
     super();
@@ -230,6 +240,8 @@ export class Ceramic extends THREE.Group {
     mat.roughness = fired ? (p.defects.some(d=>d.startsWith('欠火'))?.82:.30) : wet ? .64-.14*Math.min(1,p.moisture/.7) : glazed ? .88 : .94;
     mat.clearcoat = fired ? 1 : wet ? .24 * Math.min(1,p.moisture/.7) : 0;
     mat.clearcoatRoughness = fired ? (glazeMean(p)>1.2?.28:.12) : .32;
+    if(this.previewGlaze&&p.decoration){mat.roughness=.3;mat.clearcoat=1;mat.clearcoatRoughness=.14;}
+    mat.normalScale.setScalar(fired ? .025 : this.previewGlaze&&p.decoration ? .035 : wet ? .45 : .75);
     if(ceramicAudit==='matte'){mat.normalMap=null;mat.roughnessMap=null;mat.clearcoatRoughnessMap=null;mat.roughness=1;mat.clearcoat=0;}
     const sig = [
       p.stage,
@@ -241,27 +253,35 @@ export class Ceramic extends THREE.Group {
       p.defects.join(","),
       p.shrink,
       JSON.stringify(p.wheelTraces||[]),
+      JSON.stringify(p.decoration||null),
+      p.handles||0,
     ].join("|");
     if (!force && sig === this.signature) return;
     this.signature = sig;
-    const shapeSignature=[p.opened,wet?'wet':fired?'fired':'dry',p.height,p.radius.join(','),p.thickness.join(','),p.defects.join(','),JSON.stringify(p.wheelTraces||[])].join('|');
+    const shapeSignature=[p.opened,wet?'wet':fired?'fired':'dry',p.height,p.radius.join(','),p.thickness.join(','),p.defects.join(','),JSON.stringify(p.wheelTraces||[]),p.handles||0].join('|');
     if(force||shapeSignature!==this.shapeSignature){
-      this.mesh.geometry.dispose();
-      this.mesh.geometry = ceramicGeometry(p);
+      if(!updateCeramicGeometry(this.mesh.geometry,p)){
+        this.mesh.geometry.dispose();this.mesh.geometry=ceramicGeometry(p);
+      }
+      this.geometryUpdates++;
+      this.updateHandles();
       this.shapeSignature=shapeSignature;
     }
     this.scale.setScalar(p.shrink);
-    const ctx = this.canvas.getContext("2d")!;
+    const circumference=p.radius.reduce((a,b)=>a+b,0)/p.radius.length*Math.PI*2;
+    for(const t of [this.roughnessTexture,this.mineralNormal,this.mineralAlbedo])
+      t.repeat.set(circumference/.2*2,p.height/.2);
+    const paintSignature=[wet?'wet':fired?'fired':glazed?'glazed':'dry',p.marks.length,JSON.stringify(p.decoration||null),p.glaze.join(','),p.defects.join(',')].join('|');
+    if(!force&&paintSignature===this.paintSignature)return;
+    this.paintSignature=paintSignature;this.textureUpdates++;
+    const ctx = this.canvas.getContext("2d", {willReadFrequently:true})!;
     ctx.fillStyle = fired
       ? "#e0e5dd"
       : wet
         ? "#85867a"
         : "#b9b6a6";
     ctx.fillRect(0, 0, 2048, 1024);
-    mat.normalScale.setScalar(fired ? .025 : wet ? .45 : .75);
-    const circumference=p.radius.reduce((a,b)=>a+b,0)/p.radius.length*Math.PI*2;
-    for(const t of [this.roughnessTexture,this.mineralNormal,this.mineralAlbedo])
-      t.repeat.set(circumference/.2*2,p.height/.2);
+    if(p.decoration){ctx.save();ctx.beginPath();ctx.rect(0,0,1024,1024);ctx.clip();drawDecoration(ctx,p.decoration,1024,1024);ctx.restore();}
     for (const m of p.marks) {
       ctx.save();
       const offset = m.surface === "inner" ? 1024 : 0;
@@ -338,6 +358,7 @@ export class Ceramic extends THREE.Group {
     this.texture.needsUpdate = true;
   }
   dispose() {
+    for(const h of this.handles)h.geometry.dispose();
     this.mesh.geometry.dispose();
     this.mesh.material.bumpMap?.dispose();
     this.mesh.material.dispose();
@@ -345,5 +366,18 @@ export class Ceramic extends THREE.Group {
     this.mineralNormal.dispose();
     this.mineralAlbedo.dispose();
     this.texture.dispose();
+  }
+  private updateHandles(){
+    for(const h of this.handles){h.geometry.dispose();this.remove(h);}this.handles=[];
+    const p=this.piece;
+    for(let i=0;i<(p.handles||0);i++){
+      const side=i===0?1:-1,top=p.height*.84+.012,bottom=p.height*.56+.012,
+        r1=p.radius[39],r2=p.radius[26],out=Math.max(r1,r2)+Math.min(.08,p.height*.24);
+      const curve=new THREE.CubicBezierCurve3(new THREE.Vector3(side*(r1-.004),top,0),new THREE.Vector3(side*out,top+.008,0),new THREE.Vector3(side*out,bottom-.008,0),new THREE.Vector3(side*(r2-.004),bottom,0));
+      const geometry=new THREE.TubeGeometry(curve,96,Math.min(.009,p.height*.03),20,false);
+      const uv=geometry.attributes.uv,pos=geometry.attributes.position;
+      for(let j=0;j<uv.count;j++)uv.setXY(j,i===0?.125:.375,Math.max(0,Math.min(1,pos.getY(j)/p.height)));
+      const h=new THREE.Mesh(geometry,this.mesh.material);h.castShadow=h.receiveShadow=true;this.add(h);this.handles.push(h);
+    }
   }
 }

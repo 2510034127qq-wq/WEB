@@ -22,6 +22,12 @@ function setup() {
 }
 
 describe("solar shadow reuse", () => {
+  it('keeps opaque shadows when canvas pigments change, but refreshes alpha cutouts',()=>{
+    const {mesh,changed}=setup();mesh.material.map=new THREE.Texture();
+    changed();mesh.material.map.needsUpdate=true;expect(changed()).toBe(false);
+    mesh.material.alphaTest=.5;expect(changed()).toBe(true);
+    mesh.material.map.needsUpdate=true;expect(changed()).toBe(true);
+  });
   it("reuses point-light depth through flicker, but refreshes for range, casters and custom distance shaders", () => {
     const scene = new THREE.Scene(), light = new THREE.PointLight(), camera = new THREE.PerspectiveCamera();
     const cache = new FixedShadowCache();

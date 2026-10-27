@@ -1,4 +1,7 @@
 import "./ui/styles.css";
+import {SculptStroke} from "./simulation/sculpt";
+import {FiringPanel} from "./ui/firing-panel";
+import {PaintStudio} from "./ui/paint-studio";
 import * as THREE from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { CraftControls, type CraftHit } from "./render/craft-controls";
@@ -96,6 +99,12 @@ let dragging = false,
   restorePointer = false;
 const keys = new Set<string>();
 let editRevision = 0;
+let needsSync=false;
+let sculpt:SculptStroke|null=null;
+let sculptStart={x:0,y:0};
+let wheelAuto=true;
+const paintStudio=new PaintStudio(()=>dirty(),delta=>{game.rotation+=delta;},()=>game?.ceramics.get(state.activeId||"")?.canvas);
+const firingPanel=new FiringPanel(()=>dirty(),message=>toast(message));
 let shapeUndo: Pick<Piece,'radius'|'thickness'|'height'|'wheelTraces'>[] = [];
 let frames: number[] = [];
 let packing: string | null = null,
@@ -108,7 +117,7 @@ function toast(message: string) {
 function dirty() {
   editRevision++;
   saved = false;
-  game?.sync();
+  needsSync=true;
 }
 async function persist() {
   if (!started) return false;
@@ -125,6 +134,10 @@ async function persist() {
   }
 }
 function leave() {
+  if(sculpt){sculpt.step(0,true);sculpt=null;}
+  paintStudio.show(null);
+  firingPanel.show(null);
+  game?.camera.clearViewOffset();
   wheelGrabAngle = null;
   controls?.endDrag();
   controlDrag = null;
@@ -259,11 +272,15 @@ function enter(id: StationId) {
   locomotion.reset(yaw);
   game.focus = id;
   game.renderer.domElement.style.cursor = "default";
-  game.rotation = id === "display" ? Math.PI : 0;
+  game.rotation = id === "display" || id === "paint" ? Math.PI : 0;
   controls?.setFocus(id);
   depth = 0;
   opening = 0;
   release();
+  if(id==="wheel"&&p?.location==="wheel"){
+    if(p.stage==="prepared"&&!p.opened)openClay(p);
+    wheelAuto=true;spin=2.8;
+  }
   paused = false;
   renderWork();
   dirty();
@@ -326,6 +343,8 @@ function renderWork() {
   const station = STATIONS.find((s) => s.id === focus)!;
   const p = active(state),
     here = p?.location === focus;
+  paintStudio.show(focus==="paint"&&here&&p&&["trimmed","painted"].includes(p.stage)?p:null);
+  firingPanel.show(focus==="kiln"?state:null);
   let hint = "",
     detail = "",
     extras = "";
@@ -342,13 +361,14 @@ function renderWork() {
     hint = ["leather", "trimmed"].includes(p.stage)
       ? "刀锋贴住坯壁，随转轮轻轻旋削"
       : p.opened
-        ? "按住器壁左右拖动收放，向上拖动提拉"
+        ? "拖动器壁收放轮廓 · 拖动口沿提拉高度"
         : "拖动轮缘拨轮，再压住泥心向下开孔";
-    detail = "空格拨轮 · B 扶轮制动 · Shift 拖动抹平 · Ctrl+Z 撤回 · F 托起";
+    detail = "持续转轮 · B 暂停 / 空格继续 · Shift 抹平 · Ctrl+Z 撤回 · F 托起";
+    extras = `<div class="paint-tools" aria-label="器耳">${button("handle-0","无耳")}${button("handle-1","单耳")}${button("handle-2","双耳")}</div>`;
   } else if (focus === "paint") {
-    hint = "笔尖落在坯面，拖动留下青料";
+    hint = "展开画布绘饰，器物实时呈现";
     detail =
-      "点砚台蘸料 / 水碗洗笔 · 滚轮旋器 · Shift+滚轮调笔锋 · Ctrl+Z 撤回 · F 托起";
+      "左侧绘画、环带与文字 · 选中纹样拖动 / 缩放 / 旋转 · 滚轮旋器 · F 托起";
   } else if (focus === "glaze") {
     hint = "抓住器物下拉入釉，上提离釉";
     detail = "下拉浸釉 · 提起后 Shift 拖动釉刷补涂，滚轮转器 · 右键擦净底足 · F 托起";
@@ -419,7 +439,7 @@ function openModal(kind: string) {
   }
   if (kind === "journal") {
     title = "手艺札记";
-    content = `<div class="eyebrow">水土 · 双手 · 窑火</div><p>这里取意于清代景德镇民间制瓷。真实产业分工精细：原料行、坯房、画作与窑场，并非一位匠人、一间屋子包办。这个院落将它们连在一起，让你亲历一件青花的生命。</p><div class="note-grid"><section><h3>一 · 从泥到坯</h3><p>瓷石、高岭土经过破碎、淘洗、沉降与脱水，再配泥陈腐。本作领取的是已预处理的泥块；你仍须调水、揉练排气。轮车靠竹杖起动，双手塑形。</p></section><section><h3>二 · 干湿之间</h3><p>湿坯柔软，不能立即利坯。放到阴干架候至半干，才用刀旋削。不能用强晒或窑火代替恰当干燥。</p></section><section><h3>三 · 釉下青花</h3><p>青料研细后画在坯上，再施透明釉并高温烧成。青花主线无需强行插入素烧，也不必都做第二次彩烧。</p></section><section><h3>四 · 窑中有性</h3><p>匣钵减少窑灰与火焰污染。窑位、温度历程、坯壁与釉层共同影响结果。烧窑与冷却跨日，游戏用时间推进压缩等待。</p></section></div><h3>把手艺留在器物上</h3><p>练泥：按住泥团来回推揉。拉坯：拖轮缘拨轮，压住泥心下拉开孔，再沿器壁横向收放、纵向提拉。利坯：转轮后让刀尖接触器壁，离开就停刀。画坯：直接在三维表面落笔，点砚台蘸料、点水碗稀释。施釉：抓住器物下拖入釉、上提离釉，右键擦净底足。窑前拖封砖、火折子和柴到窑口，拖风闸调风。持物走到工作台按 E 放下；看向近处平面按 Q 可自由放置。</p><h3>考证与边界</h3><p>工序参考唐英《陶冶图说》及故宫资料，场景为合成工坊。泥体、烧成参数和缺陷是可解释的游戏近似，未经真实配方试验校准；进入工作台后使用鼠标光标点击、拖动操作，不显示玩家手部。</p><p><a href="https://www.dpm.org.cn/Uploads/File/2020/04/22/u5e9ffd0d381f6.pdf" target="_blank" rel="noopener">故宫博物院 · 唐英与《陶冶图说》</a> &nbsp; / &nbsp; <a href="https://whc.unesco.org/en/list/1765/" target="_blank" rel="noopener">景德镇手工瓷业遗产资料</a></p>`;
+    content = `<div class="eyebrow">水土 · 双手 · 窑火</div><p>这里取意于清代景德镇民间制瓷。真实产业分工精细：原料行、坯房、画作与窑场，并非一位匠人、一间屋子包办。这个院落将它们连在一起，让你亲历一件青花的生命。</p><div class="note-grid"><section><h3>一 · 从泥到坯</h3><p>瓷石、高岭土经过破碎、淘洗、沉降与脱水，再配泥陈腐。本作领取的是已预处理的泥块；你仍须调水、揉练排气。轮车靠竹杖起动，双手塑形。</p></section><section><h3>二 · 干湿之间</h3><p>湿坯柔软，不能立即利坯。放到阴干架候至半干，才用刀旋削。不能用强晒或窑火代替恰当干燥。</p></section><section><h3>三 · 釉下青花</h3><p>青料研细后画在坯上，再施透明釉并高温烧成。青花主线无需强行插入素烧，也不必都做第二次彩烧。</p></section><section><h3>四 · 窑中有性</h3><p>匣钵减少窑灰与火焰污染。窑位、温度历程、坯壁与釉层共同影响结果。烧窑与冷却跨日，游戏用时间推进压缩等待。</p></section></div><h3>把手艺留在器物上</h3><p>练泥：按住泥团来回推揉。拉坯：进入辘轳后自动开孔并持续转轮，拖器壁收放轮廓，拖口沿升降高度；B 暂停，空格继续。利坯：让刀尖随轮接触半干器壁，离开就停刀。彩绘：在左侧展开画布落笔、铺底色、添加环带和文字；选择纹样后拖动、缩放、旋转，右侧查看烧成色预览。施釉：抓住器物下拖入釉、上提离釉，右键擦净底足。烧制：装窑后按住升温或降温，松开保持温度；在目标温区积累成熟度，完成后止火冷却。持物走到工作台按 E 放下；看向近处平面按 Q 可自由放置。</p><h3>考证与边界</h3><p>工序参考唐英《陶冶图说》及故宫资料，场景为合成工坊。泥体、烧成参数和缺陷是可解释的游戏近似，未经真实配方试验校准；进入工作台后使用鼠标光标点击、拖动操作，不显示玩家手部。</p><p><a href="https://www.dpm.org.cn/Uploads/File/2020/04/22/u5e9ffd0d381f6.pdf" target="_blank" rel="noopener">故宫博物院 · 唐英与《陶冶图说》</a> &nbsp; / &nbsp; <a href="https://whc.unesco.org/en/list/1765/" target="_blank" rel="noopener">景德镇手工瓷业遗产资料</a></p>`;
   }
   if (kind === "settings") {
     title = "工坊设置";
@@ -466,7 +486,7 @@ async function exportGlb() {
   if (!p) return;
   const ceramic = game.ceramics.get(p.id)!;
   const object = new THREE.Group();
-  object.add(ceramic.mesh.clone());
+  for(const child of ceramic.children)object.add(child.clone());
   object.scale.setScalar(p.shrink);
   object.name = p.name;
   object.userData = {
@@ -535,6 +555,7 @@ root.addEventListener("click", async (e) => {
       toast(q.history.join(" → "));
       return;
     }
+    if(act.startsWith("handle-")&&p&&focus==="wheel"&&["prepared","thrown","leather","trimmed"].includes(p.stage)){p.handles=Number(act.slice(7)) as 0|1|2;dirty();return;}
     switch (act) {
       case "close-modal":
         closeModal();
@@ -779,6 +800,7 @@ root.addEventListener("pointerdown", (e) => {
   }
 });
 window.addEventListener("pointerup", () => {
+  if(sculpt){sculpt.step(0,true);sculpt=null;dirty();}
   wheelGrabAngle = null;
   if (controlDrag) {
     const action = controls.endDrag();
@@ -809,6 +831,7 @@ window.addEventListener("pointerup", () => {
   dragging = false;
 });
 window.addEventListener("pointercancel", () => {
+  sculpt=null;
   controls?.endDrag();
   controlDrag = null;
   hold = "";
@@ -880,7 +903,8 @@ function markAt(x: number, y: number, first = false) {
   }
 }
 window.addEventListener("mousemove", (e) => {
-  if (!started || modal) return;
+  if (!started || modal || (e.target as HTMLElement).closest("#paint-studio,#firing-panel")) return;
+  if (sculpt){sculpt.move(e.clientX-sculptStart.x,e.clientY-sculptStart.y);return;}
   if (wheelGrabAngle !== null) {
     const hit = game.hitWheel(e.clientX, e.clientY);
     if (hit) {
@@ -1110,10 +1134,11 @@ window.addEventListener("keydown", (e) => {
       else takePiece();
     }
     if (e.code === "Space" && focus === "wheel") {
+      wheelAuto=true;
       spin = Math.min(3.2, spin + 1.6);
       sound.tap("wood");
     }
-    if (e.code === "KeyB" && focus === "wheel") spin = 0;
+    if (e.code === "KeyB" && focus === "wheel") {spin = 0;wheelAuto=false;}
     if (e.code === "KeyR" && ["rack", "kiln"].includes(focus)) hold = "wait";
     if (e.code === "KeyC" && focus === "kiln" && state.kiln.phase === "firing")
       state.kiln.phase = "cooling";
@@ -1130,9 +1155,10 @@ window.addEventListener("keydown", (e) => {
       if (focus === "wheel" && shapeUndo.length)
         Object.assign(p, shapeUndo.pop());
       if (focus === "paint") {
-        do {
-          p.marks.pop();
-        } while (p.marks.length && !p.marks[p.marks.length - 1].end);
+        if(p.decoration)paintStudio.undo();
+        else do {
+            p.marks.pop();
+          } while (p.marks.length && !p.marks[p.marks.length - 1].end);
       }
       dirty();
     }
@@ -1149,6 +1175,8 @@ window.addEventListener("keyup", (e) => {
   if (e.code === "KeyR") hold = "";
 });
 window.addEventListener("blur", () => {
+  sculpt=null;
+  wheelGrabAngle=null;
   controls?.endDrag();
   controlDrag = null;
   keys.clear();
@@ -1246,6 +1274,7 @@ function tick(ms: number) {
     if (!document.hidden && !paused) {
       const p = active(state);
       advance(state, dt, hold === "wait" ? 8 : 1);
+      firingPanel.update();
       physics.setKilnHot(state.kiln.phase !== "idle");
       if (packing) {
         // Folding progress follows the player's paper drag, not an automatic timer.
@@ -1262,7 +1291,9 @@ function tick(ms: number) {
           toast("此器已入藏。你的指痕与笔意，都留在了这窑青花里。");
         }
       }
-      spin *= Math.exp(-dt * (dragging ? 0.28 : 0.09));
+      if(focus==="wheel"&&wheelAuto)spin=THREE.MathUtils.damp(spin,2.8,9,dt);
+      else spin *= Math.exp(-dt * (dragging ? 0.28 : 0.09));
+      if(sculpt&&sculpt.step(dt))dirty();
       if (spin < 0.02) spin = 0;
       if (
         p &&
@@ -1415,6 +1446,8 @@ function tick(ms: number) {
     game.camera.position.set(-2 + Math.sin(elapsed * 0.025) * 0.5, 1.85, 3.15);
     game.camera.lookAt(0.6, 1.15, -4.5);
   }
+  if(needsSync){game.sync();needsSync=false;}
+  paintStudio.render();
   game.update(dt, elapsed);
   requestAnimationFrame(tick);
 }
@@ -1508,6 +1541,11 @@ async function boot() {
               height: p.height,
             });
           if (shapeUndo.length > 30) shapeUndo.shift();
+          if(focus==='wheel'&&p.opened&&['prepared','thrown'].includes(p.stage)&&!e.shiftKey&&spin>.2){
+            const bounds=game.activeBounds()!;
+            sculptStart={x:e.clientX,y:e.clientY};
+            sculpt=new SculptStroke(p,hit.uv.y,e.clientX<bounds.x+bounds.w*.5?-1:1,p.height/Math.max(80,bounds.h));
+          }
           markAt(e.clientX, e.clientY, true);
           canvas.setPointerCapture(e.pointerId);
         }
@@ -1620,6 +1658,7 @@ async function boot() {
           look: { yaw, pitch },
           pieceBounds: game.activeBounds(),
           pieceGeometry:game.ceramics.get(state.activeId||'')?.mesh.geometry.id,
+          ceramicUpdates: (()=>{const c=game.ceramics.get(state.activeId||'');return {geometry:c?.geometryUpdates,texture:c?.textureUpdates};})(),
           glazeContact: focus==='glaze' && active(state) ? {travel:depth,...glazeContact(active(state)!,depth),renderedBottom:game.ceramics.get(state.activeId!)?.position.y} : null,
           interaction: { mode: focus ? "cursor" : "walk", pointerLocked: !!document.pointerLockElement, cursor: getComputedStyle(game.renderer.domElement).cursor },
         }),

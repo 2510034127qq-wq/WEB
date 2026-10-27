@@ -68,6 +68,7 @@ export class Workshop {
   private reflections = new Map<string, THREE.Texture>();
   craftAssets = new Map<string, THREE.Object3D>();
   sun = new THREE.DirectionalLight("#fff0d6", 4.25);
+  private chamberGlow = new THREE.PointLight("#ff682a",0,5,2);
   fire = new THREE.PointLight("#ff6b1b", 0, 8, 2);
   flames: THREE.Mesh[] = [];
   focus: StationId | null = null;
@@ -127,6 +128,7 @@ export class Workshop {
     // Inside the fuel bed, safely behind the 150mm seal masonry. A light in a
     // mortar joint is not a fire source and near-plane clipping leaks through it.
     this.fire.position.set(6, .74, 4.38);
+    this.chamberGlow.position.set(6.9,1.2,4.65);this.scene.add(this.chamberGlow);
     this.fire.castShadow = new URLSearchParams(location.search).get('fire-audit')!=='no-shadow';
     this.fire.visible = false;
     this.fire.shadow.autoUpdate = false;
@@ -670,6 +672,7 @@ export class Workshop {
       o.mesh.material.envMap = region?this.reflections.get(region)||null:null;
       o.mesh.material.envMapIntensity = 1;
       o.mesh.material.envMapRotation.y=Math.PI/2;
+      o.previewGlaze=this.focus==='paint'&&p.location==='paint';
       o.update();
     }
     for (const [id, o] of this.ceramics)
@@ -718,6 +721,7 @@ export class Workshop {
     const p = this.state.pieces.find((p) => p.id === this.state.activeId);
     let goal = new THREE.Vector3(...this.state.player);
     let fov = 62;
+    this.camera.clearViewOffset();
     if (s) {
       const pos = new THREE.Vector3(...s.pos);
       const close =
@@ -743,6 +747,14 @@ export class Workshop {
         this.target.lookAt(pos.clone().add(new THREE.Vector3(0, 0.25, 0)));
         fov = 55;
       }
+      if ((s.id==='wheel'||s.id==='paint')&&p?.location===s.id) {
+        // Fixed framing through a stroke: changing height cannot move the target
+        // away from the cursor. The level camera exposes the complete silhouette.
+        const dir=new THREE.Vector3(...s.approach).sub(new THREE.Vector3(...s.pos)).setY(0).normalize();
+        goal.set(...s.pos).addScaledVector(dir,.83);goal.y=s.pos[1]+.29;
+        this.target.position.copy(goal);this.target.lookAt(new THREE.Vector3(s.pos[0],s.pos[1]+.22,s.pos[2]));fov=45;
+        if(s.id==='paint'&&innerWidth>800)this.camera.setViewOffset(innerWidth,innerHeight,-innerWidth*.18,0,innerWidth,innerHeight);
+      }
       if (s.id === "glaze") {
         goal.set(6.62, 1.92, 0.38);
         this.target.position.copy(goal);
@@ -754,6 +766,9 @@ export class Workshop {
         this.target.position.copy(goal);
         this.target.lookAt(new THREE.Vector3(6, 0.65, 3.9));
         fov = 61;
+        if(p?.location==='kiln'&&(['loaded','fired'].includes(p.stage))){
+          goal.set(6.9,.82,4.08);this.target.position.copy(goal);this.target.lookAt(new THREE.Vector3(6.9,.31+p.height*.25,4.92));fov=43;
+        }
       }
       this.camera.quaternion.slerp(
         this.target.quaternion,
@@ -811,10 +826,14 @@ export class Workshop {
     for (const [id, o] of this.ceramics) {
       const item = o.piece;
       o.visible = !(
-        item.stage === "loaded" && this.state.kiln.phase !== "idle"
+        item.stage === "loaded" && this.state.kiln.phase !== "idle" && this.focus!=="kiln"
       );
       o.position.fromArray(item.position);
       o.rotation.set(0, 0, 0);
+      const kilnView=this.focus==='kiln'&&item.location==='kiln'&&['loaded','fired'].includes(item.stage);
+      if(kilnView){o.visible=item.id===this.state.activeId;o.position.set(6.9,.31,4.92);}
+      const glow=kilnView?THREE.MathUtils.smoothstep(this.state.kiln.temperature,550,1400):0;
+      o.mesh.material.emissive.set('#ff4b13');o.mesh.material.emissiveIntensity=glow*1.8;
       if (item.location === "held") {
         o.position
           .set(0, -0.3, -0.68)
@@ -902,7 +921,7 @@ export class Workshop {
     }
     const brushingGlaze=this.focus==='glaze'&&p?.location==='glaze'&&this.action==='glaze-brush';
     this.glazeBrush.position.set(6.9,1.013,-.02);this.glazeBrush.rotation.set(0,.35,0);
-    if ((p?.location === "paint" && this.focus === "paint") || brushingGlaze) {
+    if (brushingGlaze && p) {
       const brush = brushingGlaze?this.glazeBrush:this.props.get("brush")!;
       const target =
         this.contact ||
@@ -944,6 +963,8 @@ export class Workshop {
           // Warm masonry at 360C must not illuminate the courtyard like flames.
           ? Math.exp(22135*(1/1473.15-1/(this.state.kiln.temperature+273.15)))
           : 0;
+    this.chamberGlow.intensity=this.focus==="kiln"?4+heat*32:0;
+    this.chamberGlow.color.set("#d8d6c5").lerp(new THREE.Color("#ff6c25"),THREE.MathUtils.smoothstep(this.state.kiln.temperature,100,1000));
     this.kilnSeal.visible = this.state.kiln.phase !== "idle";
     this.fire.intensity = heat * (25 + (this.state.kiln.phase==='firing'?Math.sin(time * 13) * 2:0));
     this.fire.visible = this.fire.intensity > .001;

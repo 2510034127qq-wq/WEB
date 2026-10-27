@@ -1,3 +1,4 @@
+import {validDecoration,type Decoration} from './decoration.ts';
 export type Stage =
   | "raw"
   | "prepared"
@@ -49,6 +50,8 @@ export interface Piece {
   opened: boolean;
   trimmed: number;
   marks: Mark[];
+  decoration?: Decoration;
+  handles?: 0|1|2;
   glaze: number[];
   footClean: boolean;
   dryTime: number;
@@ -89,6 +92,8 @@ export interface GameState {
     elapsed: number;
     curve: [number, number][];
     assisted: boolean;
+    controlled?: boolean;
+    power?: number;
   };
   settings: Settings;
 }
@@ -501,8 +506,9 @@ export function advance(s: GameState, dt: number, timeScale = 1) {
       k.draft = k.temperature < 900 ? 0.64 : 0.52;
     }
     k.fuel = Math.max(0, k.fuel - step * 0.018);
-    const gain =
+    const gain = k.controlled ? clamp(k.power||0,-1,1)*95 :
       k.fuel * (0.25 + k.draft) * 58 - 6 - (k.temperature / 1300) * 7;
+    if(k.controlled){k.fuel=.65;k.draft=.55;}
     k.temperature = clamp(k.temperature + gain * step, 24, 1440);
     if (k.assisted) k.temperature = Math.min(k.temperature, 1290);
     for (const p of s.pieces.filter((p) => p.stage === "loaded")) {
@@ -629,6 +635,9 @@ export function active(s: GameState) {
 export function validateSave(input: unknown): GameState {
   if (!input || typeof input !== "object") throw new Error("不是窑火存档。");
   const s = input as GameState;
+  if(s.kiln?.controlled!==undefined&&typeof s.kiln.controlled!=="boolean")throw new Error("烧制控制数据无效。");
+  if(s.kiln?.power!==undefined&&(!Number.isFinite(s.kiln.power)||Math.abs(s.kiln.power)>1))throw new Error("烧制功率无效。");
+  if(s.kiln?.controlled)s.kiln.power=0;
   if (s.version !== 1 || !Array.isArray(s.pieces) || s.pieces.length > 100)
     throw new Error("存档版本或作品数量不正确。");
   const vector = (a: unknown, len: number, min: number, max: number) =>
@@ -656,6 +665,8 @@ export function validateSave(input: unknown): GameState {
     )
       throw new Error("作品字段不完整。");
     ids.add(p.id);
+    if(p.handles!==undefined&&![0,1,2].includes(p.handles))throw new Error('器耳数据无效。');
+    if(p.decoration!==undefined&&!validDecoration(p.decoration))throw new Error("彩绘图层数据无效。");
     if(p.wheelTraces!==undefined && (!Array.isArray(p.wheelTraces)||p.wheelTraces.length>128||p.wheelTraces.some(t=>
       !t||![t.v,t.width,t.depth].every(Number.isFinite)||t.v<0||t.v>1||t.width<.001||t.width>.04||t.depth<0||t.depth>.0005)))
       throw new Error('轮制接触记录无效。');

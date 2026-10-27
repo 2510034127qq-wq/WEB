@@ -119,8 +119,8 @@ export class FixedShadowCache {
           material.displacementBias ?? 0,
         );
         for (const texture of [
-          material.map,
-          material.alphaMap,
+          material.alphaTest>0||material.alphaHash ? material.map : null,
+          material.alphaTest>0||material.alphaHash ? material.alphaMap : null,
           material.displacementMap,
         ]) {
           values.push(texture?.id ?? -1, texture?.version ?? -1);
