@@ -25,8 +25,6 @@ import { Ceramic } from "./ceramic";
 import { loadScannedProps } from "./scanned-props";
 import { loadCraftAssets } from "./craft-assets";
 import { loadPottersWheel } from "./potters-wheel";
-import { fingerTip, solveFingerContact, initializeHand, poseHand, aimForearm, gripTool } from "./hand-contact";
-import {contactVessel,contactClay} from './craft-hand-motion';
 import type { MotionPose } from "../simulation/locomotion";
 import {
   STATIONS,
@@ -42,7 +40,6 @@ export class Workshop {
   ray = new THREE.Raycaster();
   ceramics = new Map<string, Ceramic>();
   props = new Map<string, THREE.Group>();
-  hands: THREE.Object3D[] = [];
   labels: THREE.Mesh[] = [];
   composer: EffectComposer;
   ao: WorkshopAO;
@@ -61,18 +58,15 @@ export class Workshop {
   private paperFlaps: THREE.Group[] = [];
   private strawTies: THREE.Mesh[] = [];
   private kilnSeal = new THREE.Group();
-  private brushPose = new THREE.Object3D();
   private glazeBrush = new THREE.Group();
   private wheelHead = new THREE.Group();
   private slurry?:THREE.Mesh<THREE.BufferGeometry,THREE.MeshPhysicalMaterial>;
   private lastDip=0;
   private slurryWave={at:-Infinity,amplitude:0,settled:false};
-  private skinMaterials = new Set<THREE.MeshStandardMaterial>();
   private surfaces!: MaterialSet;
   get controlSurfaces(){return this.surfaces;}
   private reflections = new Map<string, THREE.Texture>();
   craftAssets = new Map<string, THREE.Object3D>();
-  private reach: {target:THREE.Vector3;start:number;hand:number} | null = null;
   sun = new THREE.DirectionalLight("#fff0d6", 4.25);
   fire = new THREE.PointLight("#ff6b1b", 0, 8, 2);
   flames: THREE.Mesh[] = [];
@@ -311,22 +305,7 @@ export class Workshop {
     this.scene.add(pile);
     onProgress("木器、编织与储料器具");
     await loadScannedProps(this.scene, this.renderer);
-    onProgress("双手与工具");
-    for (const side of ['left','right'] as const) {
-      const [asset,rig] = await Promise.all([
-        loader.loadAsync(`/assets/user-${side}-hand.glb`),
-        fetch(`/assets/user-${side}-hand-rig.json`).then(r=>r.json()),
-      ]);
-      const hand=asset.scene;hand.name=`player_${side}_hand`;
-      initializeHand(hand,rig.boneLengths,side);
-      hand.traverse(o=>{if(o instanceof THREE.Mesh){
-        o.castShadow=o.receiveShadow=true;o.frustumCulled=false;
-        const mat=o.material as THREE.MeshStandardMaterial;
-        if(mat.map)mat.map.anisotropy=16;
-        this.skinMaterials.add(mat);
-      }});
-      hand.visible=false;this.scene.add(hand);this.hands.push(hand);
-    }
+    onProgress("制瓷工具");
     this.craftAssets = await loadCraftAssets(surfaces);
     const wheel=await loadPottersWheel(surfaces);
     this.wheelHead.add(wheel.get('wheel_turning')!);
@@ -546,20 +525,6 @@ export class Workshop {
       this.props.set(name, group);
       this.scene.add(group);
     }
-  }
-  reachTo(target: THREE.Vector3, hand: number) {
-    this.reach={target:target.clone(),start:performance.now()/1000,hand};
-  }
-  handDiagnostics() {
-    return this.hands.map(h=>({
-      name:h.name,visible:h.visible,mirror:h.scale.x,
-      wrist:h.position.toArray(),
-      thumb:fingerTip(h,'thumb_2').toArray(),index:fingerTip(h,'finger0_2').toArray(),
-      palm:new THREE.Vector3(0,1,0).transformDirection(h.matrixWorld).toArray(),
-      source: `user-${h.userData.side}-hand.glb`,pose:h.userData.pose,contacts:h.userData.contacts,
-      forearm: (()=>{const b=h.getObjectByName('forearm') as THREE.Bone;return {angle:b.quaternion.angleTo(b.userData.restQuaternion),scale:b.scale.toArray(),head:b.getWorldPosition(new THREE.Vector3()).toArray(),end:fingerTip(h,'forearm').toArray()};})(),
-      joints: (()=>{const out:Record<string,number[]>={};h.traverse(o=>{if(o instanceof THREE.Bone)out[o.name]=[o.userData.flex||0,o.userData.spread||0,o.userData.opposition||0];});return out;})(),
-    }));
   }
   makeSigns() {
     for (const s of STATIONS) {
@@ -953,8 +918,6 @@ export class Workshop {
         new THREE.Vector3(0, 0, -1),
         brushAxis.clone().negate(),
       );
-      this.brushPose.position.copy(brush.position);
-      this.brushPose.quaternion.copy(brush.quaternion);
     }
     if (
       p?.location === "wheel" &&
@@ -972,138 +935,6 @@ export class Workshop {
       if (this.contact) {
         knife.position.copy(this.contact).add(new THREE.Vector3(0.1, 0.015, 0));
       }
-    }
-    const brushWork=this.focus==='paint'||brushingGlaze;
-    this.hands.forEach((h, i) => {
-      const side = i === 0 ? -1 : 1;
-      const work =
-        !!this.focus &&
-        p?.location === this.focus &&
-        (["wheel", "clay", "paint", "glaze"].includes(this.focus) ||
-          this.action === "pack");
-      h.visible = work || !!this.state.held;
-      if (work && p) {
-        const center = this.ceramics.get(p.id)!.position;
-        const ringHeight = this.contact ? Math.max(.12,this.workMotion) : .42;
-        const r =
-          p.radius[
-            this.focus === "glaze" ? 47 : Math.floor(ringHeight * 47)
-          ] || 0.1;
-        const toward = this.camera.position
-            .clone()
-            .sub(center)
-            .setY(0)
-            .normalize(),
-          right = new THREE.Vector3(toward.z, 0, -toward.x);
-        h.position
-          .copy(center)
-          .addScaledVector(right, side * (r + 0.065))
-          .addScaledVector(toward, 0.07);
-        h.position.y +=
-          this.focus === "glaze"
-            ? p.height + 0.022
-            : 0.018 +
-              p.height * Math.max(0.12, Math.min(0.98, ringHeight));
-        if (this.contact && ["wheel", "clay"].includes(this.focus!)) {
-          // Fingers stay on the selected ring instead of hovering at a fixed mid height.
-          h.position.y = Math.max(center.y + 0.02, this.contact.y);
-          if (this.focus === "clay") {
-            h.position.addScaledVector(
-              toward,
-              (this.contact.z - center.z) * 0.6,
-            );
-            h.position.x += (this.contact.x - center.x) * 0.45;
-          }
-        }
-        h.rotation.set(
-          0,
-          Math.atan2(toward.x, toward.z) + side * 0.7,
-          -side * 0.15,
-        );
-        if (this.focus === "wheel" || this.focus === "glaze") {
-          // The palm faces the wall of the vessel. Finger axes follow its height;
-          // the wrist is below the contact ring and fingers flex onto the wall.
-          const palm = right.clone().multiplyScalar(-side),
-            backward = toward.clone().multiplyScalar(.8).add(new THREE.Vector3(0,-.6,0)).normalize(),
-            across = new THREE.Vector3().crossVectors(palm,backward).normalize();
-          h.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(across,palm,backward));
-          h.position.addScaledVector(right,-side*.035);
-          h.position.y = Math.max(center.y+.085,h.position.y-(this.focus === "glaze" ? .045 : .025));
-        }
-        if (this.focus === "clay") {
-          const palm = new THREE.Vector3(0,-1,0), backward = toward.clone(),
-            across = new THREE.Vector3().crossVectors(palm,backward).normalize();
-          h.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(across,palm,backward));
-          h.position.y = center.y + p.height * .72;
-        }
-        if (this.focus === "paint" && i === 0) h.visible = false;
-      } else {
-        h.position
-          .set(side * 0.2, -0.32, -0.51)
-          .applyQuaternion(this.camera.quaternion)
-          .add(this.camera.position);
-        h.quaternion.copy(this.camera.quaternion);
-        h.rotateY(-side * 0.45);
-        h.rotateX(-0.16);
-      }
-      if (work && brushWork && i === 1) {
-        h.position
-          .copy(this.brushPose.position)
-          .add(new THREE.Vector3(0.055, 0.055, 0.07));
-        h.position.y = Math.max(p!.position[1] + 0.09, h.position.y);
-        h.rotation.set(0.18, 0.6, -0.18);
-      }
-      if (this.action === "pack" && wrapping)
-        h.position.y =
-          this.parcel.position.y +
-          wrapping.height * (0.2 + 0.6 * this.packProgress);
-      poseHand(h,brushWork?'tool':this.focus==='clay'?'clay':this.focus==='wheel'?'wheel':work?'carry':'carry',dt);
-      if(work && p && !brushWork && ['wheel','glaze','clay'].includes(this.focus!)) {
-        const center=this.ceramics.get(p.id)!.position;
-        const toward=this.camera.position.clone().sub(center).setY(0).normalize();
-        if(this.focus==='clay')contactClay(h,p,center,toward,side,this.action==='knead'?(1+Math.sin(time*8))*.5:0,dt);
-        else contactVessel(h,p,center,toward,side,
-          this.focus==='glaze'?p.height*p.shrink-.018:Math.max(.04,p.height*p.shrink*(this.contact?this.workMotion:.42)),
-          this.focus==='glaze'?'rim':i===0&&p.opened&&!!this.action&&!!this.contact?'inside':'wheel',dt);
-      } else h.userData.anchorMode=null;
-      if(work && brushWork && i===1) {
-        const grip=new THREE.Vector3(0,0,.012).applyQuaternion(this.brushPose.quaternion).add(this.brushPose.position);
-        const shaft=new THREE.Vector3(0,0,1).applyQuaternion(this.brushPose.quaternion);
-        gripTool(h,grip,shaft,this.camera.position);
-
-      }
-      if(this.reach && i===this.reach.hand) {
-        const age=performance.now()/1000-this.reach.start;
-        if(age<.95) {
-          const amount=age<.35?THREE.MathUtils.smoothstep(age,0,.35):1-THREE.MathUtils.smoothstep(age,.58,.95);
-          const backward=this.camera.position.clone().sub(this.reach.target).setY(0).normalize(), palm=new THREE.Vector3(0,-1,0),
-            across=new THREE.Vector3().crossVectors(palm,backward).normalize();
-          const q=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(across,palm,backward));
-          const wrist=this.reach.target.clone().addScaledVector(backward,.11);
-          wrist.y+=.025+.07*Math.sin(Math.PI*Math.min(1,age/.35));
-          h.position.lerp(wrist,amount);h.quaternion.slerp(q,amount);h.visible=true;
-        } else this.reach=null;
-      }
-      const region = workstationRegion(h.position.x,h.position.z)||'wheel';
-      h.traverse(o => { if (o instanceof THREE.Mesh && o.material instanceof THREE.MeshStandardMaterial) {
-        o.material.envMap=this.reflections.get(region)!; o.material.envMapIntensity=1;
-        o.material.envMapRotation.y=Math.PI/2;
-      }});
-      if (h.visible) {
-        h.updateMatrixWorld(true);
-        const elbow = new THREE.Vector3(side * 0.20, -0.24, 0.03)
-          .applyQuaternion(this.camera.quaternion).add(this.camera.position);
-        aimForearm(h,elbow);
-      }
-    });
-    for (const skin of this.skinMaterials) {
-      skin.color.set(
-        p && ["raw", "prepared", "thrown"].includes(p.stage)
-          ? "#e4dbcb"
-          : "#ffffff",
-      );
-      skin.roughness =
-        p && ["raw", "prepared", "thrown"].includes(p.stage) ? 0.49 : 0.68;
     }
     const heat =
       this.state.kiln.phase === "firing"
@@ -1182,9 +1013,6 @@ export class Workshop {
         (h) =>
           h.distance < 2.2 &&
           h.object instanceof THREE.Mesh &&
-          !this.hands.some(
-            (hand) => hand === h.object || hand.getObjectById(h.object.id),
-          ) &&
           ![...this.ceramics.values()].some((c) =>
             c.getObjectById(h.object.id),
           ) &&

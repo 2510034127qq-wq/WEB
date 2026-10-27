@@ -2,9 +2,17 @@
   "runtimeExcludePrefixes": [
     "assets/scans/pine_tree_01/",
     "assets/scans/jacaranda_tree/",
-    "assets/craft-surfaces/oldplaster_"
+    "assets/craft-surfaces/oldplaster_",
+    "assets/user-left-hand",
+    "assets/user-right-hand",
+    "assets/hands",
+    "assets/hand-rig",
+    "assets/sleeve"
   ],
-  "runtimeExcludeSuffixes": ["_sky.png", "_indirect.png"],
+  "runtimeExcludeSuffixes": [
+    "_sky.png",
+    "_indirect.png"
+  ],
   "sourceExcludePrefixes": [
     "art/pine-source.blend",
     "art/exports/",

@@ -2,7 +2,7 @@
 
 一抔泥，一器一生。以清代景德镇青花工艺为线索的桌面浏览器制瓷游戏。
 
-当前分支为 `1.1.0-preview.2` 写实重制工作版：免费 Fab / Poly Haven 资产、实拍 PBR/HDR 光照、惯性步态和直接手势操作。最新实施、逐轮复查与未完成问题见 [写实重制记录](docs/PHOTOGRAPHIC-REVISION.md)，旧 [沉浸修订](docs/IMMERSION-REVISION.md)、[材质与光影](docs/VISUAL-REVISION.md) 保留为阶段证据。旧 `release/yaohuo-1.0.0-rc.1.zip` 不含本轮修改，当前没有新的照片级验收结论。
+当前分支为 `1.1.0-preview.2` 写实重制工作版：免费 Fab / Poly Haven 资产、实拍 PBR/HDR 光照、惯性步态和工作台鼠标光标操作。最新实施、逐轮复查与未完成问题见 [写实重制记录](docs/PHOTOGRAPHIC-REVISION.md)，旧 [沉浸修订](docs/IMMERSION-REVISION.md)、[材质与光影](docs/VISUAL-REVISION.md) 保留为阶段证据。旧 `release/yaohuo-1.0.0-rc.1.zip` 不含本轮修改，当前没有新的照片级验收结论。
 
 在同一个三维院落里自由行走，把同一件作品从原泥带到成器堂。器形由你在坯壁上的拖动产生；青花画在三维表面上；釉层、器壁、窑位和火候共同决定烧成结果。
 
@@ -22,6 +22,8 @@ node scripts/serve.mjs --open
 
 ## 怎样玩
 
+走到工作台附近按 E，视角退出锁定，使用正常鼠标光标点击与拖动。游戏不显示玩家的手或手臂。Esc 离开工作台，继续行走。此次变更见 [鼠标操作修订](docs/CURSOR-CONTROLS.md)。
+
 | 操作 | 用途 |
 | --- | --- |
 | W A S D / Shift / Ctrl | 行走 / 快走 / 蹲下 |
@@ -39,7 +41,7 @@ node scripts/serve.mjs --open
 
 第一件作品按屏幕左上角提示完成：
 
-1. 点击原料台实物泥堆取泥，淘练台按住泥团来回推揉；只按住不移动不会完成。点水碗润手。
+1. 点击原料台实物泥堆取泥，淘练台按住泥团来回推揉；只按住不移动不会完成。点击水碗加水。
 2. 拖轮缘拨轮，压住泥心下拉开孔；横向扶壁收放、竖向提拉。碗与瓶是创作目标，不会替换成预制模型。
 3. 托到阴干架，候至半干；回辘轳利坯。
 4. 青花案直接在器身落笔，砚台蘸青料、清水碗稀释。内壁与外壁分别记录。
@@ -89,18 +91,18 @@ npx playwright install ffmpeg
 | 目录 | 内容 |
 | --- | --- |
 | `src/simulation/` | 工艺状态、48 环剖面、笔触、釉层、烧成与存档 |
-| `src/render/` | 三维工坊、器物网格、材质、双手、音效 |
+| `src/render/` | 三维工坊、器物网格、材质、工位工具、音效 |
 | `src/physics/` | Rapier 角色碰撞、工具刚体与热窑封门 |
-| `art/` | 可编辑的工坊、骨骼手部 Blender 文件 |
+| `art/` | 可编辑工坊资产及保留的历史手部源文件 |
 | `public/assets/` | 本地 GLB、PBR 贴图、来源与 SHA-256 清单 |
 | `scripts/` | 资产重建、开发 QA、性能测试、本地服务与打包 |
 | `qa/` | Chrome 截图、实测报告和实际游玩导出样品 |
 
-重建模型需 Blender。工坊依次执行 `build-potters-wheel.py`、`build-workshop.py`、`bake-workshop-light.py`、`bake-local-probes.py`；陶车作为独立旋转组件导出，仍参与工坊离线光照。当前手资产使用 `adapt-fab-hands.py`（旧 `build-hands.py` 只供旧版复现）；工具为 `build-craft-tools.py`，林地为 `prepare-vegetation.py`。这些文件均在 `scripts/`。最后运行 `node scripts/compress-models.mjs` 校验并压缩 GLB。`.blend` 保留可编辑材质；改动后须同步导出、烘焙与视觉复查。各 `fetch-*-surfaces.py` / `fetch-scan-assets.py` 保存可复现下载流程及来源校验清单。新增实木材质由 `fetch-workshop-timber.py` 下载，林地高草为 `fetch-scan-assets.py grass_medium_01`，独立透明度贴图由 `fetch-vegetation-alpha.py` 下载。
+重建模型需 Blender。工坊依次执行 `build-potters-wheel.py`、`build-workshop.py`、`bake-workshop-light.py`、`bake-local-probes.py`；陶车作为独立旋转组件导出，仍参与工坊离线光照。手部建模脚本与源资产仅供历史版本复现，不进入当前游戏或离线缓存；工具为 `build-craft-tools.py`，林地为 `prepare-vegetation.py`。这些文件均在 `scripts/`。最后运行 `node scripts/compress-models.mjs` 校验并压缩 GLB。`.blend` 保留可编辑材质；改动后须同步导出、烘焙与视觉复查。各 `fetch-*-surfaces.py` / `fetch-scan-assets.py` 保存可复现下载流程及来源校验清单。新增实木材质由 `fetch-workshop-timber.py` 下载，林地高草为 `fetch-scan-assets.py grass_medium_01`，独立透明度贴图由 `fetch-vegetation-alpha.py` 下载。
 
 ## 范围和依据
 
-这是可独立运行的单机版本。场景把多个历史分工压缩到同一个院落，不是某一遗址的测绘复原。青花按釉下绘饰后高温釉烧处理，不强行增加现代电动轮或必做素烧。泥料、干燥和烧窑采用有因果关系的游戏近似，没有以真实配方实验校准；双手使用约束动作，不是双手六自由度跟踪。
+这是可独立运行的单机版本。场景把多个历史分工压缩到同一个院落，不是某一遗址的测绘复原。青花按釉下绘饰后高温釉烧处理，不强行增加现代电动轮或必做素烧。泥料、干燥和烧窑采用有因果关系的游戏近似，没有以真实配方实验校准；工作台使用鼠标光标操作，不显示玩家手部。
 
 云账户、跨设备自动同步、多人和其他时代瓷种尚未实现。当前以桌面 Chrome 和键鼠为主；窄屏可查看菜单与引路，没有宣称完整触屏操作。
 

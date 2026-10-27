@@ -139,6 +139,7 @@ function leave() {
   locomotion.reset(yaw);
   focus = null;
   game.focus = null;
+  game.renderer.domElement.style.cursor = "default";
   game.contact = null;
   $("#work").classList.add("hidden");
   $("#toolbar").classList.add("hidden");
@@ -257,6 +258,7 @@ function enter(id: StationId) {
   document.body.dataset.station = id;
   locomotion.reset(yaw);
   game.focus = id;
+  game.renderer.domElement.style.cursor = "default";
   game.rotation = id === "display" ? Math.PI : 0;
   controls?.setFocus(id);
   depth = 0;
@@ -274,7 +276,7 @@ function takePiece() {
     return;
   }
   if (state.held && state.held !== p.id) {
-    toast("双手已持有工具，请先放下。");
+    toast("正在携带工具，请先放下。");
     return;
   }
   if (p.stage === "loaded") {
@@ -285,7 +287,7 @@ function takePiece() {
   state.held = p.id;
   leave();
   sound.tap("wood");
-  toast("双手托稳坯板 · 到下一工作台按 E 放下");
+  toast("已搬起坯板 · 到下一工作台按 E 放下");
   dirty();
 }
 function drop() {
@@ -328,19 +330,19 @@ function renderWork() {
     detail = "",
     extras = "";
   if (focus === "supply") {
-    hint = "伸手取桌上的泥团";
-    detail = `1 碗 / 2 瓶 · 当前意向：${form === "bowl" ? "碗" : "瓶"}，器形由手塑出`;
+    hint = "点击桌上的泥团取泥";
+    detail = `1 碗 / 2 瓶 · 当前意向：${form === "bowl" ? "碗" : "瓶"}，拖动鼠标塑造器形`;
   } else if (!here && !["kiln", "rack"].includes(focus)) {
     hint = "案上没有坯体";
     detail = nextTask(p).text;
   } else if (focus === "clay") {
-    hint = "掌心压住泥团，前推、回折，再推";
-    detail = "移动双手才会排气 · 点清水碗润手 · F 托起";
+    hint = "按住泥团，来回拖动鼠标练泥";
+    detail = "拖动才会排气 · 点击清水碗加水 · F 搬起";
   } else if (focus === "wheel" && p) {
     hint = ["leather", "trimmed"].includes(p.stage)
       ? "刀锋贴住坯壁，随转轮轻轻旋削"
       : p.opened
-        ? "扶住器壁左右收放，向上慢提"
+        ? "按住器壁左右拖动收放，向上拖动提拉"
         : "拖动轮缘拨轮，再压住泥心向下开孔";
     detail = "空格拨轮 · B 扶轮制动 · Shift 拖动抹平 · Ctrl+Z 撤回 · F 托起";
   } else if (focus === "paint") {
@@ -369,7 +371,7 @@ function renderWork() {
     extras = `<details><summary>器物记录与导出</summary><input class="rename" id="piece-name" value="${esc(p.name)}" maxlength="60" aria-label="作品名称"><p>${p.score} 分 · ${p.defects.length ? p.defects.map(esc).join("、") : "釉面匀净"}</p>${button("export-glb", "导出 GLB")}${button("photo", "留影")}${button("unwrap", "解纸验看")}</details>`;
   }
   $("#work").innerHTML =
-    `<div class="work-heading"><div><div class="eyebrow">${station.subtitle}</div><h2>${station.name}</h2></div></div><p class="gesture-instruction">${hint}</p><div class="small-note">${detail}</div><div id="hand-status" aria-live="off"></div>${extras}`;
+    `<div class="work-heading"><div><div class="eyebrow">${station.subtitle}</div><h2>${station.name}</h2></div></div><p class="gesture-instruction">${hint}</p><div class="small-note">${detail}</div><div id="craft-status" aria-live="off"></div>${extras}`;
   $("#work").classList.remove("hidden");
   $("#toolbar").classList.add("hidden");
   $("#prompt").classList.add("hidden");
@@ -417,7 +419,7 @@ function openModal(kind: string) {
   }
   if (kind === "journal") {
     title = "手艺札记";
-    content = `<div class="eyebrow">水土 · 双手 · 窑火</div><p>这里取意于清代景德镇民间制瓷。真实产业分工精细：原料行、坯房、画作与窑场，并非一位匠人、一间屋子包办。这个院落将它们连在一起，让你亲历一件青花的生命。</p><div class="note-grid"><section><h3>一 · 从泥到坯</h3><p>瓷石、高岭土经过破碎、淘洗、沉降与脱水，再配泥陈腐。本作领取的是已预处理的泥块；你仍须调水、揉练排气。轮车靠竹杖起动，双手塑形。</p></section><section><h3>二 · 干湿之间</h3><p>湿坯柔软，不能立即利坯。放到阴干架候至半干，才用刀旋削。不能用强晒或窑火代替恰当干燥。</p></section><section><h3>三 · 釉下青花</h3><p>青料研细后画在坯上，再施透明釉并高温烧成。青花主线无需强行插入素烧，也不必都做第二次彩烧。</p></section><section><h3>四 · 窑中有性</h3><p>匣钵减少窑灰与火焰污染。窑位、温度历程、坯壁与釉层共同影响结果。烧窑与冷却跨日，游戏用时间推进压缩等待。</p></section></div><h3>把手艺留在器物上</h3><p>练泥：按住泥团来回推揉。拉坯：拖轮缘拨轮，压住泥心下拉开孔，再沿器壁横向收放、纵向提拉。利坯：转轮后让刀尖接触器壁，离开就停刀。画坯：直接在三维表面落笔，点砚台蘸料、点水碗稀释。施釉：抓住器物下拖入釉、上提离釉，右键擦净底足。窑前拖封砖、火折子和柴到窑口，拖风闸调风。持物走到工作台按 E 放下；看向近处平面按 Q 可自由放置。</p><h3>考证与边界</h3><p>工序参考唐英《陶冶图说》及故宫资料，场景为合成工坊。泥体、烧成参数和缺陷是可解释的游戏近似，未经真实配方试验校准；桌面双手采用动作约束，不是独立六自由度输入。</p><p><a href="https://www.dpm.org.cn/Uploads/File/2020/04/22/u5e9ffd0d381f6.pdf" target="_blank" rel="noopener">故宫博物院 · 唐英与《陶冶图说》</a> &nbsp; / &nbsp; <a href="https://whc.unesco.org/en/list/1765/" target="_blank" rel="noopener">景德镇手工瓷业遗产资料</a></p>`;
+    content = `<div class="eyebrow">水土 · 双手 · 窑火</div><p>这里取意于清代景德镇民间制瓷。真实产业分工精细：原料行、坯房、画作与窑场，并非一位匠人、一间屋子包办。这个院落将它们连在一起，让你亲历一件青花的生命。</p><div class="note-grid"><section><h3>一 · 从泥到坯</h3><p>瓷石、高岭土经过破碎、淘洗、沉降与脱水，再配泥陈腐。本作领取的是已预处理的泥块；你仍须调水、揉练排气。轮车靠竹杖起动，双手塑形。</p></section><section><h3>二 · 干湿之间</h3><p>湿坯柔软，不能立即利坯。放到阴干架候至半干，才用刀旋削。不能用强晒或窑火代替恰当干燥。</p></section><section><h3>三 · 釉下青花</h3><p>青料研细后画在坯上，再施透明釉并高温烧成。青花主线无需强行插入素烧，也不必都做第二次彩烧。</p></section><section><h3>四 · 窑中有性</h3><p>匣钵减少窑灰与火焰污染。窑位、温度历程、坯壁与釉层共同影响结果。烧窑与冷却跨日，游戏用时间推进压缩等待。</p></section></div><h3>把手艺留在器物上</h3><p>练泥：按住泥团来回推揉。拉坯：拖轮缘拨轮，压住泥心下拉开孔，再沿器壁横向收放、纵向提拉。利坯：转轮后让刀尖接触器壁，离开就停刀。画坯：直接在三维表面落笔，点砚台蘸料、点水碗稀释。施釉：抓住器物下拖入釉、上提离釉，右键擦净底足。窑前拖封砖、火折子和柴到窑口，拖风闸调风。持物走到工作台按 E 放下；看向近处平面按 Q 可自由放置。</p><h3>考证与边界</h3><p>工序参考唐英《陶冶图说》及故宫资料，场景为合成工坊。泥体、烧成参数和缺陷是可解释的游戏近似，未经真实配方试验校准；进入工作台后使用鼠标光标点击、拖动操作，不显示玩家手部。</p><p><a href="https://www.dpm.org.cn/Uploads/File/2020/04/22/u5e9ffd0d381f6.pdf" target="_blank" rel="noopener">故宫博物院 · 唐英与《陶冶图说》</a> &nbsp; / &nbsp; <a href="https://whc.unesco.org/en/list/1765/" target="_blank" rel="noopener">景德镇手工瓷业遗产资料</a></p>`;
   }
   if (kind === "settings") {
     title = "工坊设置";
@@ -454,7 +456,7 @@ function openModal(kind: string) {
       : "<p>还没有出窑的作品。第一团泥已经在原料房等你。</p>";
   }
   if (kind === "journal")
-    content += `<h3>素材署名</h3><p><a href="https://www.fab.com/listings/f19a85c6-1938-4a95-8ecc-ee7bc72767d8" target="_blank" rel="noopener">Hanging Ancient Pottery Set — Glowbox3D</a>；<a href="https://www.fab.com/listings/81a65096-1e1b-4133-9c69-3acf87398248" target="_blank" rel="noopener">Firewood Pile Scan LOWPOLY — sixonetwo</a>；<a href="https://www.fab.com/listings/c9b121d9-4dd7-43fa-9086-9d5854fa0ada" target="_blank" rel="noopener">Hands — StorePage</a>。均依 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> 使用，作比例、场景摆放或骨架适配。作者不为本作背书。实拍材质、天空与叶图来自 <a href="https://polyhaven.com/license" target="_blank" rel="noopener">Poly Haven（CC0）</a>；泥土与工具表面使用 <a href="https://ambientcg.com/" target="_blank" rel="noopener">ambientCG（CC0）</a>。</p>`;
+    content += `<h3>素材署名</h3><p><a href="https://www.fab.com/listings/f19a85c6-1938-4a95-8ecc-ee7bc72767d8" target="_blank" rel="noopener">Hanging Ancient Pottery Set — Glowbox3D</a>；<a href="https://www.fab.com/listings/81a65096-1e1b-4133-9c69-3acf87398248" target="_blank" rel="noopener">Firewood Pile Scan LOWPOLY — sixonetwo</a>。均依 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> 使用，作比例、场景摆放或骨架适配。作者不为本作背书。实拍材质、天空与叶图来自 <a href="https://polyhaven.com/license" target="_blank" rel="noopener">Poly Haven（CC0）</a>；泥土与工具表面使用 <a href="https://ambientcg.com/" target="_blank" rel="noopener">ambientCG（CC0）</a>。</p>`;
   $("#modal-root").innerHTML =
     `<div class="modal-wrap"><section class="modal" role="dialog" aria-modal="true" aria-label="${title}"><div class="modal-head"><h2>${title}</h2>${button("close-modal", "关闭 ×")}</div>${content}</section></div>`;
   $("#modal-root button")?.focus();
@@ -816,8 +818,6 @@ window.addEventListener("pointercancel", () => {
 function useControl(hit: CraftHit) {
   const p = active(state);
   controls.disturb(hit.action,performance.now()/1000+.3);
-  if(['clay-water','wheel-water','paint-water','paint-ink'].includes(hit.action))
-    game.reachTo(hit.point,hit.station==='paint'?1:0);
   try {
     if (hit.action === "supply-clay") {
       if (state.pieces.length >= 100)
@@ -833,7 +833,7 @@ function useControl(hit: CraftHit) {
       if (p && ["raw", "prepared", "thrown"].includes(p.stage))
         p.moisture = water;
       sound.tap("clay");
-      toast("双手蘸水，湿润泥面。");
+      toast("已加水，湿润泥面。");
     }
     if (hit.action === "paint-ink") {
       ink = clamp(ink + 0.15, 0.15, 1);
@@ -903,7 +903,7 @@ window.addEventListener("mousemove", (e) => {
       innerWidth,
       innerHeight,
     );
-    game.renderer.domElement.style.cursor = target ? "grab" : "crosshair";
+    game.renderer.domElement.style.cursor = target ? "pointer" : "default";
     $("#caption").textContent =
       target?.label || STATIONS.find((s) => s.id === focus)!.subtitle;
   }
@@ -1176,7 +1176,7 @@ function updateUI() {
       : "";
   $("#control-hint").textContent = focus
     ? "Esc 起身 · F 托起坯板 · 工序与器物自动保存"
-    : `${state.settings.bindings.forward.replace("Key", "")}${state.settings.bindings.left.replace("Key", "")}${state.settings.bindings.back.replace("Key", "")}${state.settings.bindings.right.replace("Key", "")} 行走 · 鼠标 看向 · ${state.settings.bindings.interact.replace("Key", "")} 操作 · ${state.settings.bindings.drop.replace("Key", "")} 放下${state.held ? " · 正在手持" + (state.held === p?.id ? "坯板" : "工具") : ""}`;
+    : `${state.settings.bindings.forward.replace("Key", "")}${state.settings.bindings.left.replace("Key", "")}${state.settings.bindings.back.replace("Key", "")}${state.settings.bindings.right.replace("Key", "")} 行走 · 鼠标 看向 · ${state.settings.bindings.interact.replace("Key", "")} 操作 · ${state.settings.bindings.drop.replace("Key", "")} 放下${state.held ? " · 正在携带" + (state.held === p?.id ? "坯板" : "工具") : ""}`;
   if (!focus && !modal) {
     const n = nearest();
     $("#prompt").classList.toggle("hidden", n.d > 2.2);
@@ -1189,7 +1189,7 @@ function updateUI() {
       if (el) el.textContent = value;
     };
     set(
-      "#hand-status",
+      "#craft-status",
       focus === "clay"
         ? `练泥 ${Math.round(p.preparation * 100)}% · 含水 ${Math.round(p.moisture * 100)}%`
         : focus === "wheel"
@@ -1621,7 +1621,7 @@ async function boot() {
           pieceBounds: game.activeBounds(),
           pieceGeometry:game.ceramics.get(state.activeId||'')?.mesh.geometry.id,
           glazeContact: focus==='glaze' && active(state) ? {travel:depth,...glazeContact(active(state)!,depth),renderedBottom:game.ceramics.get(state.activeId!)?.position.y} : null,
-          hands: game.handDiagnostics(),
+          interaction: { mode: focus ? "cursor" : "walk", pointerLocked: !!document.pointerLockElement, cursor: getComputedStyle(game.renderer.domElement).cursor },
         }),
       },
       writable: false,
