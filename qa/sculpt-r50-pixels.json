@@ -1,0 +1,131 @@
+{
+  "capture": "sculpt-r50",
+  "sourceMeasurement": "sculpt-reference-analysis.json",
+  "method": "9 screenshot rows around the actual cursor; olive mask plus specular pixels; median half-width. Controlled 1920x1080 fixture only; edge uncertainty approximately 2 px.",
+  "outlines": {
+    "start": {
+      "rows": [
+        {
+          "y": 777,
+          "left": 839,
+          "right": 1073,
+          "radius": 117.0
+        },
+        {
+          "y": 778,
+          "left": 839,
+          "right": 1073,
+          "radius": 117.0
+        },
+        {
+          "y": 779,
+          "left": 839,
+          "right": 1073,
+          "radius": 117.0
+        },
+        {
+          "y": 780,
+          "left": 839,
+          "right": 1072,
+          "radius": 116.5
+        },
+        {
+          "y": 781,
+          "left": 839,
+          "right": 1072,
+          "radius": 116.5
+        },
+        {
+          "y": 782,
+          "left": 839,
+          "right": 1068,
+          "radius": 114.5
+        },
+        {
+          "y": 783,
+          "left": 839,
+          "right": 1068,
+          "radius": 114.5
+        },
+        {
+          "y": 784,
+          "left": 839,
+          "right": 1073,
+          "radius": 117.0
+        },
+        {
+          "y": 785,
+          "left": 839,
+          "right": 1073,
+          "radius": 117.0
+        }
+      ],
+      "medianRadius": 117.0
+    },
+    "response": {
+      "rows": [
+        {
+          "y": 777,
+          "left": 810,
+          "right": 1106,
+          "radius": 148.0
+        },
+        {
+          "y": 778,
+          "left": 810,
+          "right": 1106,
+          "radius": 148.0
+        },
+        {
+          "y": 779,
+          "left": 811,
+          "right": 1106,
+          "radius": 147.5
+        },
+        {
+          "y": 780,
+          "left": 811,
+          "right": 1105,
+          "radius": 147.0
+        },
+        {
+          "y": 781,
+          "left": 811,
+          "right": 1105,
+          "radius": 147.0
+        },
+        {
+          "y": 782,
+          "left": 811,
+          "right": 1105,
+          "radius": 147.0
+        },
+        {
+          "y": 783,
+          "left": 811,
+          "right": 1105,
+          "radius": 147.0
+        },
+        {
+          "y": 784,
+          "left": 812,
+          "right": 1105,
+          "radius": 146.5
+        },
+        {
+          "y": 785,
+          "left": 812,
+          "right": 1105,
+          "radius": 146.5
+        }
+      ],
+      "medianRadius": 147.0
+    }
+  },
+  "cursorDisplacement": 188,
+  "radiusDeltaPixels": 30.0,
+  "screenGain": 0.1595744680851064,
+  "referenceGain": 0.1561944254910304,
+  "difference": 0.0033800425940759826,
+  "passed": true
+}

@@ -1,0 +1,277 @@
+{
+  "source": "C:\\Users\\Admin\\Videos\\屏幕录制\\屏幕录制 2026-10-26 193953.mp4",
+  "fps": 30.0,
+  "method": "Visible cursor template and clay silhouette at image rows 441-449; linear fit on 1.3-2.1 s. No hidden input or playback-speed claim.",
+  "radialScreenGain": 0.1561944254910304,
+  "fitRmsePixels": 1.319149580612802,
+  "fitSamples": 25,
+  "cursorRange": [
+    762.0,
+    950.0
+  ],
+  "radiusRange": [
+    78.5,
+    105.5
+  ],
+  "samples": [
+    {
+      "time": 1.2,
+      "cursorX": 726,
+      "cursorY": 440,
+      "cursorConfidence": 0.8127368092536926,
+      "radiusPixels": 75.0
+    },
+    {
+      "time": 1.2333333333333334,
+      "cursorX": 744,
+      "cursorY": 444,
+      "cursorConfidence": 0.8676213026046753,
+      "radiusPixels": 76.5
+    },
+    {
+      "time": 1.2666666666666666,
+      "cursorX": 752,
+      "cursorY": 446,
+      "cursorConfidence": 0.86395263671875,
+      "radiusPixels": 76.5
+    },
+    {
+      "time": 1.3,
+      "cursorX": 762,
+      "cursorY": 450,
+      "cursorConfidence": 0.8648520112037659,
+      "radiusPixels": 78.5
+    },
+    {
+      "time": 1.3333333333333333,
+      "cursorX": 775,
+      "cursorY": 452,
+      "cursorConfidence": 0.8540763258934021,
+      "radiusPixels": 79.5
+    },
+    {
+      "time": 1.3666666666666667,
+      "cursorX": 807,
+      "cursorY": 457,
+      "cursorConfidence": 0.8340152502059937,
+      "radiusPixels": 82.5
+    },
+    {
+      "time": 1.4,
+      "cursorX": 807,
+      "cursorY": 457,
+      "cursorConfidence": 0.8326337337493896,
+      "radiusPixels": 82.5
+    },
+    {
+      "time": 1.4333333333333333,
+      "cursorX": 807,
+      "cursorY": 457,
+      "cursorConfidence": 0.8355342149734497,
+      "radiusPixels": 82.5
+    },
+    {
+      "time": 1.4666666666666666,
+      "cursorX": 836,
+      "cursorY": 460,
+      "cursorConfidence": 0.9380828738212585,
+      "radiusPixels": 84.5
+    },
+    {
+      "time": 1.5,
+      "cursorX": 850,
+      "cursorY": 460,
+      "cursorConfidence": 0.999999463558197,
+      "radiusPixels": 87.5
+    },
+    {
+      "time": 1.5333333333333334,
+      "cursorX": 869,
+      "cursorY": 462,
+      "cursorConfidence": 0.941713809967041,
+      "radiusPixels": 90.5
+    },
+    {
+      "time": 1.5666666666666667,
+      "cursorX": 869,
+      "cursorY": 462,
+      "cursorConfidence": 0.9396985769271851,
+      "radiusPixels": 90.5
+    },
+    {
+      "time": 1.6,
+      "cursorX": 869,
+      "cursorY": 462,
+      "cursorConfidence": 0.9393393993377686,
+      "radiusPixels": 90.5
+    },
+    {
+      "time": 1.6333333333333333,
+      "cursorX": 891,
+      "cursorY": 464,
+      "cursorConfidence": 0.8889308571815491,
+      "radiusPixels": 94.0
+    },
+    {
+      "time": 1.6666666666666667,
+      "cursorX": 894,
+      "cursorY": 465,
+      "cursorConfidence": 0.8814581632614136,
+      "radiusPixels": 95.5
+    },
+    {
+      "time": 1.7,
+      "cursorX": 902,
+      "cursorY": 463,
+      "cursorConfidence": 0.9083929061889648,
+      "radiusPixels": 96.5
+    },
+    {
+      "time": 1.7333333333333334,
+      "cursorX": 902,
+      "cursorY": 463,
+      "cursorConfidence": 0.9085440039634705,
+      "radiusPixels": 96.5
+    },
+    {
+      "time": 1.7666666666666666,
+      "cursorX": 924,
+      "cursorY": 461,
+      "cursorConfidence": 0.914421796798706,
+      "radiusPixels": 100.5
+    },
+    {
+      "time": 1.8,
+      "cursorX": 924,
+      "cursorY": 461,
+      "cursorConfidence": 0.914421796798706,
+      "radiusPixels": 100.5
+    },
+    {
+      "time": 1.8333333333333333,
+      "cursorX": 932,
+      "cursorY": 461,
+      "cursorConfidence": 0.9053971767425537,
+      "radiusPixels": 102.5
+    },
+    {
+      "time": 1.8666666666666667,
+      "cursorX": 932,
+      "cursorY": 461,
+      "cursorConfidence": 0.9050061702728271,
+      "radiusPixels": 102.5
+    },
+    {
+      "time": 1.9,
+      "cursorX": 932,
+      "cursorY": 461,
+      "cursorConfidence": 0.9055382609367371,
+      "radiusPixels": 102.0
+    },
+    {
+      "time": 1.9333333333333333,
+      "cursorX": 938,
+      "cursorY": 461,
+      "cursorConfidence": 0.8953461647033691,
+      "radiusPixels": 103.5
+    },
+    {
+      "time": 1.9666666666666666,
+      "cursorX": 938,
+      "cursorY": 461,
+      "cursorConfidence": 0.8955498337745667,
+      "radiusPixels": 103.5
+    },
+    {
+      "time": 2.0,
+      "cursorX": 943,
+      "cursorY": 461,
+      "cursorConfidence": 0.8714331984519958,
+      "radiusPixels": 105.5
+    },
+    {
+      "time": 2.033333333333333,
+      "cursorX": 943,
+      "cursorY": 461,
+      "cursorConfidence": 0.8714331984519958,
+      "radiusPixels": 105.5
+    },
+    {
+      "time": 2.066666666666667,
+      "cursorX": 950,
+      "cursorY": 461,
+      "cursorConfidence": 0.9048499464988708,
+      "radiusPixels": 105.5
+    },
+    {
+      "time": 2.1,
+      "cursorX": 950,
+      "cursorY": 461,
+      "cursorConfidence": 0.9066923260688782,
+      "radiusPixels": 105.5
+    },
+    {
+      "time": 2.1333333333333333,
+      "cursorX": 954,
+      "cursorY": 460,
+      "cursorConfidence": 0.87852543592453,
+      "radiusPixels": 106.5
+    },
+    {
+      "time": 2.1666666666666665,
+      "cursorX": 954,
+      "cursorY": 460,
+      "cursorConfidence": 0.8782591223716736,
+      "radiusPixels": 106.5
+    },
+    {
+      "time": 2.2,
+      "cursorX": 956,
+      "cursorY": 460,
+      "cursorConfidence": 0.8918027281761169,
+      "radiusPixels": 107.5
+    },
+    {
+      "time": 2.2333333333333334,
+      "cursorX": 959,
+      "cursorY": 460,
+      "cursorConfidence": 0.8817884922027588,
+      "radiusPixels": 107.5
+    },
+    {
+      "time": 2.2666666666666666,
+      "cursorX": 959,
+      "cursorY": 460,
+      "cursorConfidence": 0.8796820640563965,
+      "radiusPixels": 107.5
+    },
+    {
+      "time": 2.3,
+      "cursorX": 963,
+      "cursorY": 460,
+      "cursorConfidence": 0.9046605825424194,
+      "radiusPixels": 108.0
+    },
+    {
+      "time": 2.3333333333333335,
+      "cursorX": 963,
+      "cursorY": 460,
+      "cursorConfidence": 0.8697758316993713,
+      "radiusPixels": 108.0
+    },
+    {
+      "time": 2.3666666666666667,
+      "cursorX": 963,
+      "cursorY": 460,
+      "cursorConfidence": 0.868920624256134,
+      "radiusPixels": 108.0
+    },
+    {
+      "time": 2.4,
+      "cursorX": 963,
+      "cursorY": 460,
+      "cursorConfidence": 0.8696828484535217,
+      "radiusPixels": 109.0
+    }
+  ]
+}

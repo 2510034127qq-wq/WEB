@@ -49,6 +49,7 @@ export class Workshop {
   private reuseShadows = new URLSearchParams(location.search).get('shadow-cache') !== 'off';
   board: THREE.Mesh;
   contact: THREE.Vector3 | null = null;
+  sculptContact: number | null = null;
   contactNormal = new THREE.Vector3(0, 0, 1);
   action = "";
   packId: string | null = null;
@@ -829,6 +830,7 @@ export class Workshop {
         item.stage === "loaded" && this.state.kiln.phase !== "idle" && this.focus!=="kiln"
       );
       o.position.fromArray(item.position);
+      o.setSculptContact(this.focus==='wheel'&&item.id===this.state.activeId?this.sculptContact:null,dt);
       o.rotation.set(0, 0, 0);
       const kilnView=this.focus==='kiln'&&item.location==='kiln'&&['loaded','fired'].includes(item.stage);
       if(kilnView){o.visible=item.id===this.state.activeId;o.position.set(6.9,.31,4.92);}
@@ -1015,6 +1017,21 @@ export class Workshop {
       surface: hit.uv.x >= 0.5 ? ("inner" as const) : ("outer" as const),
       uv: new THREE.Vector2((hit.uv.x * 2) % 1, hit.uv.y),
     };
+  }
+  hitSculpt(x: number,y: number) {
+    const direct=this.hitPiece(x,y);
+    if(direct)return direct;
+    // A narrow screen-space grip catches a silhouette without diverting the
+    // click to the wheel behind it. It never enlarges the visible geometry.
+    for(const distance of [3,6,10,14])for(const [dx,dy] of [[-distance,0],[distance,0],[0,distance]]){
+      const hit=this.hitPiece(x+dx,y+dy);
+      if(hit)return hit;
+    }
+    return null;
+  }
+  sculptMetresPerPixel(point: THREE.Vector3) {
+    const local=point.clone().applyMatrix4(this.camera.matrixWorldInverse);
+    return 2*Math.abs(local.z)*Math.tan(THREE.MathUtils.degToRad(this.camera.fov*.5))/innerHeight;
   }
   nearbyProp() {
     this.ray.setFromCamera(new THREE.Vector2(), this.camera);

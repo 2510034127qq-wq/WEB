@@ -1,3 +1,5 @@
+import {ceramicGeometry, updateCeramicGeometry} from "./ceramic-geometry";
+export {ceramicGeometry, updateCeramicGeometry} from "./ceramic-geometry";
 import {drawDecoration} from './decoration';
 import * as THREE from "three";
 import type { Piece, Mark } from "../simulation/model";
@@ -14,92 +16,6 @@ function clayMap(channel: string) {
   const map=source.clone();map.wrapS=map.wrapT=THREE.RepeatWrapping;map.anisotropy=16;
   return map;
 }
-function ceramicProfile(p: Piece) {
-  const points: THREE.Vector2[] = [];
-  const h = p.height;
-  points.push(
-    new THREE.Vector2(0, 0),
-    new THREE.Vector2(p.radius[0] * 0.83, 0),
-    new THREE.Vector2(p.radius[0] * 0.83, 0.012),
-  );
-  const thrown = !['raw','prepared'].includes(p.stage), fired=['fired','packed'].includes(p.stage);
-  const profileRadius=(i:number) => {
-    const row=Math.min(46,Math.floor(i)),f=i-row,y=i/47*h;
-    // Interpolate the player's profile continuously, without introducing an
-    // equal-pitch corrugation over untouched clay.
-    const a=p.radius[Math.max(0,row-1)],b=p.radius[row],c=p.radius[row+1],d=p.radius[Math.min(47,row+2)];
-    const radius=THREE.MathUtils.clamp(.5*((2*b)+(-a+c)*f+(2*a-5*b+4*c-d)*f*f+(-a+3*b-3*c+d)*f*f*f),Math.min(b,c),Math.max(b,c));
-    let relief=0;
-    if(thrown)for(const trace of p.wheelTraces||[]) {
-      const distance=(y-trace.v*h)/(trace.width*.5);
-      // Pressed band and the displaced lip on either side conserve local shape.
-      relief+=trace.depth*(.45*Math.exp(-(((Math.abs(distance)-1.1)/.45)**2))-Math.exp(-distance*distance*2));
-    }
-    return radius+THREE.MathUtils.clamp(relief,-.0005,.0005)*(fired?.28:1);
-  };
-  const rows=256;
-  for (let i = 0; i <= rows; i++)
-    points.push(new THREE.Vector2(profileRadius(i/rows*47), 0.012 + i/rows*h));
-  let insideStart = points.length;
-  if (p.opened) {
-    const outer = p.radius[47], thickness = p.thickness[47], center = outer - thickness * .5;
-    // A rolled lip has a real cross section. The opening remains hollow.
-    for (let j = 1; j <= 10; j++) {
-      const a = Math.PI * j / 10;
-      points.push(new THREE.Vector2(center + Math.cos(a) * thickness * .5, h + .012 + Math.sin(a) * thickness * .5));
-    }
-    insideStart = points.length;
-    for (let k = rows; k >= 0; k--) {
-      const i=k/rows*47,row=Math.min(46,Math.floor(i)), f=i-row;
-      points.push(
-        new THREE.Vector2(
-          Math.max(0.005, profileRadius(i) - (p.thickness[row]*(1-f)+p.thickness[row+1]*f)),
-          0.016 + (i / 47) * h,
-        ),
-      );
-    }
-    points.push(new THREE.Vector2(0, 0.021));
-  } else {
-    points.push(
-      new THREE.Vector2(p.radius[47] * 0.7, h + 0.023),
-      new THREE.Vector2(0, h + 0.028),
-    );
-  }
-  return {points,insideStart};
-}
-export function ceramicGeometry(p: Piece) {
-  const {points}=ceramicProfile(p);
-  const g=new THREE.LatheGeometry(points,128);
-  (g.attributes.position as THREE.BufferAttribute).setUsage(THREE.DynamicDrawUsage);
-  (g.attributes.normal as THREE.BufferAttribute).setUsage(THREE.DynamicDrawUsage);
-  updateCeramicGeometry(g,p);
-  return g;
-}
-/** Reuse vertex/index buffers. Analytic surface-of-revolution normals avoid a
- * full triangle adjacency pass and remain identical at the circumference seam. */
-export function updateCeramicGeometry(g: THREE.LatheGeometry,p: Piece) {
-  const {points,insideStart}=ceramicProfile(p),stride=points.length;
-  if(g.attributes.position.count!==129*stride)return false;
-  for(let i=0;i<stride;i++)g.parameters.points[i].copy(points[i]);
-  const pos=g.attributes.position,normal=g.attributes.normal,uv=g.attributes.uv;
-  const warped=p.defects.some(d=>d.startsWith('过火'));
-  for(let j=0;j<stride;j++){
-    const prev=points[Math.max(0,j-1)],next=points[Math.min(stride-1,j+1)],point=points[j];
-    const dr=next.x-prev.x,dy=next.y-prev.y,length=Math.hypot(dr,dy)||1;
-    const inside=p.opened&&j>=insideStart;
-    for(let i=0;i<=128;i++){
-      const angle=i/128*Math.PI*2,sn=Math.sin(angle),cs=Math.cos(angle),k=i*stride+j;
-      const y=point.y+(warped?Math.sin(angle*3)*.012*(point.y/p.height)**2:0);
-      pos.setXYZ(k,point.x*sn,y,point.x*cs);
-      normal.setXYZ(k,dy/length*sn,-dr/length,dy/length*cs);
-      uv.setXY(k,(.5+i/128*1023)/2048+(inside?.5:0),Math.max(0,Math.min(1,(point.y-.012)/p.height)));
-    }
-  }
-  pos.needsUpdate=true;normal.needsUpdate=true;uv.needsUpdate=true;
-  g.computeBoundingBox();g.computeBoundingSphere();
-  return true;
-}
-
 function stamp(
   ctx: CanvasRenderingContext2D,
   m: Mark,
@@ -170,6 +86,8 @@ export class Ceramic extends THREE.Group {
   previewGlaze=false;
   private handles:THREE.Mesh[]=[];
   private glazeField = document.createElement('canvas');
+  private sculptTouch = {value:new THREE.Vector2(-1,0)};
+  private vesselHeight = {value:0.16};
   constructor(public piece: Piece) {
     super();
     this.canvas.width = 2048;
@@ -202,13 +120,19 @@ export class Ceramic extends THREE.Group {
     mat.onBeforeCompile = (shader) => {
       shader.uniforms.mineralAlbedo = { value: this.mineralAlbedo };
       shader.uniforms.mineralScale = { value: this.mineralAlbedo.repeat };
+      shader.uniforms.sculptTouch = this.sculptTouch;
+      shader.uniforms.vesselHeight = this.vesselHeight;
       shader.vertexShader = `varying vec3 ceramicLocal;\n${shader.vertexShader}`.replace("#include <begin_vertex>", "#include <begin_vertex>\nceramicLocal = position;");
-      shader.fragmentShader = `uniform sampler2D mineralAlbedo; uniform vec2 mineralScale; varying vec3 ceramicLocal;\n${shader.fragmentShader}`
+      shader.fragmentShader = `uniform sampler2D mineralAlbedo; uniform vec2 mineralScale; uniform vec2 sculptTouch; uniform float vesselHeight; varying vec3 ceramicLocal;\n${shader.fragmentShader}`
         .replace("#include <map_fragment>", `#include <map_fragment>
           float mineralValue = dot(texture2D(mineralAlbedo, vMapUv * mineralScale).rgb, vec3(.2126,.7152,.0722));
           // Preserve measured surface variation while replacing red-clay pigment
           // with the stage's kaolin colour. Clay005's median linear luminance is .215.
           diffuseColor.rgb *= mix(1.,clamp(mineralValue/.215,.75,1.25),.65);
+          // Pressure smooths a damp band at the real contact height. It changes
+          // reflected light, never emission or a separately animated silhouette.
+          float contactBand = sculptTouch.y * exp(-2.1 * pow(((ceramicLocal.y-.012)/vesselHeight-sculptTouch.x)/.12,2.));
+          diffuseColor.rgb *= mix(vec3(1.),vec3(.97,.97,.94),contactBand);
           // Uncoated trimmed foot is porous, even on a fully glazed vessel.
           float foot = 1. - smoothstep(.009,.019,ceramicLocal.y);
           diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(.90,.88,.82),foot*.55);
@@ -223,6 +147,7 @@ export class Ceramic extends THREE.Group {
           roughnessFactor=clamp(roughness+(texture2D(roughnessMap,vRoughnessMapUv).g-.49)*.22,.08,1.);
           #endif
           roughnessFactor = mix(roughnessFactor,.91,1.-smoothstep(.009,.019,ceramicLocal.y));
+          roughnessFactor = max(.12,roughnessFactor-.09*contactBand);
         `);
     };
     this.mesh = new THREE.Mesh(ceramicGeometry(piece), mat);
@@ -236,12 +161,13 @@ export class Ceramic extends THREE.Group {
     const fired = ["fired", "packed"].includes(p.stage),
       wet = ["raw", "prepared", "thrown"].includes(p.stage),
       glazed = ["glazed", "dry", "loaded"].includes(p.stage),mat=this.mesh.material;
+    this.vesselHeight.value=p.height;
     // Drying changes wet sheen even when the geometry is unchanged.
-    mat.roughness = fired ? (p.defects.some(d=>d.startsWith('欠火'))?.82:.30) : wet ? .64-.14*Math.min(1,p.moisture/.7) : glazed ? .88 : .94;
-    mat.clearcoat = fired ? 1 : wet ? .24 * Math.min(1,p.moisture/.7) : 0;
-    mat.clearcoatRoughness = fired ? (glazeMean(p)>1.2?.28:.12) : .32;
+    mat.roughness = fired ? (p.defects.some(d=>d.startsWith('欠火'))?.82:.30) : wet ? .64-.28*Math.min(1,p.moisture/.7) : glazed ? .88 : .94;
+    mat.clearcoat = fired ? 1 : wet ? .34 * Math.min(1,p.moisture/.7) : 0;
+    mat.clearcoatRoughness = fired ? (glazeMean(p)>1.2?.28:.12) : .22;
     if(this.previewGlaze&&p.decoration){mat.roughness=.3;mat.clearcoat=1;mat.clearcoatRoughness=.14;}
-    mat.normalScale.setScalar(fired ? .025 : this.previewGlaze&&p.decoration ? .035 : wet ? .45 : .75);
+    mat.normalScale.setScalar(fired ? .025 : this.previewGlaze&&p.decoration ? .035 : wet ? .20 : .75);
     if(ceramicAudit==='matte'){mat.normalMap=null;mat.roughnessMap=null;mat.clearcoatRoughnessMap=null;mat.roughness=1;mat.clearcoat=0;}
     const sig = [
       p.stage,
@@ -278,7 +204,7 @@ export class Ceramic extends THREE.Group {
     ctx.fillStyle = fired
       ? "#e0e5dd"
       : wet
-        ? "#85867a"
+        ? "#60634b"
         : "#b9b6a6";
     ctx.fillRect(0, 0, 2048, 1024);
     if(p.decoration){ctx.save();ctx.beginPath();ctx.rect(0,0,1024,1024);ctx.clip();drawDecoration(ctx,p.decoration,1024,1024);ctx.restore();}
@@ -356,6 +282,10 @@ export class Ceramic extends THREE.Group {
       mat.roughness = 0.74;
     if (fired && glazeMean(p) > 1.2) mat.clearcoatRoughness = 0.28;
     this.texture.needsUpdate = true;
+  }
+  setSculptContact(v: number | null, dt: number) {
+    if(v!==null)this.sculptTouch.value.x=v;
+    this.sculptTouch.value.y=THREE.MathUtils.damp(this.sculptTouch.value.y,v===null?0:1,18,dt);
   }
   dispose() {
     for(const h of this.handles)h.geometry.dispose();

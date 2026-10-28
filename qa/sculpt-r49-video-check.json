@@ -1,0 +1,12 @@
+{
+  "source": "qa/sculpt-r49.webm",
+  "output": "qa/sculpt-r49-review.webm",
+  "sourceStartSeconds": 24.4,
+  "durationSeconds": 19.4,
+  "fps": 25.0,
+  "decodedFrames": 485,
+  "expectedFrames": 485,
+  "speedMultiplier": 1,
+  "interpolatedFrames": false,
+  "allFramesDecoded": true
+}

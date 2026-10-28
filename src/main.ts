@@ -134,7 +134,7 @@ async function persist() {
   }
 }
 function leave() {
-  if(sculpt){sculpt.step(0,true);sculpt=null;}
+  sculpt?.release();
   paintStudio.show(null);
   firingPanel.show(null);
   game?.camera.clearViewOffset();
@@ -602,7 +602,7 @@ root.addEventListener("click", async (e) => {
         if (p) smooth(p);
         break;
       case "undo-shape":
-        if (p && shapeUndo.length) Object.assign(p, shapeUndo.pop());
+        if (p && shapeUndo.length) {sculpt=null;Object.assign(p, shapeUndo.pop());}
         break;
       case "spin":
         spin = spin ? 0 : 0.75;
@@ -800,7 +800,7 @@ root.addEventListener("pointerdown", (e) => {
   }
 });
 window.addEventListener("pointerup", () => {
-  if(sculpt){sculpt.step(0,true);sculpt=null;dirty();}
+  if(sculpt){sculpt.release();game.renderer.domElement.style.cursor="default";dirty();}
   wheelGrabAngle = null;
   if (controlDrag) {
     const action = controls.endDrag();
@@ -902,9 +902,14 @@ function markAt(x: number, y: number, first = false) {
     dirty();
   }
 }
-window.addEventListener("mousemove", (e) => {
+window.addEventListener("pointermove", (e) => {
   if (!started || modal || (e.target as HTMLElement).closest("#paint-studio,#firing-panel")) return;
-  if (sculpt){sculpt.move(e.clientX-sculptStart.x,e.clientY-sculptStart.y);return;}
+  if (sculpt&&!sculpt.released){
+    const coalesced=e.getCoalescedEvents?.();
+    for(const point of coalesced?.length?coalesced:[e])sculpt.move(point.clientX-sculptStart.x,point.clientY-sculptStart.y);
+    game.renderer.domElement.style.cursor="grabbing";
+    return;
+  }
   if (wheelGrabAngle !== null) {
     const hit = game.hitWheel(e.clientX, e.clientY);
     if (hit) {
@@ -927,7 +932,9 @@ window.addEventListener("mousemove", (e) => {
       innerWidth,
       innerHeight,
     );
-    game.renderer.domElement.style.cursor = target ? "pointer" : "default";
+    const p=active(state);
+    const sculptHover=focus==='wheel'&&p?.opened&&['prepared','thrown'].includes(p.stage)&&game.hitSculpt(e.clientX,e.clientY);
+    game.renderer.domElement.style.cursor = sculptHover ? "grab" : target ? "pointer" : "default";
     $("#caption").textContent =
       target?.label || STATIONS.find((s) => s.id === focus)!.subtitle;
   }
@@ -1152,8 +1159,9 @@ window.addEventListener("keydown", (e) => {
     }
     if (e.code === "KeyZ" && (e.ctrlKey || e.metaKey) && p) {
       e.preventDefault();
-      if (focus === "wheel" && shapeUndo.length)
-        Object.assign(p, shapeUndo.pop());
+      if (focus === "wheel" && shapeUndo.length){
+        sculpt=null;Object.assign(p, shapeUndo.pop());
+      }
       if (focus === "paint") {
         if(p.decoration)paintStudio.undo();
         else do {
@@ -1294,6 +1302,8 @@ function tick(ms: number) {
       if(focus==="wheel"&&wheelAuto)spin=THREE.MathUtils.damp(spin,2.8,9,dt);
       else spin *= Math.exp(-dt * (dragging ? 0.28 : 0.09));
       if(sculpt&&sculpt.step(dt))dirty();
+      if(sculpt?.settled)sculpt=null;
+      game.sculptContact=sculpt&&!sculpt.released?sculpt.contactV:null;
       if (spin < 0.02) spin = 0;
       if (
         p &&
@@ -1488,6 +1498,9 @@ async function boot() {
     canvas.addEventListener("contextmenu", (e) => e.preventDefault());
     canvas.addEventListener("pointerdown", (e) => {
       if (!started || modal) return;
+      const current=active(state);
+      const canSculpt=focus==='wheel'&&current?.location==='wheel'&&current.opened&&['prepared','thrown'].includes(current.stage);
+      const pieceHit=canSculpt?game.hitSculpt(e.clientX,e.clientY):game.hitPiece(e.clientX,e.clientY);
       if (e.button === 2) {
         rightDrag = true;
         if (focus !== "glaze") return;
@@ -1497,7 +1510,7 @@ async function boot() {
         return;
       }
       if (focus && e.button === 0) {
-        if (focus === "wheel" && !game.hitPiece(e.clientX, e.clientY)) {
+        if (focus === "wheel" && !pieceHit) {
           const wheel = game.hitWheel(e.clientX, e.clientY);
           if (wheel) {
             wheelGrabAngle = Math.atan2(wheel.point.x, wheel.point.z + 5.6);
@@ -1512,7 +1525,7 @@ async function boot() {
           innerWidth,
           innerHeight,
         );
-        if (hit && !game.hitPiece(e.clientX, e.clientY)) {
+        if (hit && !pieceHit) {
           useControl(hit);
           if (hit.gesture === "drag") {
             controlDrag = hit;
@@ -1524,7 +1537,7 @@ async function boot() {
       }
       if (e.button === 0 || (e.button === 2 && focus === "glaze")) {
         const p = active(state),
-          hit = game.hitPiece(e.clientX, e.clientY);
+          hit = pieceHit;
         if (hit && p?.location === focus) {
           dragging = true;
           contactValid = true;
@@ -1541,10 +1554,10 @@ async function boot() {
               height: p.height,
             });
           if (shapeUndo.length > 30) shapeUndo.shift();
-          if(focus==='wheel'&&p.opened&&['prepared','thrown'].includes(p.stage)&&!e.shiftKey&&spin>.2){
+          if(canSculpt&&spin>.2){
             const bounds=game.activeBounds()!;
             sculptStart={x:e.clientX,y:e.clientY};
-            sculpt=new SculptStroke(p,hit.uv.y,e.clientX<bounds.x+bounds.w*.5?-1:1,p.height/Math.max(80,bounds.h));
+            sculpt=new SculptStroke(p,hit.uv.y,e.clientX<bounds.x+bounds.w*.5?-1:1,game.sculptMetresPerPixel(hit.point),.28,e.shiftKey);
           }
           markAt(e.clientX, e.clientY, true);
           canvas.setPointerCapture(e.pointerId);
