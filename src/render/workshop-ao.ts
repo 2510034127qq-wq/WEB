@@ -1,9 +1,26 @@
 import * as THREE from 'three';
 import {SSAOPass} from 'three/addons/postprocessing/SSAOPass.js';
+import {FullScreenQuad} from 'three/addons/postprocessing/Pass.js';
 
 /** Geometry AO must see the same leaf silhouettes as the colour/shadow passes. */
 export class WorkshopAO extends SSAOPass {
   private normalCache=new WeakMap<THREE.Material,THREE.MeshNormalMaterial>();
+  private passQuad=new FullScreenQuad();
+  private passClearColor=new THREE.Color();
+  _renderPass(renderer:THREE.WebGLRenderer,material:THREE.ShaderMaterial,target:THREE.WebGLRenderTarget|null,
+    clearColor?:THREE.ColorRepresentation,clearAlpha?:number){
+    // WorkshopOutput consumes this same AO texture. Keep normals, the complete
+    // 16-sample AO kernel and blur; omit only the redundant MSAA composite.
+    if(material===this.copyMaterial&&this.output===SSAOPass.OUTPUT.Default)return;
+    renderer.getClearColor(this.passClearColor);
+    const alpha=renderer.getClearAlpha(),autoClear=renderer.autoClear;
+    renderer.setRenderTarget(target);renderer.autoClear=false;
+    try{
+      if(clearColor!==undefined){renderer.setClearColor(clearColor,clearAlpha??0);renderer.clear();}
+      this.passQuad.material=material;this.passQuad.render(renderer);
+    }finally{renderer.autoClear=autoClear;renderer.setClearColor(this.passClearColor,alpha);}
+  }
+  override dispose(){this.passQuad.dispose();super.dispose();}
   private normalFor(source:THREE.Material) {
     let material=this.normalCache.get(source);
     if(material){material.visible=source.visible&&source.opacity>0;return material;}

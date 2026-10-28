@@ -1,5 +1,13 @@
 {
   "runtimeExcludePrefixes": [
+    "assets/woodland-pine.glb",
+    "assets/terrain/",
+    "assets/vegetation/",
+    "assets/scans/fern_02/",
+    "assets/scans/grass_bermuda_01/",
+    "assets/scans/grass_medium_01/",
+    "assets/scans/shrub_03/",
+    "assets/scans/tree_stump_01/",
     "assets/scans/pine_tree_01/",
     "assets/scans/jacaranda_tree/",
     "assets/craft-surfaces/oldplaster_",

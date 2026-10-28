@@ -1,6 +1,4 @@
 import * as THREE from "three";
-import { makeWoodland } from "./woodland";
-import { makeTerrain } from "./terrain";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 
 function random(seed: number) {
@@ -8,12 +6,6 @@ function random(seed: number) {
     seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
     return seed / 4294967296;
   };
-}
-
-/** Physical leaves and branches, instanced to keep the courtyard GPU budget bounded. */
-export async function makeGarden(scene: THREE.Scene) {
-  const supportHeight=await makeTerrain(scene);
-  await makeWoodland(scene,supportHeight);
 }
 
 export function makeWear(scene: THREE.Scene) {

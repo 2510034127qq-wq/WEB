@@ -46,9 +46,10 @@ export default defineConfig({
               ...Object.keys(bundle).map((f) => "/" + f),
             ]),
           ];
-        // Two download workers bound memory while retaining complete offline assets.
-        // Source candidates and intermediate bakes never enter this list.
-        const code = `const CACHE=${JSON.stringify(cache)};const URLS=${JSON.stringify(urls)};async function prepare(){const c=await caches.open(CACHE);let i=0;async function worker(){while(i<URLS.length){const u=URLS[i++];if(!await c.match(u))await c.add(u);}}await Promise.all([worker(),worker()]);await self.skipWaiting();}self.addEventListener('install',e=>e.waitUntil(prepare()));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('yaohuo-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method==='GET'&&u.origin===location.origin&&URLS.includes(u.pathname))e.respondWith(caches.open(CACHE).then(c=>c.match(u.pathname)).then(r=>r||fetch(e.request)));});`;
+        // Cache used assets from their real requests. Installing the worker must
+        // not redownload the entire scan/PBR library while the player is working.
+        const shell=['/','/index.html',...Object.keys(bundle).map(f=>'/'+f)];
+        const code = `const CACHE=${JSON.stringify(cache)};const URLS=${JSON.stringify(urls)};const SHELL=${JSON.stringify(shell)};self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('yaohuo-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==location.origin||!URLS.includes(u.pathname))return;const navigation=e.request.mode==='navigate';e.respondWith(caches.open(CACHE).then(async c=>{const cached=await c.match(u.pathname);if(cached&&!navigation)return cached;try{const response=await fetch(e.request);if(response.ok){const stored=response.clone();e.waitUntil(c.put(u.pathname,stored).catch(()=>{}));}return response;}catch(error){if(cached)return cached;throw error;}}));});`;
         this.emitFile({ type: "asset", fileName: "sw.js", source: code });
       },
       writeBundle(options) {

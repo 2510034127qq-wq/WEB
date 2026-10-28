@@ -18,9 +18,9 @@ import { FixedShadowCache } from "./fixed-shadow-cache";
 import { GLAZE_VAT, glazeContact } from "../simulation/glaze-contact";
 import { bindSlurryReflection } from "./slurry-reflection";
 import {firedClayMaterial,metricVesselUV} from './fired-clay';
-import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { WorkshopOutput } from "./workshop-output";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
-import { fineNoise, makeGarden, makeWear } from "./details";
+import { fineNoise, makeWear } from "./details";
 import { Ceramic } from "./ceramic";
 import { loadScannedProps } from "./scanned-props";
 import { loadCraftAssets } from "./craft-assets";
@@ -78,15 +78,18 @@ export class Workshop {
   workMotion = 0;
   lastRevision = 0;
   private dust!: THREE.Points;
+  private renderFrameId=0;
   private target = new THREE.PerspectiveCamera();
   constructor(
     public host: HTMLElement,
     public state: GameState,
   ) {
     this.renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      // Geometry is already antialiased in the HDR MSAA target. The default
+      // framebuffer only receives one fullscreen triangle.
+      antialias: false,
       alpha: false,
-      preserveDrawingBuffer: true,
+      preserveDrawingBuffer: false,
       powerPreference: "high-performance",
     });
     this.renderer.setPixelRatio(
@@ -142,6 +145,8 @@ export class Workshop {
     this.composer = new EffectComposer(this.renderer);
     this.composer.renderTarget1.samples = 4;
     this.composer.renderTarget2.samples = 4;
+    this.composer.renderTarget1.resolveDepthBuffer = false;
+    this.composer.renderTarget2.resolveDepthBuffer = false;
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.ao = new WorkshopAO(
       this.scene,
@@ -156,7 +161,7 @@ export class Workshop {
     this.ao.enabled = state.settings.quality==='high'&&new URLSearchParams(location.search).get('ao-audit') !== 'off';
     this.composer.addPass(this.ao);
     this.composer.addPass(this.exposure);
-    this.composer.addPass(new OutputPass());
+    this.composer.addPass(new WorkshopOutput(this.ao));
     this.board = new THREE.Mesh(
       new THREE.CylinderGeometry(0.245, 0.245, 0.018, 48),
       new THREE.MeshStandardMaterial({ color: "#675a40", roughness: 0.93 }),
@@ -317,7 +322,27 @@ export class Workshop {
     this.makeProps();
     this.makeSigns();
     this.makeAtmosphere();
-    await makeGarden(this.scene);
+    onProgress("闭合院门与木作结构");
+    const gate=await loader.loadAsync('/assets/closed-courtyard-gate.glb');
+    gate.scene.name='closed_courtyard_gate';
+    gate.scene.traverse(o=>{
+      if(!(o instanceof THREE.Mesh))return;
+      const name=(o.material as THREE.Material).name;
+      const material=name==='gate_plaster'?surfaces.wall:name==='gate_stone'?surfaces.ground:name==='gate_iron'?surfaces.iron:surfaces.solidwood;
+      o.material=gltfMaterial(material).clone();
+      if(name==='gate_iron'){
+        (o.material as THREE.MeshStandardMaterial).color.set('#514c42');
+        const iron=o.material as THREE.MeshStandardMaterial;
+        iron.metalness=.45;iron.roughness=.9;iron.normalScale.setScalar(.28);
+        iron.onBeforeCompile=shader=>{
+          shader.fragmentShader=shader.fragmentShader.replace('#include <roughnessmap_fragment>',
+            '#include <roughnessmap_fragment>\nroughnessFactor=max(.62,roughnessFactor);');
+        };
+        iron.customProgramCacheKey=()=> 'oxidised-gate-iron-v1';
+      }
+      o.castShadow=o.receiveShadow=true;o.userData.lightingRegion='display';
+    });
+    this.scene.add(gate.scene);
     makeWear(this.scene);
     this.reflections = await loadWorkstationReflections(this.renderer);
     this.applyLocalLighting(this.scene);
@@ -455,7 +480,7 @@ export class Workshop {
     slurry.position.set(7.2, GLAZE_VAT.liquid, 0.48);
     slurry.name='glaze_slurry_surface';
     slurry.receiveShadow=true;slurry.castShadow=false;
-    bindSlurryReflection(slurry);
+    bindSlurryReflection(slurry,()=>this.renderFrameId);
     this.slurry=slurry;
     this.scene.add(slurry);
     const glazeBrush=this.craftAssets.get('brush')!.clone(true);
@@ -992,6 +1017,11 @@ export class Workshop {
     // the damper, seal or ware does; the cache observes those actual casters.
     if (this.fire.visible)
       this.fireShadowCache.update(this.scene, this.fire, this.camera, this.reuseShadows);
+    this.renderFrame();
+  }
+  renderFrame(){
+    this.renderFrameId++;
+    this.exposure.setAO(this.ao.blurRenderTarget.texture,this.ao.enabled);
     this.composer.render();
   }
   hitWheel(x: number, y: number) {
@@ -1073,6 +1103,7 @@ export class Workshop {
       height: this.renderer.domElement.height,
       exposure:this.renderer.toneMappingExposure,
       meteredLuminance:this.exposure.meteredLuminance,
+      reflectionPixels:this.slurry?.userData.reflectionPixels,
       shadowUpdates:this.shadowCache.updates,
       shadowReused:this.shadowCache.reused,
       shadowCasters:this.shadowCache.casterCount,

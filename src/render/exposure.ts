@@ -7,10 +7,10 @@ import {Pass,FullScreenQuad} from 'three/addons/postprocessing/Pass.js';
 export class ExposureMeter extends Pass {
   private target=new THREE.WebGLRenderTarget(16,16,{depthBuffer:false,minFilter:THREE.NearestFilter,magFilter:THREE.NearestFilter});
   private material=new THREE.ShaderMaterial({
-    uniforms:{frame:{value:null}},depthTest:false,depthWrite:false,toneMapped:false,
+    uniforms:{frame:{value:null},ao:{value:null},aoEnabled:{value:0}},depthTest:false,depthWrite:false,toneMapped:false,
     vertexShader:'varying vec2 p;void main(){p=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-    fragmentShader:`uniform sampler2D frame;varying vec2 p;
-      void main(){vec3 c=texture2D(frame,p).rgb;float l=max(dot(c,vec3(.2126,.7152,.0722)),.000015);
+    fragmentShader:`uniform sampler2D frame,ao;uniform float aoEnabled;varying vec2 p;
+      void main(){vec3 c=texture2D(frame,p).rgb*mix(1.,texture2D(ao,p).r,aoEnabled);float l=max(dot(c,vec3(.2126,.7152,.0722)),.000015);
         float encoded=clamp((log2(l)+16.)/24.,0.,1.);gl_FragColor=vec4(vec3(encoded),1.);}`,
   });
   private quad=new FullScreenQuad(this.material);
@@ -21,6 +21,7 @@ export class ExposureMeter extends Pass {
   targetExposure=1.4;
   meteredLuminance=0;
   constructor(public fixedExposure:number|null){super();this.needsSwap=false;}
+  setAO(texture:THREE.Texture,enabled:boolean){this.material.uniforms.ao.value=texture;this.material.uniforms.aoEnabled.value=enabled?1:0;}
   render(renderer:THREE.WebGLRenderer,_write:THREE.WebGLRenderTarget,read:THREE.WebGLRenderTarget){
     if(this.fixedExposure!==null){renderer.toneMappingExposure=this.fixedExposure;return;}
     const now=performance.now(),dt=Math.min(.1,this.lastFrame?(now-this.lastFrame)/1000:0);this.lastFrame=now;

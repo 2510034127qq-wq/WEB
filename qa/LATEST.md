@@ -2,7 +2,22 @@
 
 本轮仍是 `1.1.0-preview.2` 写实迭代，不是照片级验收或正式发布。
 
-## 当前：r28
+## 当前：r57–r61 封闭院落与性能
+
+2026-10-28，当前生产脚本 `workshop-DLf4owfc.js` / `three-CkcWMcEh.js`。用户要求移除屋外林地并封闭院门；当前游戏不显示玩家手部，工位使用鼠标光标。38 项单元测试与构建通过，详细改动和测量范围见 [封闭院落与性能修复](../docs/PERFORMANCE-ENCLOSED.md)。
+
+| 内容 | 记录 | 范围 |
+| --- | --- | --- |
+| 原生尺寸连续行走 | [benchmark-r60.json](benchmark-r60.json) | 可见 Chrome，2560×1600 高画质，12 秒 RAF；59.89 FPS、P95 16.8ms |
+| 院落、院门、辘轳、施釉 | [scene-r61-final.json](scene-r61-final.json) | 同尺寸四个视角各 7 秒，均约 59.89 FPS，无超过 33.5ms 的帧 |
+| 门体、旧存档、离线与留影 | [enclosed-r57.json](enclosed-r57.json) | 10 项通过，确认无林地资源请求、PNG 与离线恢复可用 |
+| 连续塑形 | [sculpt-r58.json](sculpt-r58.json) | 12 项通过，1080p 连续拖动、松手、提拉、撤回与帧耗时 |
+| 彩绘、控温与导出 | [reference-r59.json](reference-r59.json) | 18 项通过，公开工位样本与真实鼠标输入；非从原料开始的完整链 |
+| 闭合木门资产 | [closed-gate-asset.json](closed-gate-asset.json) / [model-compression.json](model-compression.json) | Blender 可编辑构件、4 材质组、无损 Meshopt |
+
+实机近景：[闭合木门](scene-r61-final-gate.png)、[院内](scene-r61-final-courtyard.png)、[施釉反射](scene-r61-final-glaze.png)。下列旧轮次保留历史语境；院外林地与玩家手部已退出当前功能范围。
+
+## 历史：r28
 
 2026-10-24 实现提交 `52ea9db`，最终生产脚本 `index-wO9qQFTA.js`、Three.js `three-BV073Qur.js`。25 项单元测试与构建通过。手部继续暂缓。
 

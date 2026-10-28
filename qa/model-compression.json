@@ -40,6 +40,14 @@
       "attributesAndImagesExact": true,
       "transformMaxAbsDiff": 0,
       "sha256": "89ae077cc65e1c0c1ea5c22660b98b0892079bedfe66c45950e646ac27570027"
+    },
+    {
+      "name": "closed-courtyard-gate",
+      "inputBytes": 2571120,
+      "outputBytes": 1419124,
+      "attributesAndImagesExact": true,
+      "transformMaxAbsDiff": 0,
+      "sha256": "e588d8642134b587edf93096f11c7b6f9d6701a27292cc98f93727a941a7dbc5"
     }
   ]
 }

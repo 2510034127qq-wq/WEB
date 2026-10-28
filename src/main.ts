@@ -7,7 +7,7 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { CraftControls, type CraftHit } from "./render/craft-controls";
 import { Workshop } from "./render/workshop";
 import { applyLightingAudit } from "./render/lighting-audit";
-import { Physics } from "./physics/world";
+import { Physics, enclosedCourtyardSpawn } from "./physics/world";
 import { Sound } from "./render/sound";
 import { Locomotion } from "./simulation/locomotion";
 import { glazeContact } from "./simulation/glaze-contact";
@@ -41,6 +41,7 @@ import {
   type Vec3,
 } from "./simulation/model";
 import { download, restore, save } from "./simulation/storage";
+import { prepareOfflineCache } from "./simulation/offline-cache";
 
 const $ = <T extends HTMLElement = HTMLElement>(q: string) =>
   document.querySelector<T>(q)!;
@@ -504,6 +505,8 @@ async function exportGlb() {
   toast("已导出包含器形、青花贴图与工艺记录的 GLB。");
 }
 function capture() {
+  // An unpreserved drawing buffer must be captured in the same task as render.
+  game.renderFrame();
   game.renderer.domElement.toBlob((blob) => {
     if (blob) download(blob, `窑火-${active(state)?.name || "工坊"}.png`);
   });
@@ -766,6 +769,7 @@ $("#import").addEventListener("change", async (e) => {
       "窑火-导入前备份.json",
     );
     state = incoming;
+    state.player = enclosedCourtyardSpawn(state.player);
     game.state = state;
     game.sync();
     yaw = state.yaw;
@@ -1274,6 +1278,12 @@ function updateUI() {
   }
 }
 function tick(ms: number) {
+  // Hidden tabs already pause the simulation. They must also release the GPU.
+  if (document.hidden) {
+    lastTime = 0;
+    requestAnimationFrame(tick);
+    return;
+  }
   const frameMs = lastTime ? ms - lastTime : 16.67;
   const dt = Math.min(0.05, frameMs / 1000);
   lastTime = ms;
@@ -1483,10 +1493,12 @@ async function boot() {
     } catch {
       /* Storage may be unavailable. */
     }
+    state.player = enclosedCourtyardSpawn(state.player);
     yaw = state.yaw;
     locomotion.reset(yaw);
     game = new Workshop($("#world"), state);
     physics = new Physics();
+    await prepareOfflineCache();
     await Promise.all([
       game.load((label) => ($("#loading").textContent = "正在准备 · " + label)),
       physics.init(state.player, state.props),
@@ -1678,10 +1690,6 @@ async function boot() {
       },
       writable: false,
     });
-    if (import.meta.env.PROD && "serviceWorker" in navigator)
-      void navigator.serviceWorker.register("/sw.js").catch(() => {
-        /* Local server remains usable if browser policy disallows offline cache. */
-      });
     requestAnimationFrame(tick);
   } catch (err) {
     $("#loading").textContent = "工坊加载失败：" + (err as Error).message;

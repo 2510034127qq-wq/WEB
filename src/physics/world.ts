@@ -1,5 +1,11 @@
 import RAPIER from "@dimforge/rapier3d-compat";
 import type { Vec3 } from "../simulation/model";
+/** Older saves could stand beyond the former open gateway. Bring those saves
+ * onto the clear side aisle when restoring the now-enclosed courtyard.
+ */
+export function enclosedCourtyardSpawn(position: Vec3): Vec3 {
+  return position[2] > 7.55 ? [2.15, 1.65, 7.15] : position;
+}
 export class Physics {
   world!: RAPIER.World;
   body!: RAPIER.RigidBody;
@@ -20,6 +26,8 @@ export class Physics {
     box([0, 1.5, -8], [18, 3, 0.3]);
     for (const x of [-9, 9]) box([x, 1.5, 0], [0.3, 3, 16]);
     for (const x of [-6, 6]) box([x, 1.5, 8], [6, 3, 0.3]);
+    // The southern opening is now a permanently closed timber gate.
+    box([0, 1.5, 8], [6, 3, 0.36]);
     box([0, 1, 9.6], [20, 2, 0.3]);
     for (const p of [
       [-5.6, 0.5, -5.6],

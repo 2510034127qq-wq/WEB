@@ -2,6 +2,14 @@
 
 所有运行资源均在 `public/assets/` 中，游戏无需远程热链。资源来源及文件哈希见 `public/assets/provenance.json`。
 
+## 2026-10-28 封闭院落
+
+按用户要求，屋外林地退出当前场景。松树、草、灌木、蕨类、树桩及林地地表的历史源文件仍保留用于版本复现；`scripts/asset-delivery.json` 将其排除出 `dist` 和离线缓存，运行时也不再创建或加载这些物体。下文的林地条目是历史资产记录。
+
+新增 `art/closed-courtyard-gate.blend` / `public/assets/closed-courtyard-gate.glb`：项目原创的闭合双扇木门和门洞填充结构。Blender 源文件保留独立构件，包含 16 块厚 55mm 的门板、门框、横撑、斜撑、木销、锻铁铰链、门闩及石门槛；门板采用顺纤维的轻微弯曲和拼装公差。净开口 2.86×2.568m，导出为 4 个材质组、41,860 个三角形。它是解释性木作设计，不声称是特定历史实物的测绘复原。
+
+木、灰泥、石和铁复用既有许可 PBR 材质，木纹 UV 按构件方向展开。GLB 经 Meshopt 无损编码后为 1,419,124 字节；校验覆盖顶点属性、三角形、变换和图像，见 `qa/model-compression.json`。重建步骤为 `Blender --background --python scripts/build-closed-gate.py`，随后执行 `node scripts/compress-models.mjs closed-courtyard-gate`。
+
 ## 三维资产
 
 - `art/workshop.blend` / `public/assets/workshop.glb`：为本项目用 Blender 脚本制作的木构、院墙、瓦片、辘轳、窑炉、架子、案台、罐钵及杂物。

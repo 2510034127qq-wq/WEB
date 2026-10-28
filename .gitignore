@@ -9,6 +9,9 @@ qa/video/
 qa/failure.*
 release/
 qa/*.png
+# Repeated browser export samples are large derived artifacts; JSON validation
+# and editable workshop backups remain tracked. Existing exports stay in history.
+qa/reference-*-vessel.glb
 qa/baseline-v01/
 qa/*failure*
 qa/package-check.json

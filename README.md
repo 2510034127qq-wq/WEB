@@ -8,6 +8,8 @@
 
 2026-10-28 继续校准塑形：沿坯壁连续移动接触位置、平顺松手、曲率连续轮廓、湿泥反射与真实接触轮痕。源录像测量、Chrome 对照和实机片段见 [塑形连续性记录](docs/SCULPT-MOTION.md)。
 
+2026-10-28 按要求移除屋外林地，改为关闭并上栓的木门，同时优化重复渲染、釉面反射与离线缓存加载。院内模型和材质规格保持原有质量；本机 Chrome 的性能与操作回归见 [封闭院落与性能修复](docs/PERFORMANCE-ENCLOSED.md)。
+
 在同一个三维院落里自由行走，把同一件作品从原泥带到成器堂。拖动坯壁与口沿直接改变器形；展开画布与三维器物同步显示彩绘；釉层、器壁、窑位和火候共同决定烧成结果。
 
 ## 打开游戏
@@ -90,7 +92,7 @@ $env:PLAYWRIGHT_BROWSERS_PATH = "$PWD/.tmp/playwright"
 npx playwright install ffmpeg
 ```
 
-`npm run benchmark` 对发布服务的 1080p 高 / 轻画质做固定路线采样；先用 `node scripts/serve.mjs --port 4173` 启动服务。`npm run package` 生成源码与可运行发布包。
+`npm run benchmark` 对发布服务的 1080p 高 / 轻画质做固定路线采样；先用 `node scripts/serve.mjs --port 4173` 启动服务。可用 `QA_WIDTH` / `QA_HEIGHT` 指定视口、`QA_HEADED=1` 使用可见 Chrome 窗口、`QA_URL` 指定当前服务。`npm run package` 生成源码与可运行发布包。
 
 设置 `QA_QUALITIES=high`、`QA_SHADOW_MODES=off,on` 可在相同资产上比较太阳阴影每帧重画与缓存复用；`off` 仅禁用缓存。`qa/benchmark-r22.json` 保存本机 1080p 高画质对照和原始帧时间，不能外推为全场景或所有设备稳定帧率。当前改动未新建完成标签或正式发布包。
 
@@ -104,7 +106,7 @@ npx playwright install ffmpeg
 | `scripts/` | 资产重建、开发 QA、性能测试、本地服务与打包 |
 | `qa/` | Chrome 截图、实测报告和实际游玩导出样品 |
 
-重建模型需 Blender。工坊依次执行 `build-potters-wheel.py`、`build-workshop.py`、`bake-workshop-light.py`、`bake-local-probes.py`；陶车作为独立旋转组件导出，仍参与工坊离线光照。手部建模脚本与源资产仅供历史版本复现，不进入当前游戏或离线缓存；工具为 `build-craft-tools.py`，林地为 `prepare-vegetation.py`。这些文件均在 `scripts/`。最后运行 `node scripts/compress-models.mjs` 校验并压缩 GLB。`.blend` 保留可编辑材质；改动后须同步导出、烘焙与视觉复查。各 `fetch-*-surfaces.py` / `fetch-scan-assets.py` 保存可复现下载流程及来源校验清单。新增实木材质由 `fetch-workshop-timber.py` 下载，林地高草为 `fetch-scan-assets.py grass_medium_01`，独立透明度贴图由 `fetch-vegetation-alpha.py` 下载。
+重建模型需 Blender。工坊依次执行 `build-potters-wheel.py`、`build-workshop.py`、`bake-workshop-light.py`、`bake-local-probes.py`；陶车作为独立旋转组件导出，仍参与工坊离线光照。工具为 `build-craft-tools.py`，闭合院门为 `build-closed-gate.py`。手部与林地脚本、源资产仅供历史版本复现，不进入当前游戏或离线缓存。这些文件均在 `scripts/`。最后运行 `node scripts/compress-models.mjs` 校验并压缩 GLB。`.blend` 保留可编辑材质；改动后须同步导出、烘焙与视觉复查。各 `fetch-*-surfaces.py` / `fetch-scan-assets.py` 保存可复现下载流程及来源校验清单，实木材质由 `fetch-workshop-timber.py` 下载。
 
 ## 范围和依据
 

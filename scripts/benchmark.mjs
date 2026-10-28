@@ -1,7 +1,12 @@
 import { chromium } from "@playwright/test";
 import fs from "node:fs/promises";
 import os from "node:os";
-const browser = await chromium.launch({ channel: "chrome", headless: true });
+const viewport = {
+  width: Number(process.env.QA_WIDTH || 1920),
+  height: Number(process.env.QA_HEIGHT || 1080),
+};
+const headed = process.env.QA_HEADED === "1";
+const browser = await chromium.launch({ channel: "chrome", headless: !headed });
 const results = [],
   errors = [],
   base = process.env.QA_URL || "http://127.0.0.1:4173/";
@@ -11,7 +16,7 @@ for (const shadowMode of process.env.QA_SHADOW_MODES?.split(",") || ["on"]) {
     "low",
   ]) {
     const context = await browser.newContext({
-      viewport: { width: 1920, height: 1080 },
+      viewport,
       deviceScaleFactor: 1,
     });
     const page = await context.newPage();
@@ -122,7 +127,8 @@ await fs.writeFile(
       browser: browser.version(),
       cpu: os.cpus()[0].model,
       memoryGiB: Math.round(os.totalmem() / 2 ** 30),
-      resolution: "1920 x 1080",
+      resolution: `${viewport.width} x ${viewport.height}`,
+      headed,
       pixelRatio: 1,
       recording: false,
       slowFrameThresholdMs: 33.4,

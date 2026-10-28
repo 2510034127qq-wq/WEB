@@ -1,0 +1,12 @@
+{
+  "source": "art/closed-courtyard-gate.blend",
+  "runtime": "public/assets/closed-courtyard-gate.glb",
+  "triangles": 41860,
+  "materialGroups": 4,
+  "clearOpeningMetres": [
+    2.86,
+    2.568
+  ],
+  "construction": "16 fitted 55 mm boards, timber jambs, supporting battens, bracing, metal hinges, closed latch, stone threshold",
+  "provenance": "Original interpretive geometry; existing licensed timber, plaster, iron and stone PBR maps are reused at runtime."
+}
